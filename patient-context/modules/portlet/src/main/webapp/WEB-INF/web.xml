@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--
 
-    Copyright 2009 Vastra Gotalandsregionen
+    Copyright 2010 Västra Götalandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -17,15 +17,20 @@
       Free Software Foundation, Inc., 59 Temple Place, Suite 330,
       Boston, MA 02111-1307  USA
 
+
 -->
+
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-  version="2.4">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
 
-  <display-name>CHANGE ME!</display-name>
-  <description>CHANGE ME!</description>
+  <display-name>PatientContext</display-name>
+  <description>PatientContext</description>
 
+  <listener>
+    <listener-class>com.liferay.portal.kernel.servlet.PortletContextListener</listener-class>
+  </listener>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -42,9 +47,22 @@
     <servlet-class>org.springframework.web.servlet.ViewRendererServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
-  
   <servlet-mapping>
     <servlet-name>view</servlet-name>
     <url-pattern>/WEB-INF/servlet/view</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PatientContext</servlet-name>
+    <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-class</param-name>
+      <param-value>org.springframework.web.portlet.DispatcherPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PatientContext</servlet-name>
+    <url-pattern>/PatientContext/*</url-pattern>
   </servlet-mapping>
 </web-app>
