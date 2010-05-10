@@ -43,6 +43,32 @@
       <short-title>Kontext</short-title>
       <keywords>Kontext</keywords>
     </portlet-info>
+
+    <supported-publishing-event>
+      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.personNumber</qname> 
+    </supported-publishing-event>
+  </portlet>
+
+  <portlet>
+    <portlet-name>PatientContextListner</portlet-name>
+    <display-name>PatientContextListner</display-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Patient context listner</title>
+      <short-title>Context listner</short-title>
+      <keywords>Context</keywords>
+    </portlet-info>
+
+    <supported-processing-event>
+      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.personNumber</qname>
+    </supported-processing-event>
   </portlet>
 
   <!-- Used to get remote user. See more info in JSR-286 Section 21.1. -->
@@ -52,4 +78,10 @@
   </user-attribute>
 
   <default-namespace>http://PatientContext/</default-namespace>
+
+  <event-definition>
+    <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.personNumber</qname>
+    <value-type>java.lang.String</value-type>
+  </event-definition>
+
 </portlet-app>
