@@ -22,6 +22,7 @@
   <modules>
     <module>patient-context</module>
   </modules>
+  
 
   <!--NB! SCM config below assumes system name equals VGR subversion/googlecode project name! -->
   <!-- Open Source repo -->
