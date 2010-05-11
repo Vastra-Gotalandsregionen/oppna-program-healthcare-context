@@ -30,20 +30,36 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<portlet:actionURL var="searchEvent" name="searchEvent" />
+<portlet:actionURL var="searchEvent" name="searchEvent"/>
+<portlet:actionURL var="resetEvent" name="resetEvent"/>
 
-<div class="module-content">
-    <h1>Search</h1>
-    
-    <form:form method="POST" action="${searchEvent}" commandName="patientContext">
-        <table>
-            <tr>
-                <td>Personnummer</td>
-                <td><form:input path="personNumber"/></td>
-                <td><input type="submit"/></td>
-            </tr>
-        </table>
-    </form:form>
+<div id="module-search-patient" class="module">
+    <h2>Sök patient</h2>
+
+    <div class="module-content">
+        <div class="search-criteria">
+            <form:form cssClass="form-general search-module" method="POST" action="${searchEvent}"
+                       commandName="searchPatient">
+                <div class="select alt">
+                    <form:label path="historySearchText" cssClass="structural">Visade</form:label>
+                    <form:select path="historySearchText" onchange="form.submit()">
+                        <form:option value="0" label="Senast visade" />
+                        <form:options items="${patientContext.patientHistory}" itemLabel="personNumber" itemValue="personNumber" />
+                    </form:select>
+                </div>
+                <div class="text alt">
+                    <form:label path="searchText" cssClass="structural">Söktext</form:label>
+                    <form:input path="searchText" maxlength="13"/>
+                </div>
+                <div class="submit-area alt">
+                    <input type="submit" value="Sök"/>
+                </div>
+                <div class="button-area alt">
+                    <input type="button" value="Rensa" onclick="parent.location='${resetEvent}'"/>
+                </div>
+            </form:form>
+        </div>
+    </div>
 </div>
