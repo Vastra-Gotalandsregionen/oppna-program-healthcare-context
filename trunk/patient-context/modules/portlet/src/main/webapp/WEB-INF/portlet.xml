@@ -45,7 +45,10 @@
     </portlet-info>
 
     <supported-publishing-event>
-      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.personNumber</qname> 
+      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.change</qname>
+    </supported-publishing-event>
+    <supported-publishing-event>
+      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.reset</qname>
     </supported-publishing-event>
   </portlet>
 
@@ -67,7 +70,10 @@
     </portlet-info>
 
     <supported-processing-event>
-      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.personNumber</qname>
+      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.change</qname>
+    </supported-processing-event>
+    <supported-processing-event>
+      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.reset</qname>
     </supported-processing-event>
   </portlet>
 
@@ -80,8 +86,13 @@
   <default-namespace>http://PatientContext/</default-namespace>
 
   <event-definition>
-    <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.personNumber</qname>
-    <value-type>java.lang.String</value-type>
+    <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.change</qname>
+    <value-type>se.vgregion.portal.model.Patient</value-type>
+  </event-definition>
+
+  <event-definition>
+    <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.reset</qname>
+    <value-type>se.vgregion.portal.model.Patient</value-type>
   </event-definition>
 
 </portlet-app>

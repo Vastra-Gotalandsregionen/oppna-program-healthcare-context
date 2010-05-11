@@ -25,12 +25,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import se.vgregion.portal.model.Patient;
+import se.vgregion.portal.model.PatientContext;
+import se.vgregion.portal.model.SearchPatientFormBean;
 
-import javax.portlet.*;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletSecurityException;
+import javax.portlet.RenderRequest;
 import javax.xml.namespace.QName;
-import java.security.Principal;
 
 /**
  * This action do that and that, if it has something special it is.
@@ -39,6 +44,7 @@ import java.security.Principal;
  */
 @Controller
 @RequestMapping("VIEW")
+@SessionAttributes("patientContext")
 public class SearchController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
@@ -46,38 +52,62 @@ public class SearchController {
 
     @RenderMapping
     public String view(ModelMap model, RenderRequest request) throws PortletSecurityException {
-        Long userId = getCurrentUserId(request);
-
         if (!model.containsKey("patientContext")) {
-            PatientContext patientContext = new PatientContext();
-            model.put("patientContext", patientContext);
+            model.addAttribute("patientContext", new PatientContext());
+        }
+        PatientContext patientContext = (PatientContext)model.get("patientContext");
+        SearchPatientFormBean formBean = new SearchPatientFormBean();
+        if (patientContext.getCurrentPatient() != null) {
+            formBean.setSearchText(patientContext.getCurrentPatient().getPersonNumber());
+        }
+
+        model.addAttribute("searchPatient", formBean);
+
+        for (Patient history : patientContext.getPatientHistory()) {
+            LOGGER.debug(history.toString());
         }
 
         return VIEW_JSP;
     }
 
     @ActionMapping("searchEvent")
-    public void searchEvent(@ModelAttribute("patientContext") PatientContext patientContext, ActionResponse response) {
-        // validator
-        final String personNumber = patientContext.getPersonNumber();
-        LOGGER.debug(personNumber);
-        // event
-        QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.personNumber");
-        response.setEvent(qname, personNumber);
+    public void searchEvent(@ModelAttribute("searchPatient") SearchPatientFormBean formBean,
+                            @ModelAttribute("patientContext") PatientContext patientContext,
+                            ActionResponse response) {
 
+        // Log patient
+        LOGGER.debug("1-search: "+formBean.getSearchText());
+        LOGGER.debug("1-history: "+formBean.getHistorySearchText());
+        Patient patient = new Patient();
+        if (formBean.getHistorySearchText().equals("0")) {
+            patient.setPersonNumber(formBean.getSearchText());
+        } else {
+            patient.setPersonNumber(formBean.getHistorySearchText());
+        }
+
+        // validate search patient
+        // TODO: Validate patient before it is allowed into the patient-context
+
+        // patient selection changed
+        if (!patient.equals(patientContext.getCurrentPatient())) {
+            // update patient context
+            patientContext.addToHistory(patient);
+            patientContext.setCurrentPatient(patient);
+
+            // patient-context chang event
+            // TODO: Fire a patient-context changed to all other searchController's - need IPC over pages to function
+
+            // patient change event
+            QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
+            response.setEvent(qname, patientContext.getCurrentPatient());
+        }
     }
 
-    private Long getCurrentUserId(PortletRequest request) throws PortletSecurityException {
-        // TODO: Vi borde hantera detta snyggare. Skapa en NOT_LOGGED_IN.jsp som visar ett vettigt felmeddelande
-        // istället... Detta problem finns i flera controllers/portlets.
-
-        final Principal userPrincipal = request.getUserPrincipal();
-        try {
-            String userIdStr = userPrincipal.getName();
-            return Long.parseLong(userIdStr);
-        } catch (Exception e) {
-            LOGGER.warn("No user session exists.");
-            throw new PortletSecurityException("No user session exists.", e);
-        }
+    @ActionMapping("resetEvent")
+    public void resetEvent(@ModelAttribute("patientContext") PatientContext patientContext, ActionResponse response) {
+        patientContext.clear();
+        // event
+        QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.reset");
+        response.setEvent(qname, null);
     }
 }
