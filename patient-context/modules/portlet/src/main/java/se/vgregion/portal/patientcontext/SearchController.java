@@ -28,9 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import se.vgregion.portal.model.Patient;
-import se.vgregion.portal.model.PatientContext;
-import se.vgregion.portal.model.SearchPatientFormBean;
+import se.vgregion.portal.patient.event.Patient;
+import se.vgregion.portal.patient.event.PatientContext;
 
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletSecurityException;
