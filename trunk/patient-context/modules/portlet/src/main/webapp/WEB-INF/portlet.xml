@@ -87,12 +87,12 @@
 
   <event-definition>
     <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.change</qname>
-    <value-type>se.vgregion.portal.model.Patient</value-type>
+    <value-type>se.vgregion.portal.patient.event.Patient</value-type>
   </event-definition>
 
   <event-definition>
     <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.reset</qname>
-    <value-type>se.vgregion.portal.model.Patient</value-type>
+    <value-type>se.vgregion.portal.patient.event.Patient</value-type>
   </event-definition>
 
 </portlet-app>

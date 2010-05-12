@@ -17,7 +17,7 @@
  *
  */
 
-package se.vgregion.portal.model;
+package se.vgregion.portal.patient.event;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
