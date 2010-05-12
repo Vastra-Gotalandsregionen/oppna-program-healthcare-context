@@ -28,7 +28,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
-public class Patient implements Serializable {
+public class PatientEvent implements Serializable {
     private String personNumber = "";
 
     public String getPersonNumber() {
@@ -42,9 +42,9 @@ public class Patient implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Patient)) return false;
+        if (!(o instanceof PatientEvent)) return false;
 
-        Patient patient = (Patient) o;
+        PatientEvent patient = (PatientEvent) o;
 
         if (personNumber != null ? !personNumber.equals(patient.personNumber) : patient.personNumber != null)
             return false;

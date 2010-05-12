@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import se.vgregion.portal.patient.event.Patient;
+import se.vgregion.portal.patient.event.PatientEvent;
 
 import javax.portlet.*;
 
@@ -45,9 +45,9 @@ public class ListnerController {
     public static final String VIEW_JSP = "view";
 
     @RenderMapping
-    public String view(ModelMap model) throws PortletSecurityException {
+    public String view(ModelMap model) {
         if (!model.containsKey("patient")) {
-            model.addAttribute("patient", new Patient());
+            model.addAttribute("patient", new PatientEvent());
         }
 
         return VIEW_JSP;
@@ -56,7 +56,7 @@ public class ListnerController {
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
     public void changeListner(EventRequest request, ModelMap model) {
         Event event = request.getEvent();
-        Patient patient = (Patient)event.getValue();
+        PatientEvent patient = (PatientEvent)event.getValue();
         LOGGER.debug("Listner personnummer: "+patient.getPersonNumber());
 
         model.addAttribute("patient", patient);
@@ -65,6 +65,6 @@ public class ListnerController {
 
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.reset")
     public void resetListner(ModelMap model) {
-        model.addAttribute("patient", new Patient());
+        model.addAttribute("patient", new PatientEvent());
     }
 }

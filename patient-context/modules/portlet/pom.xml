@@ -38,6 +38,7 @@ Generation time : 2010-05-07 13:56:05 CEST
       <groupId>${project.groupId}</groupId>
       <artifactId>healthcare-context-patient-context-composite-webcomp</artifactId>
       <version>${project.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.portlet</groupId>

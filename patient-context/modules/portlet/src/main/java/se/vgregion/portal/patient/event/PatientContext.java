@@ -31,23 +31,23 @@ import java.util.List;
  */
 public class PatientContext implements Serializable {
 
-    private Patient currentPatient;
+    private PatientEvent currentPatient;
 
-    private List<Patient> patientHistory = new ArrayList<Patient>();
+    private List<PatientEvent> patientHistory = new ArrayList<PatientEvent>();
 
-    public Patient getCurrentPatient() {
+    public PatientEvent getCurrentPatient() {
         return currentPatient;
     }
 
-    public void setCurrentPatient(Patient currentPatient) {
+    public void setCurrentPatient(PatientEvent currentPatient) {
         this.currentPatient = currentPatient;
     }
 
-    public List<Patient> getPatientHistory() {
+    public List<PatientEvent> getPatientHistory() {
         return Collections.unmodifiableList(patientHistory);
     }
 
-    public void addToHistory(Patient patient) {
+    public void addToHistory(PatientEvent patient) {
         if (!patientHistory.contains(patient)) {
             patientHistory.add(patient);
         }
