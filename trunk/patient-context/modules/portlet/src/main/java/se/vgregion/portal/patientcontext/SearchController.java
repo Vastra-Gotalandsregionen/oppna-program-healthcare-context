@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import se.vgregion.portal.patient.event.Patient;
+import se.vgregion.portal.patient.event.PatientEvent;
 import se.vgregion.portal.patient.event.PatientContext;
 
 import javax.portlet.ActionResponse;
@@ -62,7 +62,7 @@ public class SearchController {
 
         model.addAttribute("searchPatient", formBean);
 
-        for (Patient history : patientContext.getPatientHistory()) {
+        for (PatientEvent history : patientContext.getPatientHistory()) {
             LOGGER.debug(history.toString());
         }
 
@@ -77,7 +77,7 @@ public class SearchController {
         // Log patient
         LOGGER.debug("1-search: "+formBean.getSearchText());
         LOGGER.debug("1-history: "+formBean.getHistorySearchText());
-        Patient patient = new Patient();
+        PatientEvent patient = new PatientEvent();
         if (formBean.getHistorySearchText().equals("0")) {
             patient.setPersonNumber(formBean.getSearchText());
         } else {
@@ -107,6 +107,6 @@ public class SearchController {
         patientContext.clear();
         // event
         QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.reset");
-        response.setEvent(qname, null);
+        response.setEvent(qname, "reset");
     }
 }
