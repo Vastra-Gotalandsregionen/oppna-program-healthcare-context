@@ -35,7 +35,7 @@
 <portlet:actionURL var="searchEvent" name="searchEvent"/>
 <portlet:actionURL var="resetEvent" name="resetEvent"/>
 
-<div id="module-search-patient" class="module">
+<div id="module-search-patient" class="module" style="text-align: left">
     <h2>Sök patient</h2>
 
     <div class="module-content">
@@ -44,19 +44,20 @@
                        commandName="searchPatient">
                 <div class="select alt">
                     <form:label path="historySearchText" cssClass="structural">Visade</form:label>
-                    <form:select path="historySearchText" onchange="form.submit()">
-                        <form:option value="0" label="Senast visade" />
-                        <form:options items="${patientContext.patientHistory}" itemLabel="personNumber" itemValue="personNumber" />
-                    </form:select>
+                    <c:if test="${patientContext.patientHistorySize > 0}">
+                        <form:select path="historySearchText" onchange="form.submit()">
+                            <form:option value="0" label="Senast visade"/>
+                            <form:options items="${patientContext.patientHistory}" itemLabel="inputText"
+                                          itemValue="inputText"/>
+                        </form:select>
+                    </c:if>
                 </div>
                 <div class="text alt">
                     <form:label path="searchText" cssClass="structural">Söktext</form:label>
                     <form:input path="searchText" maxlength="13"/>
                 </div>
-                <div class="submit-area alt">
-                    <input type="submit" value="Sök"/>
-                </div>
                 <div class="button-area alt">
+                    <input type="submit" value="Sök"/>
                     <input type="button" value="Rensa" onclick="parent.location='${resetEvent}'"/>
                 </div>
             </form:form>

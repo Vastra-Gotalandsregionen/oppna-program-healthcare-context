@@ -19,6 +19,8 @@
 
 package se.vgregion.portal.patient.event;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,8 +34,14 @@ import java.util.Date;
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 public class PersonNummer implements Serializable {
-    public enum Gender {MALE, FEMALE}
-    public enum Type {SHORT, NORMAL, FULL_NO, FULL, INVALID}
+
+    public enum Gender {
+        MALE, FEMALE
+    }
+
+    public enum Type {
+        SHORT, NORMAL, FULL_NO, FULL, INVALID
+    }
 
     private int century;
     private int year;
@@ -44,6 +52,7 @@ public class PersonNummer implements Serializable {
     private String separator; // or "+" if age over 100
 
     private boolean checkNumberValid = false;
+    private int calculatedCheckNumber;
     private boolean monthValid = false;
     private boolean dayValid = false;
     private Gender gender;
@@ -68,15 +77,22 @@ public class PersonNummer implements Serializable {
         return pNo;
     }
 
-    public String toShort() {
-        return String.format("%02d%02d%02d%03d%d", year, month, day, birthNumber, checkNumber);
+    public String getShort() {
+        if (type == Type.INVALID) return String.format("INVALID [%s]", numberText);
+        if (separator.equals("-")) {
+            return String.format("%02d%02d%02d%03d%d", year, month, day, birthNumber, checkNumber);
+        } else {
+            return String.format("%02d%02d%02d%02d%03d%d", century, year, month, day, birthNumber, checkNumber);
+        }
     }
 
-    public String toNormal() {
+    public String getNormal() {
+        if (type == Type.INVALID) return String.format("INVALID [%s]", numberText);
         return String.format("%02d%02d%02d%s%03d%d", year, month, day, separator, birthNumber, checkNumber);
     }
 
-    public String toFull() {
+    public String getFull() {
+        if (type == Type.INVALID) return String.format("INVALID [%s]", numberText);
         return String.format("%02d%02d%02d%02d-%03d%d", century, year, month, day, birthNumber, checkNumber);
     }
 
@@ -88,17 +104,18 @@ public class PersonNummer implements Serializable {
 
     private void initGender() {
         if (type == Type.INVALID) gender = null;
-        else gender = (birthNumber%2 == 0) ? Gender.FEMALE : Gender.MALE;
+        else gender = (birthNumber % 2 == 0) ? Gender.FEMALE : Gender.MALE;
     }
 
     private void initCheckNumber() {
         if (type == Type.INVALID) {
             checkNumber = -1;
+            calculatedCheckNumber = -1;
             checkNumberValid = false;
         } else {
-            checkNumber = Integer.parseInt(numberText.substring(numberText.length()-1));
-            int checkDigit = checkDigitCalculator(toShort());
-            checkNumberValid = checkDigit == checkNumber;
+            checkNumber = Integer.parseInt(numberText.substring(numberText.length() - 1));
+            calculatedCheckNumber = checkDigitCalculator(getShort());
+            checkNumberValid = (calculatedCheckNumber == checkNumber);
         }
     }
 
@@ -116,7 +133,7 @@ public class PersonNummer implements Serializable {
 
     private void initDay() {
         if (type == Type.INVALID) day = -1;
-        
+
         if (type == Type.SHORT || type == Type.NORMAL) day = Integer.parseInt(numberText.substring(4, 6));
 
         if (type == Type.FULL_NO || type == Type.FULL) day = Integer.parseInt(numberText.substring(6, 8));
@@ -172,12 +189,12 @@ public class PersonNummer implements Serializable {
         if (type == Type.INVALID) century = -1;
 
         Calendar cal = Calendar.getInstance();
-        int thisCentury = cal.get(Calendar.YEAR)/100;
-        int thisYear = cal.get(Calendar.YEAR)%100;
+        int thisCentury = cal.get(Calendar.YEAR) / 100;
+        int thisYear = cal.get(Calendar.YEAR) % 100;
 
         if ("-".equals(separator)) {
             if (year > thisYear) {
-                century = thisCentury -1;
+                century = thisCentury - 1;
             } else {
                 century = thisCentury;
             }
@@ -185,9 +202,9 @@ public class PersonNummer implements Serializable {
 
         if ("+".equals(separator)) {
             if (year > thisYear) {
-                century = thisCentury -2;
+                century = thisCentury - 2;
             } else {
-                century = thisCentury -1;
+                century = thisCentury - 1;
             }
         }
     }
@@ -249,21 +266,21 @@ public class PersonNummer implements Serializable {
         long pnr = Long.parseLong(shortFormat);
 
         // number sum [0...18]
-        int[] numberSum = {0,1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9};
-        int checkNumber = (int)(pnr % 10);
+        int[] numberSum = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int checkNumber = (int) (pnr % 10);
 
         int sum = 0;
-        for (int i=1; i<=9; i++) {
+        for (int i = 1; i <= 9; i++) {
             pnr = pnr / 10; // strip last digit
 
-            int digit = (int)(pnr % 10);
-            int multiplyer = ((i%2)+1); // multiplyer is [2 1 2 1 2 1 2 1 2]
+            int digit = (int) (pnr % 10);
+            int multiplyer = ((i % 2) + 1); // multiplyer is [2 1 2 1 2 1 2 1 2]
 
             digit = digit * multiplyer;
             sum = sum + numberSum[digit];
         }
 
-        int checkDigit = 10 - (sum % 10);
+        int checkDigit = (10 - (sum % 10))%10;
 
         return checkDigit;
     }
@@ -300,6 +317,10 @@ public class PersonNummer implements Serializable {
         return checkNumberValid;
     }
 
+    public int getCalculatedCheckNumber() {
+        return calculatedCheckNumber;
+    }
+
     public boolean isMonthValid() {
         return monthValid;
     }
@@ -314,5 +335,54 @@ public class PersonNummer implements Serializable {
 
     public Type getType() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PersonNummer)) return false;
+
+        PersonNummer that = (PersonNummer) o;
+
+        if (type == Type.INVALID || that.type == Type.INVALID) return false;
+
+        if (birthNumber != that.birthNumber) return false;
+        if (century != that.century) return false;
+        if (checkNumber != that.checkNumber) return false;
+        if (day != that.day) return false;
+        if (month != that.month) return false;
+        if (year != that.year) return false;
+        if (separator != null ? !separator.equals(that.separator) : that.separator != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        if (type == Type.INVALID) {
+            return 0;
+        } else {
+            int result = century;
+            result = 31 * result + year;
+            result = 31 * result + month;
+            result = 31 * result + day;
+            result = 31 * result + birthNumber;
+            result = 31 * result + checkNumber;
+            result = 31 * result + (separator != null ? separator.hashCode() : 0);
+            return result;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (type == Type.INVALID) {
+            return new ToStringBuilder(this).
+                    append("personNummer", "INVALID").
+                    toString();
+        } else {
+            return new ToStringBuilder(this).
+                    append("personNummer", getNormal()).
+                    toString();
+        }
     }
 }

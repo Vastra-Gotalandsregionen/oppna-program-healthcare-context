@@ -29,14 +29,29 @@ import java.io.Serializable;
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 public class PatientEvent implements Serializable {
-    private String personNumber = "";
+    private String inputText = "";
 
-    public String getPersonNumber() {
-        return personNumber;
+    private PersonNummer personNummer;
+
+    public String getInputText() {
+        return inputText;
     }
 
-    public void setPersonNumber(String personNumber) {
-        this.personNumber = personNumber;
+    public void setInputText(String inputText) {
+        this.inputText = inputText;
+
+        PersonNummer pNo = PersonNummer.personummer(inputText);
+        if (pNo.getType() != PersonNummer.Type.INVALID) {
+            personNummer = pNo;
+        }
+    }
+
+    public PersonNummer getPersonNummer() {
+        return personNummer;
+    }
+
+    public void setPersonNummer(PersonNummer pNo) {
+        personNummer = pNo;
     }
 
     @Override
@@ -44,23 +59,40 @@ public class PatientEvent implements Serializable {
         if (this == o) return true;
         if (!(o instanceof PatientEvent)) return false;
 
-        PatientEvent patient = (PatientEvent) o;
+        PatientEvent that = (PatientEvent) o;
 
-        if (personNumber != null ? !personNumber.equals(patient.personNumber) : patient.personNumber != null)
+        if (personNummer != null && that.personNummer != null) {
+            if (personNummer != null ? !personNummer.equals(that.personNummer) : that.personNummer != null)
+                return false;
+        } else if ((personNummer != null && that.personNummer == null) || (personNummer == null && that.personNummer != null)) {
             return false;
+        } else {
+            if (inputText != null ? !inputText.equals(that.inputText) : that.inputText != null)
+                return false;
+        }
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return personNumber != null ? personNumber.hashCode() : 0;
+        return ((personNummer != null) ? personNummer.hashCode() : ((inputText != null) ? inputText.hashCode() : 0));
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this).
-                append("personNumber", personNumber).
+                append("inputText", inputText).
+                append("personNummer", personNummer).
                 toString();
     }
+
+    //    @Override
+//    public String toString() {
+//        if (personNummer != null && personNummer.getType() != PersonNummer.Type.INVALID) {
+//            return new ToStringBuilder(this).append("personNummer", personNummer.getNormal()).toString();
+//        } else {
+//            return new ToStringBuilder(this).append("inputText", inputText).toString();
+//        }
+//    }
 }

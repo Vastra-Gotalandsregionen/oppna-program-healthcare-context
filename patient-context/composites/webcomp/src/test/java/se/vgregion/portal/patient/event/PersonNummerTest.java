@@ -19,7 +19,6 @@
 
 package se.vgregion.portal.patient.event;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -34,32 +33,27 @@ import static org.junit.Assert.*;
 public class PersonNummerTest {
     PersonNummer pNo;
 
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
     @Test
     public void testType() throws Exception {
-        assertEquals("Wrong type", PersonNummer.Type.SHORT, PersonNummer.personummer("6509124696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.NORMAL, PersonNummer.personummer("650912-4696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.NORMAL, PersonNummer.personummer("650912+4696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.FULL_NO, PersonNummer.personummer("196509124696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.FULL, PersonNummer.personummer("19650912-4696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.FULL, PersonNummer.personummer("19650912+4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.SHORT, PersonNummer.personummer("6707124696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.NORMAL, PersonNummer.personummer("670712-4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.NORMAL, PersonNummer.personummer("670712+4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.FULL_NO, PersonNummer.personummer("196707124696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.FULL, PersonNummer.personummer("19670712-4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.FULL, PersonNummer.personummer("19670712+4696").getType());
 
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("650912 4696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19650912 4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("670712 4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19670712 4696").getType());
 
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("196509120").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19650912+46962").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("650912469a").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("650912-469a").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("65091204696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("650912/4696").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19650912469a").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19650912-469a").getType());
-        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19650912_4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("196707120").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19670712+46962").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("670712469a").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("670712-469a").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("67071204696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("670712/4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19670712469a").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19670712-469a").getType());
+        assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19670712_4696").getType());
     }
 
     @Test
@@ -97,13 +91,13 @@ public class PersonNummerTest {
 
     @Test
     public void testCentury() throws Exception {
-        pNo = PersonNummer.personummer("6509124696");
+        pNo = PersonNummer.personummer("6707124696");
         assertEquals(19, pNo.getCentury());
 
-        pNo = PersonNummer.personummer("650912-4696");
+        pNo = PersonNummer.personummer("670712-4696");
         assertEquals(19, pNo.getCentury());
 
-        pNo = PersonNummer.personummer("650912+4696");
+        pNo = PersonNummer.personummer("670712+4696");
         assertEquals(18, pNo.getCentury());
 
         pNo = PersonNummer.personummer("990912-4696");
@@ -139,42 +133,42 @@ public class PersonNummerTest {
 
     @Test
     public void testYear() throws Exception {
-        assertEquals("Wrong year", 65, PersonNummer.personummer("6509124696").getYear());
-        assertEquals("Wrong year", 65, PersonNummer.personummer("650912-4696").getYear());
-        assertEquals("Wrong year", 65, PersonNummer.personummer("650912+4696").getYear());
-        assertEquals("Wrong year", 65, PersonNummer.personummer("196509124696").getYear());
-        assertEquals("Wrong year", 65, PersonNummer.personummer("19650912-4696").getYear());
-        assertEquals("Wrong year", 65, PersonNummer.personummer("19650912+4696").getYear());
-        assertEquals("Wrong year", -1, PersonNummer.personummer("650912 4696").getYear());
+        assertEquals("Wrong year", 67, PersonNummer.personummer("6707124696").getYear());
+        assertEquals("Wrong year", 67, PersonNummer.personummer("670712-4696").getYear());
+        assertEquals("Wrong year", 67, PersonNummer.personummer("670712+4696").getYear());
+        assertEquals("Wrong year", 67, PersonNummer.personummer("196707124696").getYear());
+        assertEquals("Wrong year", 67, PersonNummer.personummer("19670712-4696").getYear());
+        assertEquals("Wrong year", 67, PersonNummer.personummer("19670712+4696").getYear());
+        assertEquals("Wrong year", -1, PersonNummer.personummer("670712 4696").getYear());
     }
 
     @Test
     public void testMonth() throws Exception {
-        pNo = PersonNummer.personummer("6509124696");
-        assertEquals("Wrong month", 9, pNo.getMonth());
+        pNo = PersonNummer.personummer("6707124696");
+        assertEquals("Wrong month", 7, pNo.getMonth());
         assertTrue(pNo.isMonthValid());
 
-        pNo = PersonNummer.personummer("650912-4696");
-        assertEquals("Wrong month", 9, pNo.getMonth());
+        pNo = PersonNummer.personummer("670712-4696");
+        assertEquals("Wrong month", 7, pNo.getMonth());
         assertTrue(pNo.isMonthValid());
 
-        pNo = PersonNummer.personummer("650912+4696");
-        assertEquals("Wrong month", 9, pNo.getMonth());
+        pNo = PersonNummer.personummer("670712+4696");
+        assertEquals("Wrong month", 7, pNo.getMonth());
         assertTrue(pNo.isMonthValid());
 
-        pNo = PersonNummer.personummer("196509124696");
-        assertEquals("Wrong month", 9, pNo.getMonth());
+        pNo = PersonNummer.personummer("196707124696");
+        assertEquals("Wrong month", 7, pNo.getMonth());
         assertTrue(pNo.isMonthValid());
 
-        pNo = PersonNummer.personummer("19650912-4696");
-        assertEquals("Wrong month", 9, pNo.getMonth());
+        pNo = PersonNummer.personummer("19670712-4696");
+        assertEquals("Wrong month", 7, pNo.getMonth());
         assertTrue(pNo.isMonthValid());
 
-        pNo = PersonNummer.personummer("19650912+4696");
-        assertEquals("Wrong month", 9, pNo.getMonth());
+        pNo = PersonNummer.personummer("19670712+4696");
+        assertEquals("Wrong month", 7, pNo.getMonth());
         assertTrue(pNo.isMonthValid());
 
-        pNo = PersonNummer.personummer("650912 4696");
+        pNo = PersonNummer.personummer("670712 4696");
         assertEquals("Wrong month", -1, pNo.getMonth());
         assertFalse(pNo.isMonthValid());
 
@@ -301,33 +295,33 @@ public class PersonNummerTest {
     @Test
     public void testFormat() {
         pNo = PersonNummer.personummer("1212121212");
-        assertEquals("1212121212", pNo.toShort());
-        assertEquals("121212-1212", pNo.toNormal());
-        assertEquals("19121212-1212", pNo.toFull());
+        assertEquals("1212121212", pNo.getShort());
+        assertEquals("121212-1212", pNo.getNormal());
+        assertEquals("19121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("121212-1212");
-        assertEquals("1212121212", pNo.toShort());
-        assertEquals("121212-1212", pNo.toNormal());
-        assertEquals("19121212-1212", pNo.toFull());
+        assertEquals("1212121212", pNo.getShort());
+        assertEquals("121212-1212", pNo.getNormal());
+        assertEquals("19121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("121212+1212");
-        assertEquals("1212121212", pNo.toShort());
-        assertEquals("121212+1212", pNo.toNormal());
-        assertEquals("18121212-1212", pNo.toFull());
+        assertEquals("181212121212", pNo.getShort());
+        assertEquals("121212+1212", pNo.getNormal());
+        assertEquals("18121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("19121212-1212");
-        assertEquals("1212121212", pNo.toShort());
-        assertEquals("121212-1212", pNo.toNormal());
-        assertEquals("19121212-1212", pNo.toFull());
+        assertEquals("1212121212", pNo.getShort());
+        assertEquals("121212-1212", pNo.getNormal());
+        assertEquals("19121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("18121212-1212");
-        assertEquals("1212121212", pNo.toShort());
-        assertEquals("121212+1212", pNo.toNormal());
-        assertEquals("18121212-1212", pNo.toFull());
+        assertEquals("181212121212", pNo.getShort());
+        assertEquals("121212+1212", pNo.getNormal());
+        assertEquals("18121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("18121212+1212");
-        assertEquals("1212121212", pNo.toShort());
-        assertEquals("121212+1212", pNo.toNormal());
-        assertEquals("18121212-1212", pNo.toFull());
+        assertEquals("181212121212", pNo.getShort());
+        assertEquals("121212+1212", pNo.getNormal());
+        assertEquals("18121212-1212", pNo.getFull());
     }
 }

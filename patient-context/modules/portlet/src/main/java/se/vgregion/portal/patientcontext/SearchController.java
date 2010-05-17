@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import se.vgregion.portal.patient.event.PatientEvent;
 import se.vgregion.portal.patient.event.PatientContext;
+import se.vgregion.portal.patient.event.PatientEvent;
 
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletSecurityException;
@@ -54,16 +54,23 @@ public class SearchController {
         if (!model.containsKey("patientContext")) {
             model.addAttribute("patientContext", new PatientContext());
         }
-        PatientContext patientContext = (PatientContext)model.get("patientContext");
+        PatientContext patientContext = (PatientContext) model.get("patientContext");
         SearchPatientFormBean formBean = new SearchPatientFormBean();
         if (patientContext.getCurrentPatient() != null) {
-            formBean.setSearchText(patientContext.getCurrentPatient().getPersonNumber());
+            PatientEvent patient = patientContext.getCurrentPatient();
+            if (patient.getPersonNummer() != null) {
+                formBean.setSearchText(patient.getPersonNummer().getNormal());
+            } else {
+                formBean.setSearchText(patient.getInputText());
+            }
         }
 
         model.addAttribute("searchPatient", formBean);
 
-        for (PatientEvent history : patientContext.getPatientHistory()) {
-            LOGGER.debug(history.toString());
+        if (LOGGER.isDebugEnabled()) {
+            for (PatientEvent history : patientContext.getPatientHistory()) {
+                LOGGER.debug(history.toString());
+            }
         }
 
         return VIEW_JSP;
@@ -75,13 +82,13 @@ public class SearchController {
                             ActionResponse response) {
 
         // Log patient
-        LOGGER.debug("1-search: "+formBean.getSearchText());
-        LOGGER.debug("1-history: "+formBean.getHistorySearchText());
+        LOGGER.debug("1-search: " + formBean.getSearchText());
+        LOGGER.debug("1-history: " + formBean.getHistorySearchText());
         PatientEvent patient = new PatientEvent();
-        if (formBean.getHistorySearchText().equals("0")) {
-            patient.setPersonNumber(formBean.getSearchText());
+        if (formBean.getHistorySearchText() == null || "0".equals(formBean.getHistorySearchText())) {
+            patient.setInputText(formBean.getSearchText());
         } else {
-            patient.setPersonNumber(formBean.getHistorySearchText());
+            patient.setInputText(formBean.getHistorySearchText());
         }
 
         // validate search patient
@@ -99,6 +106,9 @@ public class SearchController {
             // patient change event
             QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
             response.setEvent(qname, patientContext.getCurrentPatient());
+        } else {
+            QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
+            response.setEvent(qname, patient);
         }
     }
 
