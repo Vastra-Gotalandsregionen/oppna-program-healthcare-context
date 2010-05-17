@@ -28,9 +28,42 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
 <div class="module-content">
     <h1>Patient</h1>
-    <p>Person nummer: ${patient.personNumber}</p>
+
+    <c:if test="${patient.inputText != ''}">
+        <p>Input: ${patient.inputText}</p>
+
+        <h2>Person nummer:</h2>
+        <c:if test="${patient.personNummer != null}">
+            <p>Short-format: ${patient.personNummer.short} </p>
+
+            <p>Normal-format: ${patient.personNummer.normal} </p>
+
+            <p>Full-format: ${patient.personNummer.full} </p>
+
+            <h2>Validation:</h2>
+
+            <p>Gender: ${patient.personNummer.gender}</p>
+
+            <p class="${patient.personNummer.checkNumberValid ? '' : 'error'}">
+                Is checknumber valid: ${patient.personNummer.checkNumberValid}
+                <span class="${patient.personNummer.checkNumberValid ?  'hidden' : ''}">
+                    (It ought to be ${patient.personNummer.calculatedCheckNumber})
+                </span>
+            </p>
+
+            <p class="${patient.personNummer.monthValid ? '' : 'error'}">Is month
+                valid: ${patient.personNummer.monthValid}</p>
+
+            <p class="${patient.personNummer.dayValid ? '' : 'error'}">Is day
+                valid: ${patient.personNummer.dayValid}</p>
+        </c:if>
+        <c:if test="${patient.personNummer == null}">
+            Input is not a personnummer
+        </c:if>
+    </c:if>
 </div>

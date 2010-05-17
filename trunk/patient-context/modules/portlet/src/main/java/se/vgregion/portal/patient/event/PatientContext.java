@@ -53,6 +53,10 @@ public class PatientContext implements Serializable {
         }
     }
 
+    public int getPatientHistorySize() {
+        return patientHistory.size();
+    }
+
     public void clear() {
         currentPatient = null;
     }

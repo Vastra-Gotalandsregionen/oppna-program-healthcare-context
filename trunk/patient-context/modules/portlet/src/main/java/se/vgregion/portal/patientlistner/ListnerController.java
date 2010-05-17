@@ -29,7 +29,8 @@ import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import se.vgregion.portal.patient.event.PatientEvent;
 
-import javax.portlet.*;
+import javax.portlet.Event;
+import javax.portlet.EventRequest;
 
 /**
  * This action do that and that, if it has something special it is.
@@ -56,8 +57,14 @@ public class ListnerController {
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
     public void changeListner(EventRequest request, ModelMap model) {
         Event event = request.getEvent();
-        PatientEvent patient = (PatientEvent)event.getValue();
-        LOGGER.debug("Listner personnummer: "+patient.getPersonNumber());
+        PatientEvent patient = (PatientEvent) event.getValue();
+
+        LOGGER.debug("Listner personnummer input: " + patient.getInputText());
+        if (patient.getPersonNummer() != null) {
+            LOGGER.debug("Listner personnummer short: " + patient.getPersonNummer().getShort());
+            LOGGER.debug("Listner personnummer normal: " + patient.getPersonNummer().getNormal());
+            LOGGER.debug("Listner personnummer full: " + patient.getPersonNummer().getFull());
+        }
 
         model.addAttribute("patient", patient);
     }
