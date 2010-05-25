@@ -1,0 +1,14 @@
+#Guide for installing and testing the Patient context portlet, making it available for other systems.
+
+= Patient context =
+== Introduction ==
+
+The patient context parse and interprets user input, making it available to other systems/portlets through a JSR-286 portlet event. 
+
+== Event class deployment ==
+The event object has to be deployed separately from the portlet, and it has to be on the classpath of the application server.
+Every portlet has it's own class-loader and if the event-class where to be deployed along the portlets depending on it, they would not be able to use it.
+
+Tomcat:
+ * copy {{{healthcare-context-patient-context-composite-webcomp-*.*.jar}}} to {{{<tomcat_home>/lib/ext}}}
+ * verify that {{{commons-lang-2.4.jar}}} is in {{{<tomcat_home>/lib/ext}}}   
