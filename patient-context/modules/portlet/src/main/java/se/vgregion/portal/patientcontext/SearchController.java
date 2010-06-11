@@ -86,13 +86,15 @@ public class SearchController {
         LOGGER.debug("1-history: " + formBean.getHistorySearchText());
         PatientEvent patient = new PatientEvent();
         if (formBean.getHistorySearchText() == null || "0".equals(formBean.getHistorySearchText())) {
+            // validate search patient
+            if (formBean.getSearchText() == null) {
+                return;
+            }
             patient.setInputText(formBean.getSearchText());
         } else {
             patient.setInputText(formBean.getHistorySearchText());
         }
 
-        // validate search patient
-        // TODO: Validate patient before it is allowed into the patient-context
 
         // patient selection changed
         if (!patient.equals(patientContext.getCurrentPatient())) {
@@ -100,7 +102,7 @@ public class SearchController {
             patientContext.addToHistory(patient);
             patientContext.setCurrentPatient(patient);
 
-            // patient-context chang event
+            // patient-context change event
             // TODO: Fire a patient-context changed to all other searchController's - need IPC over pages to function
 
             // patient change event

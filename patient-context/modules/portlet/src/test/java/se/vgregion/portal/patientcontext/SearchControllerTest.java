@@ -21,12 +21,14 @@ package se.vgregion.portal.patientcontext;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.mock.web.portlet.MockActionResponse;
 import org.springframework.mock.web.portlet.MockRenderRequest;
 import org.springframework.ui.ModelMap;
 import se.vgregion.portal.patient.event.PatientContext;
 import se.vgregion.portal.patient.event.PatientEvent;
 
 import javax.portlet.RenderRequest;
+import javax.xml.namespace.QName;
 
 import static org.junit.Assert.*;
 
@@ -100,19 +102,119 @@ public class SearchControllerTest {
         assertNull(formBean.getHistorySearchText());
     }
 
+    @Test
+    public void testSearchEventFormBeanEmpty() throws Exception {
+        SearchPatientFormBean formBean = new SearchPatientFormBean();
+        PatientContext pCtx = new PatientContext();
+        MockActionResponse mockRes = new MockActionResponse();
+        
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        assertNull(pCtx.getCurrentPatient());
+        assertEquals(0, pCtx.getPatientHistorySize());
+        assertFalse(mockRes.getEventNames().hasNext());
+    }
+
+    @Test
+    public void testSearchEventFirstSearch() throws Exception {
+        SearchPatientFormBean formBean = new SearchPatientFormBean();
+        formBean.setSearchText("191212121212");
+        PatientContext pCtx = new PatientContext();
+        MockActionResponse mockRes = new MockActionResponse();
+
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        assertNotNull(pCtx.getCurrentPatient());
+        assertEquals(1, pCtx.getPatientHistorySize());
+        assertEquals(1, pCtx.getPatientHistory().size());
+        assertTrue(mockRes.getEventNames().hasNext());
+        PatientEvent patient = (PatientEvent) mockRes.getEvent(new QName("http://vgregion.se/patientcontext/events", "pctx.change"));
+        assertSame(patient, pCtx.getCurrentPatient());
+        assertSame(patient, pCtx.getPatientHistory().get(0));
+    }
+
+    @Test
+    public void testSearchEventSecondSearch() throws Exception {
+        SearchPatientFormBean formBean = new SearchPatientFormBean();
+        formBean.setSearchText("191212121212");
+        PatientContext pCtx = new PatientContext();
+        MockActionResponse mockRes = new MockActionResponse();
+
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        formBean.setSearchText("191212121213");
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        PatientEvent patient = pCtx.getCurrentPatient();
+        assertNotNull(patient);
+        assertEquals("191212121213", patient.getInputText());
+        assertEquals(2, pCtx.getPatientHistorySize());
+        assertEquals(2, pCtx.getPatientHistory().size());
+        assertTrue(mockRes.getEventNames().hasNext());
+
+        PatientEvent patientEvent = (PatientEvent) mockRes.getEvent(new QName("http://vgregion.se/patientcontext/events", "pctx.change"));
+        assertSame(patientEvent, pCtx.getCurrentPatient());
+    }
+
+    @Test
+    public void testSearchEventHistorySearch() throws Exception {
+        SearchPatientFormBean formBean = new SearchPatientFormBean();
+        formBean.setSearchText("191212121212");
+        PatientContext pCtx = new PatientContext();
+        MockActionResponse mockRes = new MockActionResponse();
+
+        controller.searchEvent(formBean, pCtx, mockRes);
+        formBean.setSearchText("121212-1213");
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        formBean.setHistorySearchText("121212-1212");
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        PatientEvent patient = pCtx.getCurrentPatient();
+        assertNotNull(patient);
+        assertEquals("121212-1212", patient.getInputText());
+        assertEquals(2, pCtx.getPatientHistorySize());
+        assertEquals(2, pCtx.getPatientHistory().size());
+        assertTrue(mockRes.getEventNames().hasNext());
+
+        PatientEvent patientEvent = (PatientEvent) mockRes.getEvent(new QName("http://vgregion.se/patientcontext/events", "pctx.change"));
+        assertSame(patientEvent, pCtx.getCurrentPatient());
+    }
+
+    @Test
+    public void testSearchEventHistorySearchNotInHistory() throws Exception {
+        SearchPatientFormBean formBean = new SearchPatientFormBean();
+        formBean.setSearchText("191212121212");
+        PatientContext pCtx = new PatientContext();
+        MockActionResponse mockRes = new MockActionResponse();
+
+        controller.searchEvent(formBean, pCtx, mockRes);
+        formBean.setSearchText("121212-1213");
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        formBean.setHistorySearchText("121212-1214");
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        PatientEvent patient = pCtx.getCurrentPatient();
+        assertNotNull(patient);
+        assertEquals("121212-1214", patient.getInputText());
+        assertEquals(3, pCtx.getPatientHistorySize());
+        assertEquals(3, pCtx.getPatientHistory().size());
+        assertTrue(mockRes.getEventNames().hasNext());
+
+        PatientEvent patientEvent = (PatientEvent) mockRes.getEvent(new QName("http://vgregion.se/patientcontext/events", "pctx.change"));
+        assertSame(patientEvent, pCtx.getCurrentPatient());
+    }
+
+    @Test
+    public void testResetEvent() throws Exception {
+    }
+
     private PatientContext initPatientContext(String inputText) {
         PatientContext pCtx = new PatientContext();
         PatientEvent patient = new PatientEvent();
         patient.setInputText(inputText);
         pCtx.setCurrentPatient(patient);
         return pCtx;
-    }
-
-    @Test
-    public void testSearchEvent() throws Exception {
-    }
-
-    @Test
-    public void testResetEvent() throws Exception {
     }
 }
