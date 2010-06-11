@@ -104,14 +104,10 @@ public class SearchController {
 
             // patient-context change event
             // TODO: Fire a patient-context changed to all other searchController's - need IPC over pages to function
-
-            // patient change event
-            QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
-            response.setEvent(qname, patientContext.getCurrentPatient());
-        } else {
-            QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
-            response.setEvent(qname, patient);
         }
+        // patient change event
+        QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
+        response.setEvent(qname, patient);
     }
 
     @ActionMapping("resetEvent")
