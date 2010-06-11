@@ -80,7 +80,6 @@ public class SearchController {
     public void searchEvent(@ModelAttribute("searchPatient") SearchPatientFormBean formBean,
                             @ModelAttribute("patientContext") PatientContext patientContext,
                             ActionResponse response) {
-
         // Log patient
         LOGGER.debug("1-search: " + formBean.getSearchText());
         LOGGER.debug("1-history: " + formBean.getHistorySearchText());
