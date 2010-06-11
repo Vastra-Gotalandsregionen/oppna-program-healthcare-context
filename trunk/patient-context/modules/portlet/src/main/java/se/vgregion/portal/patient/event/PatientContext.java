@@ -30,6 +30,7 @@ import java.util.List;
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 public class PatientContext implements Serializable {
+    private static final long serialVersionUID = 5623507583753192525L;
 
     private PatientEvent currentPatient;
 

@@ -29,6 +29,8 @@ import java.io.Serializable;
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 public class PatientEvent implements Serializable {
+    private static final long serialVersionUID = 1196374164899537338L;
+
     private String inputText = "";
 
     private PersonNummer personNummer;
@@ -62,8 +64,7 @@ public class PatientEvent implements Serializable {
         PatientEvent that = (PatientEvent) o;
 
         if (personNummer != null && that.personNummer != null) {
-            if (personNummer != null ? !personNummer.equals(that.personNummer) : that.personNummer != null)
-                return false;
+            return personNummer.equals(that.personNummer);
         } else if ((personNummer != null && that.personNummer == null) || (personNummer == null && that.personNummer != null)) {
             return false;
         } else {

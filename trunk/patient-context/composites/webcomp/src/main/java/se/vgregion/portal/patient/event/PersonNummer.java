@@ -34,6 +34,7 @@ import java.util.Date;
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 public class PersonNummer implements Serializable {
+    private static final long serialVersionUID = 7763500091845636827L;
 
     public enum Gender {
         MALE, FEMALE
@@ -267,7 +268,7 @@ public class PersonNummer implements Serializable {
 
         // number sum [0...18]
         int[] numberSum = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-        int checkNumber = (int) (pnr % 10);
+//        int checkNumber = (int) (pnr % 10);
 
         int sum = 0;
         for (int i = 1; i <= 9; i++) {
