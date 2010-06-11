@@ -157,6 +157,29 @@ public class SearchControllerTest {
     }
 
     @Test
+    public void testSearchEventSecondSearchSamePatient() throws Exception {
+        SearchPatientFormBean formBean = new SearchPatientFormBean();
+        formBean.setSearchText("191212121212");
+        PatientContext pCtx = new PatientContext();
+        MockActionResponse mockRes = new MockActionResponse();
+
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        formBean.setSearchText("1212121212");
+        controller.searchEvent(formBean, pCtx, mockRes);
+
+        PatientEvent patient = pCtx.getCurrentPatient();
+        assertNotNull(patient);
+        assertEquals("191212121212", patient.getInputText());
+        assertEquals(1, pCtx.getPatientHistorySize());
+        assertEquals(1, pCtx.getPatientHistory().size());
+        assertTrue(mockRes.getEventNames().hasNext());
+
+        PatientEvent patientEvent = (PatientEvent) mockRes.getEvent(new QName("http://vgregion.se/patientcontext/events", "pctx.change"));
+        assertEquals(patientEvent, pCtx.getCurrentPatient());
+    }
+
+    @Test
     public void testSearchEventHistorySearch() throws Exception {
         SearchPatientFormBean formBean = new SearchPatientFormBean();
         formBean.setSearchText("191212121212");
@@ -208,6 +231,22 @@ public class SearchControllerTest {
 
     @Test
     public void testResetEvent() throws Exception {
+        PatientContext pCtx = new PatientContext();
+        PatientEvent patient = new PatientEvent();
+        patient.setInputText("121212-1212");
+        pCtx.setCurrentPatient(patient);
+        pCtx.addToHistory(patient);
+
+        MockActionResponse mockRes = new MockActionResponse();
+
+        controller.resetEvent(pCtx, mockRes);
+
+        assertNull(pCtx.getCurrentPatient());
+        assertEquals(1, pCtx.getPatientHistorySize());
+        assertEquals(patient, pCtx.getPatientHistory().get(0));
+
+        String event = (String) mockRes.getEvent(new QName("http://vgregion.se/patientcontext/events", "pctx.reset"));
+        assertEquals("reset", event);
     }
 
     private PatientContext initPatientContext(String inputText) {
