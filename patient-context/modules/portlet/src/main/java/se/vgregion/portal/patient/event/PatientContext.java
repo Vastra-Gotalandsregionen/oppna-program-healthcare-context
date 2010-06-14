@@ -36,24 +36,50 @@ public class PatientContext implements Serializable {
 
     private List<PatientEvent> patientHistory = new ArrayList<PatientEvent>();
 
+    /**
+     * Access the currently active PatientEvent.
+     *
+     * @return PatientEvent
+     */
     public PatientEvent getCurrentPatient() {
         return currentPatient;
     }
 
+    /**
+     * Set the currently active PatientEvent
+     *
+     * @param currentPatient PatientEvent
+     */
     public void setCurrentPatient(PatientEvent currentPatient) {
         this.currentPatient = currentPatient;
     }
 
+    /**
+     * Access the context history.
+     *
+     * @return List
+     */
     public List<PatientEvent> getPatientHistory() {
         return Collections.unmodifiableList(patientHistory);
     }
 
+    /**
+     * Add a PatientEvent object to the context history.
+     * Duplications are not saved.
+     *
+     * @param patient PatientEvent.
+     */
     public void addToHistory(PatientEvent patient) {
         if (!patientHistory.contains(patient)) {
             patientHistory.add(patient);
         }
     }
 
+    /**
+     * Utility method to access context history size.
+     *
+     * @return Integer
+     */
     public int getPatientHistorySize() {
         return patientHistory.size();
     }
