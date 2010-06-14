@@ -53,6 +53,7 @@ public class PatientEventTest {
     @Test
     public void testEquals() throws Exception {
         PatientEvent p1 = new PatientEvent("531212-1212");
+        assertEquals(p1, p1);
         assertEquals(p1, new PatientEvent("531212-1212"));
         assertEquals(p1, new PatientEvent("19531212-1212"));
         assertEquals(p1, new PatientEvent("19531212+1212"));
@@ -95,6 +96,7 @@ public class PatientEventTest {
 
         assertEquals(96321, new PatientEvent("aaa").hashCode());
         assertEquals(96322, new PatientEvent("aab").hashCode());
+        assertEquals(0, new PatientEvent(null).hashCode());
     }
 
     @Test
