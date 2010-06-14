@@ -227,21 +227,25 @@ public class PersonNummer implements Serializable {
     private void initType() {
         Type type;
 
-        switch (numberText.length()) {
-            case 10:
-                type = numberText.matches("\\d{10}") ? Type.SHORT : Type.INVALID;
-                break;
-            case 11:
-                type = numberText.matches("\\d{6}[-|+]\\d{4}") ? Type.NORMAL : Type.INVALID;
-                break;
-            case 12:
-                type = numberText.matches("\\d{12}") ? Type.FULL_NO : Type.INVALID;
-                break;
-            case 13:
-                type = numberText.matches("\\d{8}[-|+]\\d{4}") ? Type.FULL : Type.INVALID;
-                break;
-            default:
-                type = Type.INVALID;
+        if (numberText == null) {
+            type = Type.INVALID;
+        } else {
+            switch (numberText.length()) {
+                case 10:
+                    type = numberText.matches("\\d{10}") ? Type.SHORT : Type.INVALID;
+                    break;
+                case 11:
+                    type = numberText.matches("\\d{6}[-|+]\\d{4}") ? Type.NORMAL : Type.INVALID;
+                    break;
+                case 12:
+                    type = numberText.matches("\\d{12}") ? Type.FULL_NO : Type.INVALID;
+                    break;
+                case 13:
+                    type = numberText.matches("\\d{8}[-|+]\\d{4}") ? Type.FULL : Type.INVALID;
+                    break;
+                default:
+                    type = Type.INVALID;
+            }
         }
 
         this.type = type;
@@ -281,7 +285,7 @@ public class PersonNummer implements Serializable {
             sum = sum + numberSum[digit];
         }
 
-        int checkDigit = (10 - (sum % 10))%10;
+        int checkDigit = (10 - (sum % 10)) % 10;
 
         return checkDigit;
     }
