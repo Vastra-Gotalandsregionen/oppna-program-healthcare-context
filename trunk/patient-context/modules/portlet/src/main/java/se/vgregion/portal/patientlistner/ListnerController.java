@@ -43,8 +43,17 @@ import javax.portlet.EventRequest;
 public class ListnerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ListnerController.class);
 
+    /**
+     * jsp name.
+     */
     public static final String VIEW_JSP = "view";
 
+    /**
+     * Render view.
+     *
+     * @param model ModelMap
+     * @return path to jsp
+     */
     @RenderMapping
     public String view(ModelMap model) {
         if (!model.containsKey("patient")) {
@@ -54,6 +63,12 @@ public class ListnerController {
         return VIEW_JSP;
     }
 
+    /**
+     * Listener method for change PatienEvent's.
+     *
+     * @param request EventRequest
+     * @param model ModelMap
+     */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
     public void changeListner(EventRequest request, ModelMap model) {
         Event event = request.getEvent();
@@ -69,7 +84,11 @@ public class ListnerController {
         model.addAttribute("patient", patient);
     }
 
-
+    /**
+     * Listener method for reset PatientEvent.
+     *
+     * @param model ModelMap
+     */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.reset")
     public void resetListner(ModelMap model) {
         model.addAttribute("patient", new PatientEvent(""));
