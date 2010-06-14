@@ -32,8 +32,16 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 @RequestMapping("EDIT")
 public class ConfigurationController {
 
+    /**
+     * jsp name.
+     */
     public static final String EDIT_JSP = "configuration";
 
+    /**
+     * Nothing here yet.
+     *
+     * @return edit view jsp.
+     */
     @RenderMapping
     public String view() {
         return EDIT_JSP;

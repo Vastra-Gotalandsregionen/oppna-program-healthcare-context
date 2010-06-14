@@ -76,8 +76,8 @@ public class PatientEvent implements Serializable {
 
         if (personNummer != null && that.personNummer != null) {
             return personNummer.equals(that.personNummer);
-        } else if ((personNummer != null && that.personNummer == null) ||
-                (personNummer == null && that.personNummer != null)) {
+        } else if ((personNummer != null && that.personNummer == null) 
+                        || (personNummer == null && that.personNummer != null)) {
             return false;
         } else {
             if (inputText != null ? !inputText.equals(that.inputText) : that.inputText != null) {
@@ -90,8 +90,8 @@ public class PatientEvent implements Serializable {
 
     @Override
     public int hashCode() {
-        return ((personNummer != null) ?
-                personNummer.hashCode() : ((inputText != null) ? inputText.hashCode() : 0));
+        return ((personNummer != null)
+                ? personNummer.hashCode() : ((inputText != null) ? inputText.hashCode() : 0));
     }
 
     @Override
