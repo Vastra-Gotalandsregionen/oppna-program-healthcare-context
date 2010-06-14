@@ -36,10 +36,18 @@ import java.util.Date;
 public final class PersonNummer implements Serializable {
     private static final long serialVersionUID = 7763500091845636827L;
 
+    /**
+     * Gender enumeration.
+     */
     public enum Gender {
         MALE, FEMALE
     }
 
+    /**
+     * PersonNumber Type enumeration.
+     * This type is determined by the input string, and spans from if it can be interpreted as a person number at all,
+     * to how the input string where broken down.
+     */
     public enum Type {
         SHORT, NORMAL, FULL_NO, FULL, INVALID
     }
@@ -327,7 +335,7 @@ public final class PersonNummer implements Serializable {
      * Static calculator for the checknumber digit.
      *
      * @param shortFormat Use short string representation for calculation.
-     * @return
+     * @return String
      */
     public static int checkDigitCalculator(String shortFormat) {
         long pnr = Long.parseLong(shortFormat);
@@ -435,7 +443,7 @@ public final class PersonNummer implements Serializable {
     }
 
     /**
-     * Is the given month a possible month - [1..12]
+     * Is the given month a possible month - [1..12].
      *
      * @return true/false
      */
@@ -478,8 +486,12 @@ public final class PersonNummer implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PersonNummer)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PersonNummer)) {
+            return false;
+        }
 
         PersonNummer that = (PersonNummer) o;
 
@@ -515,7 +527,7 @@ public final class PersonNummer implements Serializable {
     /**
      * HashCode defined for use in set's and map's.
      *
-     * @return  Integer.
+     * @return Integer.
      */
     @Override
     public int hashCode() {

@@ -35,6 +35,11 @@ public class PatientEvent implements Serializable {
 
     private final PersonNummer personNummer;
 
+    /**
+     * PatientEvent are immutable and cannot be changed after creation.
+     *
+     * @param inputText String representing a patient identifier.
+     */
     public PatientEvent(String inputText) {
         this.inputText = inputText;
 
@@ -60,18 +65,24 @@ public class PatientEvent implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PatientEvent)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PatientEvent)) {
+            return false;
+        }
 
         PatientEvent that = (PatientEvent) o;
 
         if (personNummer != null && that.personNummer != null) {
             return personNummer.equals(that.personNummer);
-        } else if ((personNummer != null && that.personNummer == null) || (personNummer == null && that.personNummer != null)) {
+        } else if ((personNummer != null && that.personNummer == null) ||
+                (personNummer == null && that.personNummer != null)) {
             return false;
         } else {
-            if (inputText != null ? !inputText.equals(that.inputText) : that.inputText != null)
+            if (inputText != null ? !inputText.equals(that.inputText) : that.inputText != null) {
                 return false;
+            }
         }
 
         return true;
@@ -79,7 +90,8 @@ public class PatientEvent implements Serializable {
 
     @Override
     public int hashCode() {
-        return ((personNummer != null) ? personNummer.hashCode() : ((inputText != null) ? inputText.hashCode() : 0));
+        return ((personNummer != null) ?
+                personNummer.hashCode() : ((inputText != null) ? inputText.hashCode() : 0));
     }
 
     @Override
