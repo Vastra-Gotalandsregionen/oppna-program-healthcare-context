@@ -367,13 +367,9 @@ public class PersonNummerTest {
 
     @Test
     public void testEquals() {
-        pNo = PersonNummer.personummer("1212121212");
         pNo = PersonNummer.personummer("121212-1212");
-        pNo = PersonNummer.personummer("121212+1212");
-        pNo = PersonNummer.personummer("19121212-1212");
-        pNo = PersonNummer.personummer("18121212-1212");
-        pNo = PersonNummer.personummer("18121212+1212");
 
+        assertFalse(pNo.equals(pNo));
         assertEquals(PersonNummer.personummer("1212121212"), PersonNummer.personummer("121212-1212"));
         assertEquals(PersonNummer.personummer("191212121212"), PersonNummer.personummer("121212-1212"));
         assertEquals(PersonNummer.personummer("19121212-1212"), PersonNummer.personummer("121212-1212"));
@@ -394,6 +390,7 @@ public class PersonNummerTest {
         assertFalse(PersonNummer.personummer("121212-1312").equals(pNo));
         assertFalse(PersonNummer.personummer("121212-1222").equals(pNo));
         assertFalse(PersonNummer.personummer("aaa").equals(pNo));
+        assertFalse(pNo.equals(PersonNummer.personummer("aaa")));
         assertFalse(PersonNummer.personummer("aaa").equals(PersonNummer.personummer("aaa")));
         assertFalse(PersonNummer.personummer("aaa").equals(null));
         assertFalse(pNo.equals(null));
