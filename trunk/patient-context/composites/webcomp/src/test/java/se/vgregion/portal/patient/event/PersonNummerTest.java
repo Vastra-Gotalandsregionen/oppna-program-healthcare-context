@@ -364,4 +364,76 @@ public class PersonNummerTest {
         pNo = PersonNummer.personummer("aaa");
         assertEquals(-1, pNo.getCalculatedCheckNumber());
     }
+
+    @Test
+    public void testEquals() {
+        pNo = PersonNummer.personummer("1212121212");
+        pNo = PersonNummer.personummer("121212-1212");
+        pNo = PersonNummer.personummer("121212+1212");
+        pNo = PersonNummer.personummer("19121212-1212");
+        pNo = PersonNummer.personummer("18121212-1212");
+        pNo = PersonNummer.personummer("18121212+1212");
+
+        assertEquals(PersonNummer.personummer("1212121212"), PersonNummer.personummer("121212-1212"));
+        assertEquals(PersonNummer.personummer("191212121212"), PersonNummer.personummer("121212-1212"));
+        assertEquals(PersonNummer.personummer("19121212-1212"), PersonNummer.personummer("121212-1212"));
+        assertEquals(PersonNummer.personummer("181212121212"), PersonNummer.personummer("121212+1212"));
+        assertEquals(PersonNummer.personummer("18121212-1212"), PersonNummer.personummer("121212+1212"));
+        assertEquals(PersonNummer.personummer("18121212+1212"), PersonNummer.personummer("121212+1212"));
+    }
+
+    @Test
+    public void testNotEquals() {
+        pNo = PersonNummer.personummer("121212-1212");
+        assertFalse(PersonNummer.personummer("131212-1212").equals(pNo));
+        assertFalse(PersonNummer.personummer("121312-1212").equals(pNo));
+        assertFalse(PersonNummer.personummer("121213-1212").equals(pNo));
+        assertFalse(PersonNummer.personummer("18121212-1212").equals(pNo));
+        assertFalse(PersonNummer.personummer("121212+1212").equals(pNo));
+        assertFalse(PersonNummer.personummer("121212-1213").equals(pNo));
+        assertFalse(PersonNummer.personummer("121212-1312").equals(pNo));
+        assertFalse(PersonNummer.personummer("121212-1222").equals(pNo));
+        assertFalse(PersonNummer.personummer("aaa").equals(pNo));
+        assertFalse(PersonNummer.personummer("aaa").equals(PersonNummer.personummer("aaa")));
+        assertFalse(PersonNummer.personummer("aaa").equals(null));
+        assertFalse(pNo.equals(null));
+    }
+
+    @Test
+    public void testHashCode() {
+        pNo = PersonNummer.personummer("1212121212");
+        assertEquals(37806699, pNo.hashCode());
+        pNo = PersonNummer.personummer("121212-1212");
+        assertEquals(37806699, pNo.hashCode());
+        pNo = PersonNummer.personummer("121212+1212");
+        assertEquals(-849696984, pNo.hashCode());
+        pNo = PersonNummer.personummer("19121212-1212");
+        assertEquals(37806699, pNo.hashCode());
+        pNo = PersonNummer.personummer("18121212-1212");
+        assertEquals(-849696984, pNo.hashCode());
+        pNo = PersonNummer.personummer("18121212+1212");
+        assertEquals(-849696984, pNo.hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        pNo = PersonNummer.personummer("5212121212");
+        assertEndsWith("[personNummer=521212-1212]", pNo.toString());
+        pNo = PersonNummer.personummer("521212-1212");
+        assertEndsWith("[personNummer=521212-1212]", pNo.toString());
+        pNo = PersonNummer.personummer("521212+1212");
+        assertEndsWith("[personNummer=521212+1212]", pNo.toString());
+        pNo = PersonNummer.personummer("19521212-1212");
+        assertEndsWith("[personNummer=521212-1212]", pNo.toString());
+        pNo = PersonNummer.personummer("18521212-1212");
+        assertEndsWith("[personNummer=521212+1212]", pNo.toString());
+        pNo = PersonNummer.personummer("18521212+1212");
+        assertEndsWith("[personNummer=521212+1212]", pNo.toString());
+        pNo = PersonNummer.personummer("aaa");
+        assertEndsWith("[personNummer=INVALID,numberText=aaa]", pNo.toString());
+    }
+
+    private void assertEndsWith(String expected, String actual) {
+        assertTrue("\nExpected: "+expected+"\nActual: "+actual, actual.endsWith(expected));
+    }
 }

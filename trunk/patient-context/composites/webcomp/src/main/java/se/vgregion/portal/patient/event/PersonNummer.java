@@ -379,6 +379,7 @@ public class PersonNummer implements Serializable {
         if (type == Type.INVALID) {
             return new ToStringBuilder(this).
                     append("personNummer", "INVALID").
+                    append("numberText", numberText).
                     toString();
         } else {
             return new ToStringBuilder(this).
