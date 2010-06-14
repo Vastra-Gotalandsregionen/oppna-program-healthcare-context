@@ -382,6 +382,7 @@ public class PersonNummerTest {
     @Test
     public void testNotEquals() {
         pNo = PersonNummer.personummer("121212-1212");
+
         assertFalse(PersonNummer.personummer("131212-1212").equals(pNo));
         assertFalse(PersonNummer.personummer("121312-1212").equals(pNo));
         assertFalse(PersonNummer.personummer("121213-1212").equals(pNo));
@@ -395,6 +396,11 @@ public class PersonNummerTest {
         assertFalse(PersonNummer.personummer("aaa").equals(PersonNummer.personummer("aaa")));
         assertFalse(PersonNummer.personummer("aaa").equals(null));
         assertFalse(pNo.equals(null));
+
+        assertFalse(pNo.equals(PersonNummer.personummer(null)));
+        assertFalse(PersonNummer.personummer(null).equals(pNo));
+        assertFalse(PersonNummer.personummer("aaa").equals(PersonNummer.personummer(null)));
+        assertFalse(PersonNummer.personummer(null).equals(PersonNummer.personummer("aaa")));
     }
 
     @Test

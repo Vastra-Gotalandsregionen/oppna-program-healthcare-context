@@ -72,6 +72,7 @@ public class PatientEventTest {
     public void testNotEquals() throws Exception {
         PatientEvent p1 = new PatientEvent("531212-1212");
         PatientEvent p2 = new PatientEvent("aaa");
+        PatientEvent p3 = new PatientEvent(null);
 
         assertFalse(p1.equals(new PatientEvent("531212-1213")));
         assertFalse(p2.equals(new PatientEvent("aab")));
@@ -79,6 +80,11 @@ public class PatientEventTest {
         assertFalse(p2.equals(p1));
         assertFalse(p1.equals(null));
         assertFalse(p2.equals(null));
+
+        assertFalse(p1.equals(p3));
+        assertFalse(p3.equals(p1));
+        assertFalse(p2.equals(p3));
+        assertFalse(p3.equals(p2));
     }
 
     @Test
