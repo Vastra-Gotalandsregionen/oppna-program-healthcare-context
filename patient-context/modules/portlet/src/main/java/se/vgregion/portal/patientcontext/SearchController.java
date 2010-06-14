@@ -135,7 +135,8 @@ public class SearchController {
      * @param response ActionResponse for event propagation.
      */
     @ActionMapping("resetEvent")
-    public void resetEvent(@ModelAttribute("patientContext") PatientContext patientContext, ActionResponse response) {
+    public void resetEvent(@ModelAttribute("patientContext") PatientContext patientContext,
+                           ActionResponse response) {
         patientContext.clear();
         // event
         QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.reset");
