@@ -32,7 +32,6 @@ import se.vgregion.portal.patient.event.PatientContext;
 import se.vgregion.portal.patient.event.PatientEvent;
 
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletSecurityException;
 import javax.portlet.RenderRequest;
 import javax.xml.namespace.QName;
 
@@ -47,10 +46,20 @@ import javax.xml.namespace.QName;
 public class SearchController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
+    /**
+     * jsp name.
+     */
     public static final String VIEW_JSP = "search";
 
+    /**
+     * Render view.
+     *
+     * @param model ModelMap
+     * @param request RenderRequest
+     * @return path to view jsp
+     */
     @RenderMapping
-    public String view(ModelMap model, RenderRequest request) throws PortletSecurityException {
+    public String view(ModelMap model, RenderRequest request) {
         if (!model.containsKey("patientContext")) {
             model.addAttribute("patientContext", new PatientContext());
         }
@@ -76,6 +85,13 @@ public class SearchController {
         return VIEW_JSP;
     }
 
+    /**
+     * Patient search event.
+     *
+     * @param formBean FormBean from view
+     * @param patientContext PatientContext
+     * @param response ActionResponse for event propagation
+     */
     @ActionMapping("searchEvent")
     public void searchEvent(@ModelAttribute("searchPatient") SearchPatientFormBean formBean,
                             @ModelAttribute("patientContext") PatientContext patientContext,
@@ -84,7 +100,8 @@ public class SearchController {
         LOGGER.debug("1-search: " + formBean.getSearchText());
         LOGGER.debug("1-history: " + formBean.getHistorySearchText());
         PatientEvent patient;
-        if (formBean.getHistorySearchText() == null || "0".equals(formBean.getHistorySearchText())) {
+        if (formBean.getHistorySearchText() == null
+                || "0".equals(formBean.getHistorySearchText())) {
             // validate search patient
             if (formBean.getSearchText() == null) {
                 return;
@@ -102,13 +119,21 @@ public class SearchController {
             patientContext.setCurrentPatient(patient);
 
             // patient-context change event
-            // TODO: Fire a patient-context changed to all other searchController's - need IPC over pages to function
+            // TODO: Fire a patient-context changed to all other searchController's
+            // - need IPC over pages to function
         }
         // patient change event
         QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
         response.setEvent(qname, patient);
     }
 
+    /**
+     * Reset PatientEvent.
+     * Remove current active PatientEvent from context.
+     *
+     * @param patientContext PatientContext.
+     * @param response ActionResponse for event propagation.
+     */
     @ActionMapping("resetEvent")
     public void resetEvent(@ModelAttribute("patientContext") PatientContext patientContext, ActionResponse response) {
         patientContext.clear();

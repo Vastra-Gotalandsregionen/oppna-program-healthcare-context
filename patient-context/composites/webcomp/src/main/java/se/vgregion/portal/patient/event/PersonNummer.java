@@ -45,8 +45,8 @@ public final class PersonNummer implements Serializable {
 
     /**
      * PersonNumber Type enumeration.
-     * This type is determined by the input string, and spans from if it can be interpreted as a person number at all,
-     * to how the input string where broken down.
+     * This type is determined by the input string, and spans from if it can be interpreted as
+     * a person number at all, to how the input string where broken down.
      */
     public enum Type {
         SHORT, NORMAL, FULL_NO, FULL, INVALID
