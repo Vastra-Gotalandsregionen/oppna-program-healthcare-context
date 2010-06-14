@@ -83,15 +83,15 @@ public class SearchController {
         // Log patient
         LOGGER.debug("1-search: " + formBean.getSearchText());
         LOGGER.debug("1-history: " + formBean.getHistorySearchText());
-        PatientEvent patient = new PatientEvent();
+        PatientEvent patient;
         if (formBean.getHistorySearchText() == null || "0".equals(formBean.getHistorySearchText())) {
             // validate search patient
             if (formBean.getSearchText() == null) {
                 return;
             }
-            patient.setInputText(formBean.getSearchText());
+            patient = new PatientEvent(formBean.getSearchText());
         } else {
-            patient.setInputText(formBean.getHistorySearchText());
+            patient = new PatientEvent(formBean.getHistorySearchText());
         }
 
 

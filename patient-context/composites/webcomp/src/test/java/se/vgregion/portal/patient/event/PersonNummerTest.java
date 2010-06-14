@@ -24,6 +24,7 @@ import org.junit.Test;
 import java.util.Calendar;
 
 import static org.junit.Assert.*;
+import static se.vgregion.portal.patient.event.Extension.assertEndsWith;
 
 /**
  * This action do that and that, if it has something special it is.
@@ -369,7 +370,7 @@ public class PersonNummerTest {
     public void testEquals() {
         pNo = PersonNummer.personummer("121212-1212");
 
-        assertFalse(pNo.equals(pNo));
+        assertEquals(pNo, pNo);
         assertEquals(PersonNummer.personummer("1212121212"), PersonNummer.personummer("121212-1212"));
         assertEquals(PersonNummer.personummer("191212121212"), PersonNummer.personummer("121212-1212"));
         assertEquals(PersonNummer.personummer("19121212-1212"), PersonNummer.personummer("121212-1212"));
@@ -430,7 +431,4 @@ public class PersonNummerTest {
         assertEndsWith("[personNummer=INVALID,numberText=aaa]", pNo.toString());
     }
 
-    private void assertEndsWith(String expected, String actual) {
-        assertTrue("\nExpected: "+expected+"\nActual: "+actual, actual.endsWith(expected));
-    }
 }
