@@ -324,4 +324,44 @@ public class PersonNummerTest {
         assertEquals("121212+1212", pNo.getNormal());
         assertEquals("18121212-1212", pNo.getFull());
     }
+
+    @Test
+    public void testFormatInvalid() {
+        pNo = PersonNummer.personummer("aaa");
+        assertEquals("INVALID [aaa]", pNo.getShort());
+        assertEquals("INVALID [aaa]", pNo.getNormal());
+        assertEquals("INVALID [aaa]", pNo.getFull());
+    }
+
+    @Test
+    public void testCalculatedCheckNumber() {
+        pNo = PersonNummer.personummer("1212121212");
+        assertEquals(2, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("121212-1212");
+        assertEquals(2, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("121212+1212");
+        assertEquals(2, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("19121212-1212");
+        assertEquals(2, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("18121212-1212");
+        assertEquals(2, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("18121212+1212");
+        assertEquals(2, pNo.getCalculatedCheckNumber());
+
+        pNo = PersonNummer.personummer("1212121412");
+        assertEquals(0, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("121212-1412");
+        assertEquals(0, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("121212+1412");
+        assertEquals(0, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("19121212-1412");
+        assertEquals(0, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("18121212-1412");
+        assertEquals(0, pNo.getCalculatedCheckNumber());
+        pNo = PersonNummer.personummer("18121212+1412");
+        assertEquals(0, pNo.getCalculatedCheckNumber());
+
+        pNo = PersonNummer.personummer("aaa");
+        assertEquals(-1, pNo.getCalculatedCheckNumber());
+    }
 }
