@@ -17,30 +17,17 @@
  *
  */
 
-package se.vgregion.portal.patientcontext;
+package se.vgregion.portal.patient.event;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This action do that and that, if it has something special it is.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
-public class ConfigurationControllerTest {
-    private ConfigurationController controller;
-
-    @Before
-    public void setUp() throws Exception {
-        controller = new ConfigurationController();
-    }
-
-    @Test
-    public void testView() throws Exception {
-        String result = controller.view();
-
-        assertEquals(result, ConfigurationController.EDIT_JSP);
+public class Extension {
+    public static void assertEndsWith(String expected, String actual) {
+        assertTrue("\nExpected: " + expected + "\nActual: " + actual, actual.endsWith(expected));
     }
 }

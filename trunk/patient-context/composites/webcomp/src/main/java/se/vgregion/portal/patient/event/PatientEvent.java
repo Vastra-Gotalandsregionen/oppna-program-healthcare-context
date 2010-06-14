@@ -31,30 +31,32 @@ import java.io.Serializable;
 public class PatientEvent implements Serializable {
     private static final long serialVersionUID = 1196374164899537338L;
 
-    private String inputText = "";
+    private final String inputText;
 
-    private PersonNummer personNummer;
+    private final PersonNummer personNummer;
 
-    public String getInputText() {
-        return inputText;
-    }
-
-    public void setInputText(String inputText) {
+    public PatientEvent(String inputText) {
         this.inputText = inputText;
 
         PersonNummer pNo = PersonNummer.personummer(inputText);
         if (pNo.getType() != PersonNummer.Type.INVALID) {
             personNummer = pNo;
+        } else {
+            personNummer = null;
         }
+    }
+
+    public String getInputText() {
+        return inputText;
     }
 
     public PersonNummer getPersonNummer() {
         return personNummer;
     }
 
-    public void setPersonNummer(PersonNummer pNo) {
-        personNummer = pNo;
-    }
+//    public void setPersonNummer(PersonNummer pNo) {
+//        personNummer = pNo;
+//    }
 
     @Override
     public boolean equals(Object o) {

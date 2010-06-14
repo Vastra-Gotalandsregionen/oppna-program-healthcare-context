@@ -1,3 +1,22 @@
+/**
+ * Copyright 2010 Västra Götalandsregionen
+ *
+ *   This library is free software; you can redistribute it and/or modify
+ *   it under the terms of version 2.1 of the GNU Lesser General Public
+ *   License as published by the Free Software Foundation.
+ *
+ *   This library is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the GNU Lesser General Public
+ *   License along with this library; if not, write to the
+ *   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ *   Boston, MA 02111-1307  USA
+ *
+ */
+
 package se.vgregion.portal.patientlistner;
 
 import org.junit.Before;
@@ -40,8 +59,7 @@ public class ListnerControllerTest {
 
     @Test
     public void testViewRevisit() throws Exception {
-        PatientEvent pe = new PatientEvent();
-        pe.setInputText("19121212-1212");
+        PatientEvent pe = new PatientEvent("19121212-1212");
         model.addAttribute("patient", pe);
 
         controller.view(model);
@@ -52,8 +70,7 @@ public class ListnerControllerTest {
 
     @Test
     public void testChangeListnerPatientEventWithPersonNumber() throws Exception {
-        PatientEvent pe = new PatientEvent();
-        pe.setInputText("19121212-1212");
+        PatientEvent pe = new PatientEvent("19121212-1212");
         Event mockEvent = new MockEvent("{http://vgregion.se/patientcontext/events}pctx.change", pe);
         EventRequest mockReq = new MockEventRequest(mockEvent);
 
@@ -65,8 +82,7 @@ public class ListnerControllerTest {
 
     @Test
     public void testChangeListnerPatientEventWithInputText() throws Exception {
-        PatientEvent pe = new PatientEvent();
-        pe.setInputText("aaa");
+        PatientEvent pe = new PatientEvent("aaa");
         Event mockEvent = new MockEvent("{http://vgregion.se/patientcontext/events}pctx.change", pe);
         EventRequest mockReq = new MockEventRequest(mockEvent);
 
@@ -79,12 +95,10 @@ public class ListnerControllerTest {
 
     @Test
     public void testChangeListnerPatientAreChangedInModel() throws Exception {
-        PatientEvent peModel = new PatientEvent();
-        peModel.setInputText("19121212-1213");
+        PatientEvent peModel = new PatientEvent("19121212-1213");
         model.addAttribute("patient", peModel);
 
-        PatientEvent pe = new PatientEvent();
-        pe.setInputText("19121212-1212");
+        PatientEvent pe = new PatientEvent("19121212-1212");
         Event mockEvent = new MockEvent("{http://vgregion.se/patientcontext/events}pctx.change", pe);
         EventRequest mockReq = new MockEventRequest(mockEvent);
 
@@ -97,8 +111,7 @@ public class ListnerControllerTest {
 
     @Test
     public void testResetListner() throws Exception {
-        PatientEvent pe = new PatientEvent();
-        pe.setInputText("19121212-1212");
+        PatientEvent pe = new PatientEvent("19121212-1212");
         model.addAttribute("patient", pe);
 
         controller.resetListner(model);

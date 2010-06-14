@@ -232,8 +232,7 @@ public class SearchControllerTest {
     @Test
     public void testResetEvent() throws Exception {
         PatientContext pCtx = new PatientContext();
-        PatientEvent patient = new PatientEvent();
-        patient.setInputText("121212-1212");
+        PatientEvent patient = new PatientEvent("121212-1212");
         pCtx.setCurrentPatient(patient);
         pCtx.addToHistory(patient);
 
@@ -251,8 +250,7 @@ public class SearchControllerTest {
 
     private PatientContext initPatientContext(String inputText) {
         PatientContext pCtx = new PatientContext();
-        PatientEvent patient = new PatientEvent();
-        patient.setInputText(inputText);
+        PatientEvent patient = new PatientEvent(inputText);
         pCtx.setCurrentPatient(patient);
         return pCtx;
     }
