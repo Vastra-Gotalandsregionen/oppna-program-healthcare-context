@@ -39,7 +39,7 @@ If the text can be interpreted as one of these types, an object of that type wil
 
 If the input text cannot be match too any of the identifier types, it can be used as is, without being typed in any way.
 
-=== Patient identifier validation === 
+== Patient identifier validation == 
 The type validators can be quite liberal. For instance the PersonNumber validator accept invalid month, day or control number. PersonNumbers are used for search so it has to allow for errors entered in external systems, as long as it obeys some kind of regularity.
 
 More person-identifier-types can be added as the need arise.
