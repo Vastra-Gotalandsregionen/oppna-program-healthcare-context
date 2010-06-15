@@ -23,5 +23,11 @@ We need a mechanism that at the same time makes things simple and natural and at
 
 <img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/P1070529.png" width="400"/><br/>
 
-The patient-context keeps track of a rather frugal set of data. The current active patient-identifier stored in a PatientEvent object and a history list of patient searches (PatientEvent's) made in the current session.
-  
+The patient-context keeps track of a rather frugal set of data. The current active patient-identifier stored in a PatientEvent object and a history list of patient searches (PatientEvents) made in the current session.
+
+<img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/ScreenShot1.png" /><br/>
+
+When a search are entered in the search window
+
+
+<img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/P1070530.jpg" width="400"/><br/>
