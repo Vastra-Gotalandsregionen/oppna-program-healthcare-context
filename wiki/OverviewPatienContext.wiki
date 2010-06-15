@@ -6,6 +6,7 @@ The patient context is a combination of a simple search interface and an portlet
 
 = The idea =
 
+<img src="http://code.google.com/p/oppna-program-healthcare-context/source/browse/wiki/P1070526.png" />
 
 
 Add your content here.  Format your content with:
