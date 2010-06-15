@@ -25,8 +25,10 @@ We need a mechanism that at the same time makes things simple and natural and at
 
 <img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/ScreenShot3.png" /><br/>
 
+== PatientEvent ==
 The patient-context keeps track of a rather frugal set of data. The current active patient-identifier stored in a PatientEvent object and a history list of patient searches (PatientEvents) made in the current session.
 
+== Patient identifier types ==
 When a search are entered in the search window the text are matched against a predefined list of patient identifier types:
  * PersonNumber
  * ReservNumber (SäS, SU, NU)
@@ -37,10 +39,12 @@ If the text can be interpreted as one of these types, an object of that type wil
 
 If the input text cannot be match too any of the identifier types, it can be used as is, without being typed in any way.
 
+=== Patient identifier validation === 
 The type validators can be quite liberal. For instance the PersonNumber validator accept invalid month, day or control number. PersonNumbers are used for search so it has to allow for errors entered in external systems, as long as it obeys some kind of regularity.
 
 More person-identifier-types can be added as the need arise.
 
+== Portlet events ==
 When a search are issued a PatientEvent are created. This object are packaged in a portlet-event and sent for consumption of other portlets on the page.
 
 It is up to the listener portlet to actually perform the search and retrieve and display the information, the patient-context portlet just announce that something *ought* to be done, *not what* has to be done.
