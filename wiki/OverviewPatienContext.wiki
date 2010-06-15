@@ -16,7 +16,9 @@ In the portal the patient-context's are share in one common mind.
 = The reason why =
 
 When you have many healthcare systems you want to make it easy to navigate between these systems, and pick up information about the patient at hand.
+
 At the same time it is *very* important not to have any mixups. You should never risk while looking at a referral for one patient, flip a page and get a list of medications for the previous patient.
+
 We need a mechanism that at the same time makes things simple and natural and at the same time prevents misstakes.
 
 = The how =
