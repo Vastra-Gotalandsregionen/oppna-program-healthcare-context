@@ -4,7 +4,7 @@
 
 The patient context is a combination of a simple search interface and an portlet-event based message service. Though the portlet can be placed on multiple pages in the portal, they share a common context.
 
-= The ideé =
+= The idéa =
 
 
 
