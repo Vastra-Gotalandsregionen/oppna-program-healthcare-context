@@ -35,7 +35,7 @@ When a search are entered in the search window the text are matched against a pr
  * SamordningsNumber
  * ...
 
-The reason why we need rich patient identifier types is that a number can provide quite a bit extra information. If you enter a PersonNumber incorrectly you could end up with the information for a woman even though you sit in front of a man. This extra cues can be displayed in both the search and the listener portlets. 
+The reason why we need rich patient-identifier types is that a number can provide quite a bit extra information. If you enter a PersonNumber incorrectly you could end up with the information for a woman even though you sit in front of a man. These extra cues can be displayed in both the search and the listener portlets. 
 
 If the text can be interpreted as one of these types, an object of that type will be created. If several of the types can match the input text a choice dialog will appear.
 
