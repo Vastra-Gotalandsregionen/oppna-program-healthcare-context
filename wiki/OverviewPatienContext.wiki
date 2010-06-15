@@ -25,17 +25,17 @@ We need a mechanism that at the same time makes things simple and natural and at
 
 <img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/ScreenShot3.png" /><br/>
 
-== PatientEvent ==
-The patient-context keeps track of a rather frugal set of data. The current active patient-identifier stored in a PatientEvent object and a history list of patient searches (PatientEvents) made in the current session.
+== Patient Event ==
+The patient-context keeps track of a rather frugal set of data. The current active patient-identifier stored in a Patient Event object and a history list of patient searches (Patient Event's) made in the current session.
 
 == Patient identifier types ==
 When a search are entered in the search window the text are matched against a predefined list of patient identifier types:
- * PersonNumber
- * ReservNumber (SäS, SU, NU)
- * SamordningsNumber
+ * Person Number
+ * Reserv Number (SäS, SU, NU)
+ * Samordnings Number
  * ...
 
-The reason why we need rich patient-identifier types is that a number can provide quite a bit extra information. If you enter a PersonNumber incorrectly you could end up with the information for a woman even though you sit in front of a man. These extra cues can be displayed in both the search and the listener portlets. 
+The reason why we need rich patient-identifier types is that a number can provide quite a bit extra information. If you enter a Person Number incorrectly you could end up with the information for a woman even though you sit in front of a man. These extra cues can be displayed in both the search and the listener portlets. 
 
 If the text can be interpreted as one of these types, an object of that type will be created. If several of the types can match the input text a choice dialog will appear.
 
@@ -44,7 +44,7 @@ If the input text cannot be match too any of the identifier types, it can be use
 == Patient identifier validation == 
 The validation for a patient-identifier type should be quite liberal. 
 
-For instance the PersonNumber validator accept invalid months, invalid days and invalid control numbers. PersonNumbers are used for search so it has to allow for errors entered in external systems, and as long as the entered text obeys some kind of regularity it can be used as if it obeyed all the rules.
+For instance the Person Number validator accept invalid months, invalid days and invalid control numbers. Person Numbers are used for search so it has to allow for errors entered in external systems, and as long as the entered text obeys some kind of regularity it can be used as if it obeyed all the rules.
 
 More person-identifier-types can be added as the need arise.
 
@@ -53,9 +53,9 @@ When a search are issued a PatientEvent are created. This object are packaged in
 
 It is up to the listener portlet to actually perform the search and retrieve and display the information, the patient-context portlet just announce that something *ought* to be done, *not what* has to be done.
 
-Finally, when a PatientEvent search request are issued, an PatientContext changed event are issued. This event are to tell all the other patient-context instances on the other pages that something has changed. 
+Finally, when a Patient Event search request are issued, an Patient Context changed event are issued. This event are to tell all the other patient-context instances on the other pages that something has changed. 
 
-The PatientContext changed event serves two purposes:
+The Patient Context changed event serves two purposes:
  # Current patient (and history) has changed.
  # Invalidate the old patient information display. 
 
