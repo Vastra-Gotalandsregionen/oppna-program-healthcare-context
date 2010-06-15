@@ -21,13 +21,39 @@ We need a mechanism that at the same time makes things simple and natural and at
 
 = The hows =
 
-<img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/P1070529.png" width="400"/><br/>
+<img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/ScreenShot3.png" /><br/>
 
 The patient-context keeps track of a rather frugal set of data. The current active patient-identifier stored in a PatientEvent object and a history list of patient searches (PatientEvents) made in the current session.
 
-<img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/ScreenShot1.png" /><br/>
+When a search are entered in the search window the text are matched against a predefined list of patient identifier types:
+ * PersonNumber
+ * ReservNumber (SäS, SU, NU)
+ * SamordningsNumber
+ * ...
 
-When a search are entered in the search window
+If the text can be interpreted as one of these types, an object of that type will be created. If several of the types can match the input text a choice dialog will appear.
 
+If the input text cannot be match too any of the identifier types, it can be used as is, without being typed in any way.
+
+The type validators can be quite liberal. For instance the PersonNumber validator accept invalid month, day or control number. PersonNumbers are used for search so it has to allow for errors entered in external systems, as long as it obeys some kind of regularity.
+
+More person-identifier-types can be added as the need arise.
+
+When a search are issued a PatientEvent are created. This object are packaged in a portlet-event and sent for consumption of other portlets on the page.
+
+It is up to the listener portlet to actually perform the search and retrieve and display the information, the patient-context portlet just announce that something *ought* to be done, *not what* has to be done.
+
+<img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/P1070529.png" width="400"/><br/>
+
+= Integrations =
+
+The patient-context also is a sweet spot for integrations. 
+
+I.e. if we want to log who has accessed information on what patient in which healthcare application - the patient-context is an obvious place. This can be done with an independent Logging listener portlet or integrated into the patient-context.
+
+Another obvious integration could be context synchronisation with desktop systems like Journal3, and when it is in place NPÖ.
+
+If the patient-context is used to synchronise everything inside the portal, there will only need to be one integration made, not one integration for every application accessed in the portal.
 
 <img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/P1070530.jpg" width="400"/><br/>
+
