@@ -2,11 +2,25 @@
 
 = Introduction =
 
-The patient context is a combination of a simple search interface and an portlet-event based message service. Though the portlet can be placed on multiple pages in the portal, they share a common context.
+The patient context is a combination of a simple search interface and an portlet-event based message service. Though the portlet can be placed on multiple pages in the portal, each instance share a common context.
 
 = The idea =
 
-<img src="http://code.google.com/p/oppna-program-healthcare-context/source/browse/wiki/P1070526.png" />
+<img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/P1070526.png" width="400"/><br/>
+
+The patient-context is a little like a bunch of telepathic siblings. 
+The happy people are the patient-context portlets. They each live on their own page, on that page each patient-context direct what other portlets should do. 
+In the portal the patient-context's are share in one common mind.
+
+= The reason why =
+
+When you have many healthcare systems you want to make it easy to navigate between these systems, and pick up information about the patient at hand.
+At the same time it is *very* important not to have any mixups. You should never risk while looking at a referral for one patient, flip a page and get a list of medications for the previous patient.
+We need a mechanism that at the same time makes things simple and natural and at the same time prevents misstakes.
+
+= The hows =
+
+
 
 
 Add your content here.  Format your content with:
