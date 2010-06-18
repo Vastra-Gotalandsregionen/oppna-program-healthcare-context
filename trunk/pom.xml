@@ -27,8 +27,8 @@
   <!--NB! SCM config below assumes system name equals VGR subversion/googlecode project name! -->
   <!-- Open Source repo -->
   <scm>
-    <developerConnection>scm:svn:https://healthcare-context.googlecode.com/svn/trunk</developerConnection>
-    <url>http://healthcare-context.googlecode.com/svn/trunk</url>
+    <developerConnection>scm:svn:https://oppna-program-healthcare-context.googlecode.com/svn/trunk</developerConnection>
+    <url>http://oppna-program-healthcare-context.googlecode.com/svn/trunk</url>
   </scm>
 
 </project>
