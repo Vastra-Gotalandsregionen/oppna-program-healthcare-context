@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>se.vgregion.healthcare-context</groupId>
 		<artifactId>healthcare-context-patient-context</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1</version>
 	</parent>
 	<groupId>se.vgregion.healthcare-context</groupId>
 	<artifactId>healthcare-context-patient-context-composite-svc</artifactId>
