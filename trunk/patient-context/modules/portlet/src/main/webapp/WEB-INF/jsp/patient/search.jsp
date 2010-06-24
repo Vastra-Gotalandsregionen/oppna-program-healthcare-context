@@ -32,8 +32,8 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<portlet:actionURL var="searchEvent" name="searchEvent"/>
-<portlet:actionURL var="resetEvent" name="resetEvent"/>
+<portlet:actionURL var="searchEvent" name="searchEvent" escapeXml="false"/>
+<portlet:actionURL var="resetEvent" name="resetEvent" escapeXml="false"/>
 
 <div id="module-search-patient" class="module" style="text-align: left">
     <h2>Sök patient</h2>
