@@ -28,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 
+import se.vgr.ldapservice.LdapService;
+import se.vgr.ldapservice.LdapUser;
+
 /**
  * 
  * @author Hans Gyllensten, VGR-IT (vgrId: hangy2)
@@ -36,6 +39,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFactory {
     private RequestResponseConverter requestResponseConverter;
+
+    private LdapService ldapService = null;
+
+    @Autowired
+    public AuditLogInfoContainerFactoryImpl(LdapService ldapService) {
+        this.ldapService = ldapService;
+    }
 
     /**
      * {@inheritDoc}
@@ -49,19 +59,45 @@ public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFa
     /**
      * {@inheritDoc}
      */
-    public AuditLogInfoContainer getAuditLogInfoContainer(String patientId, String searcherId,
-            PortletRequest portletRequest) {
+    public AuditLogInfoContainer getAuditLogInfoContainer(String patientId, PortletRequest portletRequest) {
         HttpServletRequest httpServletRequest = requestResponseConverter.getHttpServletRequest(portletRequest);
         AuditLogInfoContainer container = new AuditLogInfoContainer();
 
         container.setPatientId(patientId);
+
+        String searcherId = getUserId(portletRequest);
         container.setSearcherId(searcherId);
+
         container.setRemoteIpAddress(httpServletRequest.getRemoteAddr());
         container.setRemoteHost(httpServletRequest.getRemoteHost());
         container.setRemotePort(httpServletRequest.getRemotePort());
-        container.setRemoteUser(getUserLoginId(portletRequest));
+
+        String remoteUser = getUserLoginId(portletRequest);
+        container.setRemoteUser(remoteUser);
 
         return container;
+    }
+
+    /**
+     * @param request
+     * @return user id from LDAP if available, else liferay user id
+     */
+    private String getUserId(PortletRequest request) {
+        LdapUser ldapUser = null;
+        String loggedInUser = getUserLoginId(request);
+        try {
+            ldapUser = ldapService.getLdapUserByUid(loggedInUser);
+        } catch (Exception e) {
+            // Do nothing, we'll use Liferay user id instead
+        }
+
+        if (ldapUser != null) {
+            loggedInUser = ldapUser.getAttributeValue("cn");
+        } else {
+            loggedInUser = "[LiferayUser:]" + loggedInUser;
+        }
+
+        return loggedInUser;
     }
 
     @SuppressWarnings("unchecked")
@@ -70,5 +106,4 @@ public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFa
         return (String) ((userInfo != null) ? userInfo.get(PortletRequest.P3PUserInfos.USER_LOGIN_ID.toString())
                 : "");
     }
-
 }
