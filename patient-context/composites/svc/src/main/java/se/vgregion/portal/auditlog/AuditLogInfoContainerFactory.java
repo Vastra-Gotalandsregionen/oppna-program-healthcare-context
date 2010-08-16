@@ -25,7 +25,6 @@ public interface AuditLogInfoContainerFactory {
 
     public abstract void setRequestResponseConverter(RequestResponseConverter requestResponseConverter);
 
-    public abstract AuditLogInfoContainer getAuditLogInfoContainer(String patientId, String searcherId,
-            PortletRequest portletRequest);
+    public abstract AuditLogInfoContainer getAuditLogInfoContainer(String patientId, PortletRequest portletRequest);
 
 }
