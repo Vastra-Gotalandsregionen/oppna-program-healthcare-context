@@ -30,9 +30,7 @@
     
     <!-- Enables annotations -->
     <context:annotation-config/>
-    
-    <context:property-placeholder location="classpath:security.properties" ignore-unresolvable="false"/>
-    
+        
     <!-- Spring ldap -->
     <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
       <property name="url" value="${BIND_URL}" />
