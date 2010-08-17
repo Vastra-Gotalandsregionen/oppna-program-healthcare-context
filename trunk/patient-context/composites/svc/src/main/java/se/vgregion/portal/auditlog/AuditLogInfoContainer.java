@@ -20,6 +20,7 @@
 package se.vgregion.portal.auditlog;
 
 import java.util.Map;
+import java.util.SortedMap;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -60,7 +61,7 @@ public final class AuditLogInfoContainer {
     private String patientId; // Patient id, e.g. patientSSN
     private String searcherId; // User id, not necessarily same as remoteUser (e.g. Liferay userId)
 
-    private Map<String, String> additionalAuditParameters;
+    private SortedMap<String, String> additionalAuditParameters;
 
     public void setRemoteIpAddress(String remoteIpAddress) {
         this.remoteIpAddress = remoteIpAddress;
@@ -86,7 +87,7 @@ public final class AuditLogInfoContainer {
         this.searcherId = searcherId;
     }
 
-    public void setAdditionalAuditParameters(Map<String, String> additionalAuditParameters) {
+    public void setAdditionalAuditParameters(SortedMap<String, String> additionalAuditParameters) {
         this.additionalAuditParameters = additionalAuditParameters;
     }
 

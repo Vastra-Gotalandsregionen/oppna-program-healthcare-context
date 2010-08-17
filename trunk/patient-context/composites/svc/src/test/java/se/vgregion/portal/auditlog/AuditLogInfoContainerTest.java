@@ -24,8 +24,8 @@ package se.vgregion.portal.auditlog;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -89,7 +89,7 @@ public class AuditLogInfoContainerTest {
      */
     @Test
     public final void testToFlatLogMessageWithAdditionalParams() {
-        Map<String, String> params = new HashMap<String, String>();
+        SortedMap<String, String> params = new TreeMap<String, String>();
         params.put("apa", "bpa");
         params.put("cpa", "dpa");
 

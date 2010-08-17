@@ -31,7 +31,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.apache.log4j.WriterAppender;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -41,13 +40,6 @@ import org.junit.Test;
 public class PatientAccessAuditLoggerTest {
 
     private static final String NEW_LINE = System.getProperty("line.separator");
-
-    /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
 
     /**
      * Test method for
