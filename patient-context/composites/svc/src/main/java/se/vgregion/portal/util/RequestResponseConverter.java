@@ -20,7 +20,7 @@
 /**
  * Helper methods to convert things between portal and servlet container. 
  */
-package se.vgregion.portal.auditlog;
+package se.vgregion.portal.util;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;

@@ -17,7 +17,7 @@
  *
  */
 
-package se.vgregion.portal.auditlog;
+package se.vgregion.portal.util;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;

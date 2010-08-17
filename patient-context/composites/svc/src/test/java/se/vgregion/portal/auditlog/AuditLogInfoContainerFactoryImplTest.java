@@ -40,6 +40,7 @@ import org.springframework.mock.web.portlet.MockPortletRequest;
 import se.vgr.ldapservice.LdapService;
 import se.vgr.ldapservice.LdapUser;
 import se.vgr.ldapservice.SimpleLdapUser;
+import se.vgregion.portal.util.RequestResponseConverter;
 
 /**
  * @author anders.bergkvist@omegapoint.se
