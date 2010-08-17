@@ -72,3 +72,15 @@ Another obvious integration could be context synchronisation with desktop system
 If the patient-context is used to synchronise everything inside the portal, there will only need to be *one* integration made, not one integration per healthcare application in the portal.
 
 <img src="http://oppna-program-healthcare-context.googlecode.com/svn/wiki/P1070530.jpg" width="400"/><br/>
+
+== Access Logging ==
+
+Utility service for access logging is available. 
+
+Access information is acquired from the request and from Ldap, patient identifier and additional audit properties are provided by the client using the service.
+
+Portlets using this service:
+ * BRF
+ * PLI
+ * Infobroker
+ * PafWeb Viewer
