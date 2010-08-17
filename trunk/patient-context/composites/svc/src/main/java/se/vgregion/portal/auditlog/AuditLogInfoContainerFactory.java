@@ -21,6 +21,8 @@ package se.vgregion.portal.auditlog;
 
 import javax.portlet.PortletRequest;
 
+import se.vgregion.portal.util.RequestResponseConverter;
+
 public interface AuditLogInfoContainerFactory {
 
     public abstract void setRequestResponseConverter(RequestResponseConverter requestResponseConverter);

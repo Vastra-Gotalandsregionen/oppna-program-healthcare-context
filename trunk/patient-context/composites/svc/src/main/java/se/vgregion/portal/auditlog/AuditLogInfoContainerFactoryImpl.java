@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
 
 import se.vgr.ldapservice.LdapService;
 import se.vgr.ldapservice.LdapUser;
+import se.vgregion.portal.util.RequestResponseConverter;
 
 /**
  * 
