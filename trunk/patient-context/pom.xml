@@ -11,12 +11,12 @@ Generation time : 2010-05-07 13:56:05 CEST
   <parent>
     <groupId>se.vgregion.healthcare-context</groupId>
     <artifactId>healthcare-context-system</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4</version>
   </parent>
   <groupId>se.vgregion.healthcare-context</groupId>
   <artifactId>healthcare-context-patient-context</artifactId>
   <packaging>pom</packaging>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.4</version>
   <name>${project.artifactId}</name>
 
   <modules>
