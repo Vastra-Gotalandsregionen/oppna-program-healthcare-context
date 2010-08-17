@@ -19,6 +19,8 @@
 
 package se.vgregion.portal.auditlog;
 
+import java.util.Map;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -58,6 +60,8 @@ public final class AuditLogInfoContainer {
     private String patientId; // Patient id, e.g. patientSSN
     private String searcherId; // User id, not necessarily same as remoteUser (e.g. Liferay userId)
 
+    private Map<String, String> additionalAuditParameters;
+
     public void setRemoteIpAddress(String remoteIpAddress) {
         this.remoteIpAddress = remoteIpAddress;
     }
@@ -80,6 +84,10 @@ public final class AuditLogInfoContainer {
 
     public void setSearcherId(String searcherId) {
         this.searcherId = searcherId;
+    }
+
+    public void setAdditionalAuditParameters(Map<String, String> additionalAuditParameters) {
+        this.additionalAuditParameters = additionalAuditParameters;
     }
 
     /**
@@ -125,6 +133,13 @@ public final class AuditLogInfoContainer {
         return searcherId;
     }
 
+    /**
+     * @return the additionalAuditParameters, any additional parameters that should be logged
+     */
+    public Map<String, String> getAdditionalAuditParameters() {
+        return additionalAuditParameters;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
@@ -146,6 +161,13 @@ public final class AuditLogInfoContainer {
         sb.append(messageLine(AuditLogParameters.REMOTE_IP.getKey(), getRemoteIpAddress()));
         sb.append(messageLine(AuditLogParameters.REMOTE_PORT.getKey(), String.valueOf(getRemotePort())));
         sb.append(messageLine(AuditLogParameters.REMOTE_USER.getKey(), getRemoteUser()));
+
+        if (additionalAuditParameters != null) {
+            sb.append(NEW_LINE);
+            for (Map.Entry<String, String> entry : additionalAuditParameters.entrySet()) {
+                sb.append(messageLine(entry.getKey(), entry.getValue()));
+            }
+        }
 
         sb.append("*************************************************").append(NEW_LINE);
 

@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PatientAccessAuditLogger {
 
-    private final Logger LOGGER;
+    protected final Logger LOGGER;
 
     public PatientAccessAuditLogger(String loggerName) {
         LOGGER = LoggerFactory.getLogger(loggerName);
