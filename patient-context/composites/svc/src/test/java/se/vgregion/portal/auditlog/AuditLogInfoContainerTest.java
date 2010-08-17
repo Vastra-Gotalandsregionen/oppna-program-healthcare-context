@@ -24,6 +24,9 @@ package se.vgregion.portal.auditlog;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,6 +46,13 @@ public class AuditLogInfoContainerTest {
     @Before
     public void setUp() throws Exception {
         container = new AuditLogInfoContainer();
+
+        container.setPatientId("1234567890");
+        container.setRemoteHost("RemoteHost");
+        container.setRemoteIpAddress("127.0.0.1");
+        container.setRemotePort(123);
+        container.setRemoteUser("RemoteUser");
+        container.setSearcherId("SearcherId");
     }
 
     /**
@@ -50,12 +60,6 @@ public class AuditLogInfoContainerTest {
      */
     @Test
     public final void testToFlatLogMessage() {
-        container.setPatientId("1234567890");
-        container.setRemoteHost("RemoteHost");
-        container.setRemoteIpAddress("127.0.0.1");
-        container.setRemotePort(123);
-        container.setRemoteUser("RemoteUser");
-        container.setSearcherId("SearcherId");
 
         String logMessage = container.toFlatLogMessage();
 
@@ -78,6 +82,43 @@ public class AuditLogInfoContainerTest {
         assertTrue(logMessage.contains(expected));
 
         assertEquals(8, logMessage.split(NEW_LINE).length); // We have one line before and one after info
+    }
+
+    /**
+     * Test method for {@link se.vgregion.portal.auditlog.AuditLogInfoContainer#toFlatLogMessage()}.
+     */
+    @Test
+    public final void testToFlatLogMessageWithAdditionalParams() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("apa", "bpa");
+        params.put("cpa", "dpa");
+
+        container.setAdditionalAuditParameters(params);
+
+        String logMessage = container.toFlatLogMessage();
+
+        String expected = buildExpected(AuditLogInfoContainer.AuditLogParameters.PATIENT_ID, "1234567890");
+        assertTrue(logMessage.contains(expected));
+
+        expected = buildExpected(AuditLogInfoContainer.AuditLogParameters.REMOTE_HOST, "RemoteHost");
+        assertTrue(logMessage.contains(expected));
+
+        expected = buildExpected(AuditLogInfoContainer.AuditLogParameters.REMOTE_IP, "127.0.0.1");
+        assertTrue(logMessage.contains(expected));
+
+        expected = buildExpected(AuditLogInfoContainer.AuditLogParameters.REMOTE_PORT, "123");
+        assertTrue(logMessage.contains(expected));
+
+        expected = buildExpected(AuditLogInfoContainer.AuditLogParameters.REMOTE_USER, "RemoteUser");
+        assertTrue(logMessage.contains(expected));
+
+        expected = buildExpected(AuditLogInfoContainer.AuditLogParameters.SEARCHER_ID, "SearcherId");
+        assertTrue(logMessage.contains(expected));
+
+        assertTrue(logMessage.contains("apa = bpa"));
+        assertTrue(logMessage.contains("cpa = dpa"));
+
+        assertEquals(11, logMessage.split(NEW_LINE).length); // We have one line before and one after info
     }
 
     private String buildExpected(AuditLogInfoContainer.AuditLogParameters logParameter, String value) {
