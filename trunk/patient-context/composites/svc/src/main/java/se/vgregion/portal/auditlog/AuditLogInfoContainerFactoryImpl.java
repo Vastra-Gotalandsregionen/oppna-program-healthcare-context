@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,9 @@ import se.vgregion.portal.util.RequestResponseConverter;
  */
 @Component
 public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFactory {
+
+    public static final String HEADER_X_FORWARDED_FOR = "x-forwarded-for";
+
     private RequestResponseConverter requestResponseConverter;
 
     private LdapService ldapService = null;
@@ -69,7 +73,7 @@ public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFa
         String searcherId = getUserId(portletRequest);
         container.setSearcherId(searcherId);
 
-        container.setRemoteIpAddress(httpServletRequest.getRemoteAddr());
+        container.setRemoteIpAddress(getRemoteIpAddress(httpServletRequest));
         container.setRemoteHost(httpServletRequest.getRemoteHost());
         container.setRemotePort(httpServletRequest.getRemotePort());
 
@@ -106,5 +110,14 @@ public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFa
         Map<String, ?> userInfo = (Map<String, ?>) portletRequest.getAttribute(PortletRequest.USER_INFO);
         return (String) ((userInfo != null) ? userInfo.get(PortletRequest.P3PUserInfos.USER_LOGIN_ID.toString())
                 : "");
+    }
+
+    private String getRemoteIpAddress(HttpServletRequest request) {
+        String ipAddress = request.getRemoteAddr();
+        String forwardedFor = request.getHeader(HEADER_X_FORWARDED_FOR);
+        if (!StringUtils.isBlank(forwardedFor)) {
+            ipAddress = request.getRemoteAddr();
+        }
+        return ipAddress;
     }
 }
