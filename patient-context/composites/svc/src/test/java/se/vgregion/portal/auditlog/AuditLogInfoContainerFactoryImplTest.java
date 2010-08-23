@@ -123,4 +123,26 @@ public class AuditLogInfoContainerFactoryImplTest {
 
         assertEquals("searcherId", container.getSearcherId());
     }
+
+    @Test
+    public final void testRequestHeaderInfo() {
+        MockPortletRequest portletRequest = new MockPortletRequest();
+
+        Map<String, String> uInfoMap = new HashMap<String, String>();
+        uInfoMap.put(PortletRequest.P3PUserInfos.USER_LOGIN_ID.toString(), "remoteUid");
+        portletRequest.setAttribute(PortletRequest.USER_INFO, uInfoMap);
+
+        MockHttpServletRequest httpRequest = new MockHttpServletRequest();
+        httpRequest.addHeader(AuditLogInfoContainerFactoryImpl.HEADER_X_FORWARDED_FOR, "127.0.0.2");
+
+        given(converter.getHttpServletRequest(portletRequest)).willReturn(httpRequest);
+
+        LdapUser ldapUser = new SimpleLdapUser("dn");
+        ldapUser.setAttributeValue("cn", "searcherId");
+        given(ldapService.getLdapUserByUid("remoteUid")).willReturn(ldapUser);
+
+        AuditLogInfoContainer container = factory.getAuditLogInfoContainer("patientId", portletRequest);
+
+        assertEquals("127.0.0.2", container.getRemoteIpAddress());
+    }
 }
