@@ -79,4 +79,18 @@
     <servlet-name>PatientContextListner</servlet-name>
     <url-pattern>/PatientContextListner/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RequestLogger</servlet-name>
+    <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-class</param-name>
+      <param-value>org.springframework.web.portlet.DispatcherPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RequestLogger</servlet-name>
+    <url-pattern>/RequestLogger/*</url-pattern>
+  </servlet-mapping>
 </web-app>

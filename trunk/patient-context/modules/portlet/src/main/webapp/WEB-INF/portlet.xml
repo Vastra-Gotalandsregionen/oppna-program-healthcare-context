@@ -76,6 +76,24 @@
       <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.reset</qname>
     </supported-processing-event>
   </portlet>
+  
+  <portlet>
+    <portlet-name>RequestLogger</portlet-name>
+    <display-name>RequestLogger</display-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>RequestLogger</title>
+      <short-title>RequestLogger</short-title>
+      <keywords>RequestLogger</keywords>
+    </portlet-info>
+  </portlet>
 
   <!-- Used to get remote user. See more info in JSR-286 Section 21.1. -->
   <user-attribute>
