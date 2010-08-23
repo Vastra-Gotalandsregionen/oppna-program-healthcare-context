@@ -19,19 +19,17 @@
 
 package se.vgregion.portal.auditlog;
 
-import java.util.Map;
-
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
-
 import se.vgr.ldapservice.LdapService;
 import se.vgr.ldapservice.LdapUser;
 import se.vgregion.portal.util.RequestResponseConverter;
+
+import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * 
@@ -116,7 +114,7 @@ public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFa
         String ipAddress = request.getRemoteAddr();
         String forwardedFor = request.getHeader(HEADER_X_FORWARDED_FOR);
         if (!StringUtils.isBlank(forwardedFor)) {
-            ipAddress = request.getRemoteAddr();
+            ipAddress = forwardedFor;
         }
         return ipAddress;
     }
