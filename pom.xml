@@ -15,7 +15,7 @@
   <groupId>se.vgregion.healthcare-context</groupId>
   <artifactId>healthcare-context-system</artifactId>
   <packaging>pom</packaging>
-  <version>1.6</version>
+  <version>1.6-SNAPSHOT</version>
   <name>${project.artifactId}</name>
 
   <modules>
@@ -26,8 +26,8 @@
   <!--NB! SCM config below assumes system name equals VGR subversion/googlecode project name! -->
   <!-- Open Source repo -->
   <scm>
-    <developerConnection>scm:svn:https://oppna-program-healthcare-context.googlecode.com/svn/tags/healthcare-context-system-1.6</developerConnection>
-    <url>http://oppna-program-healthcare-context.googlecode.com/svn/tags/healthcare-context-system-1.6</url>
+    <developerConnection>scm:svn:https://oppna-program-healthcare-context.googlecode.com/svn/trunk</developerConnection>
+    <url>http://oppna-program-healthcare-context.googlecode.com/svn/trunk</url>
   </scm>
 
 </project>
