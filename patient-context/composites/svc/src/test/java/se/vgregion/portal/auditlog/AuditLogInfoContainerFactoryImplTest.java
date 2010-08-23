@@ -93,7 +93,7 @@ public class AuditLogInfoContainerFactoryImplTest {
         assertEquals("patientId", container.getPatientId());
         assertEquals("[LiferayUser:]remoteUid", container.getSearcherId());
         assertEquals("remoteUid", container.getRemoteUser());
-        assertEquals("127.0.0.1", container.getRemoteIpAddress());
+        assertEquals("127.0.0.1 [Default]", container.getRemoteIpAddress());
         assertEquals("remoteHost", container.getRemoteHost());
         assertEquals(123, container.getRemotePort());
     }

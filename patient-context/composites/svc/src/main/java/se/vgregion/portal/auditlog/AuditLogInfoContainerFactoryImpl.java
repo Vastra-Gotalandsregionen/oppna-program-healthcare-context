@@ -19,7 +19,6 @@
 
 package se.vgregion.portal.auditlog;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
@@ -29,6 +28,7 @@ import se.vgregion.portal.util.RequestResponseConverter;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.Map;
 
 /**
@@ -111,11 +111,16 @@ public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFa
     }
 
     private String getRemoteIpAddress(HttpServletRequest request) {
-        String ipAddress = request.getRemoteAddr();
-        String forwardedFor = request.getHeader(HEADER_X_FORWARDED_FOR);
-        if (!StringUtils.isBlank(forwardedFor)) {
-            ipAddress = forwardedFor;
+        StringBuilder ipAddress = new StringBuilder();
+
+        Enumeration forwardedForEnum = request.getHeaders(HEADER_X_FORWARDED_FOR);
+        while (forwardedForEnum.hasMoreElements()) {
+            ipAddress.append(forwardedForEnum.nextElement()).append(" ");
         }
-        return ipAddress;
+        if (ipAddress.length() == 0) {
+            ipAddress.append(request.getRemoteAddr()).append(" [Default]");
+        }
+        
+        return ipAddress.toString().trim();
     }
 }
