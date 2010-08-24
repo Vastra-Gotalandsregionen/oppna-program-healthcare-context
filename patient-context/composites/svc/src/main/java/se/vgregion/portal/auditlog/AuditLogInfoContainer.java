@@ -19,14 +19,20 @@
 
 package se.vgregion.portal.auditlog;
 
-import java.util.Map;
-import java.util.SortedMap;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.util.Map;
+import java.util.SortedMap;
+
 /**
- * Package private class containing data related to patient info access audit logging.
+ * Package private class containing data related to patient info
+ * access audit logging.
+ * It defines a base set of audit information that can be extended
+ * by providing data in a Map.
+ * It can be used straight out of the box, but can also be extended
+ * to add this functionality.
+ * e.g se.vgregion.portal.pli.logging.PliAuditLogger 
  * 
  * @author hangyl
  * 
