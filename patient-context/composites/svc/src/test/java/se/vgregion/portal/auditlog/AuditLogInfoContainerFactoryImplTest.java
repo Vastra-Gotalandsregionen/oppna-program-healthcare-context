@@ -37,9 +37,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.portlet.MockPortletRequest;
 
-import se.vgr.ldapservice.LdapService;
-import se.vgr.ldapservice.LdapUser;
-import se.vgr.ldapservice.SimpleLdapUser;
+import se.vgregion.ldapservice.LdapService;
+import se.vgregion.ldapservice.LdapUser;
+import se.vgregion.ldapservice.SimpleLdapUser;
 import se.vgregion.portal.util.RequestResponseConverter;
 
 /**

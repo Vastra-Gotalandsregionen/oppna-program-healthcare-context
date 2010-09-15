@@ -19,17 +19,19 @@
 
 package se.vgregion.portal.auditlog;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.stereotype.Component;
-import se.vgr.ldapservice.LdapService;
-import se.vgr.ldapservice.LdapUser;
-import se.vgregion.portal.util.RequestResponseConverter;
+import java.util.Enumeration;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Component;
+
+import se.vgregion.ldapservice.LdapService;
+import se.vgregion.ldapservice.LdapUser;
+import se.vgregion.portal.util.RequestResponseConverter;
 
 /**
  * 
@@ -120,7 +122,7 @@ public class AuditLogInfoContainerFactoryImpl implements AuditLogInfoContainerFa
         if (ipAddress.length() == 0) {
             ipAddress.append(request.getRemoteAddr()).append(" [Default]");
         }
-        
+
         return ipAddress.toString().trim();
     }
 }
