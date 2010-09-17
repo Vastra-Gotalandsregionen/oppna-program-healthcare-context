@@ -15,7 +15,7 @@ Tomcat:
  * Verify that {{{commons-lang-2.4.jar}}} is in {{{<tomcat_home>/lib/ext}}}   
 
 == Portlet deployment ==
-Patient context is a normal portlet. However, the event class dependency is marked as provided in the maven build, so it will not be packaged into the war file.
+Patient context is a normal portlet. However, the event class dependency is marked as provided in the maven build, so it will not be packaged into the war file (that is why we copied it to {{{<tomcat_home>/lib/ext}}} in the description above).
 Along side the Patient context portlet, a test listener client portlet will be deployed. This makes it easy to verify that the portlet to portlet communication is working.
 
 Liferay:
