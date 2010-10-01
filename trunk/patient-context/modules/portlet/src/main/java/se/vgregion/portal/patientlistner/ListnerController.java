@@ -33,7 +33,8 @@ import javax.portlet.Event;
 import javax.portlet.EventRequest;
 
 /**
- * This action do that and that, if it has something special it is.
+ * Example listner controller.
+ * Implementation example of a controller that listens to Patient Events and presents it's content.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */

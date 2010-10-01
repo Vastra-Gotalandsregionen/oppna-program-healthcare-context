@@ -20,7 +20,7 @@ Generation time : 2010-05-07 13:56:05 CEST
 
 
   <dependencies>
-    <dependency>
+    <!--dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>healthcare-context-patient-context-composite-svc</artifactId>
       <version>${project.version}</version>
@@ -35,7 +35,7 @@ Generation time : 2010-05-07 13:56:05 CEST
       <artifactId>myfaces-api</artifactId>
       <version>1.2.7</version>
       <scope>provided</scope>
-    </dependency>
+    </dependency-->
   </dependencies>
 
 </project>

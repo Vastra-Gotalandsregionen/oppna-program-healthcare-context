@@ -19,24 +19,26 @@
 
 package se.vgregion.portal.requestlogger;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
-import javax.servlet.http.HttpServletRequest;
-
+import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.util.PortalUtil;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * View controller
+ * Utility controller that log incoming request parameters.
+ * Useful for tracking request header information.
+ *
+ * @author Anders Bergkvist
+ * @author David Rosell  
  */
 @Controller
 @RequestMapping("VIEW")
