@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import se.vgregion.portal.patient.event.PatientContext;
 import se.vgregion.portal.patient.event.PatientEvent;
 
-import javax.portlet.ActionResponse;
-import javax.portlet.RenderRequest;
+import javax.portlet.*;
 import javax.xml.namespace.QName;
 
 /**
@@ -98,7 +98,9 @@ public class SearchController {
     @ActionMapping("searchEvent")
     public void searchEvent(@ModelAttribute("searchPatient") SearchPatientFormBean formBean,
                             @ModelAttribute("patientContext") PatientContext patientContext,
-                            ActionResponse response) {
+                            ActionResponse response, PortletPreferences prefs) {
+        String groupCode = prefs.getValue("group.code", PatientEvent.DEFAULT_GROUP_CODE);
+
         // Log patient
         LOGGER.debug("1-search: " + formBean.getSearchText());
         LOGGER.debug("1-history: " + formBean.getHistorySearchText());
@@ -109,9 +111,9 @@ public class SearchController {
             if (formBean.getSearchText() == null) {
                 return;
             }
-            patient = new PatientEvent(formBean.getSearchText());
+            patient = new PatientEvent(formBean.getSearchText(), groupCode);
         } else {
-            patient = new PatientEvent(formBean.getHistorySearchText());
+            patient = new PatientEvent(formBean.getHistorySearchText(), groupCode);
         }
 
 
@@ -120,14 +122,34 @@ public class SearchController {
             // update patient context
             patientContext.addToHistory(patient);
             patientContext.setCurrentPatient(patient);
-
-            // patient-context change event
-            // TODO: Fire a patient-context changed to all other searchController's
-            // - need IPC over pages to function
         }
         // patient change event
         QName qname = new QName("http://vgregion.se/patientcontext/events", "pctx.change");
         response.setEvent(qname, patient);
+    }
+
+    /**
+     * Listener method for change PatienEvent's.
+     *
+     * @param request EventRequest
+     * @param model ModelMap
+     */
+    @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
+    public void changeListner(EventRequest request, ModelMap model) {
+        Event event = request.getEvent();
+        PatientEvent patient = (PatientEvent) event.getValue();
+
+        if (!model.containsKey("patientContext")) {
+            model.addAttribute("patientContext", new PatientContext());
+        }
+        PatientContext patientContext = (PatientContext) model.get("patientContext");
+
+        // patient selection changed
+        if (!patient.equals(patientContext.getCurrentPatient())) {
+            // update patient context
+            patientContext.addToHistory(patient);
+            patientContext.setCurrentPatient(patient);
+        }
     }
 
     /**

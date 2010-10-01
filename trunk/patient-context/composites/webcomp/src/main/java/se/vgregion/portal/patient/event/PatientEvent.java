@@ -29,7 +29,12 @@ import java.io.Serializable;
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 public class PatientEvent implements Serializable {
+
     private static final long serialVersionUID = 1196374164899537338L;
+
+    public static final String DEFAULT_GROUP_CODE = "Default";
+
+    private final String groupCode;
 
     private final String inputText;
 
@@ -40,7 +45,8 @@ public class PatientEvent implements Serializable {
      *
      * @param inputText String representing a patient identifier.
      */
-    public PatientEvent(String inputText) {
+    public PatientEvent(String inputText, String groupCode) {
+        this.groupCode = groupCode;
         this.inputText = inputText;
 
         PersonNummer pNo = PersonNummer.personummer(inputText);
@@ -49,6 +55,10 @@ public class PatientEvent implements Serializable {
         } else {
             personNummer = null;
         }
+    }
+
+    public String getGroupCode() {
+        return groupCode;
     }
 
     public String getInputText() {

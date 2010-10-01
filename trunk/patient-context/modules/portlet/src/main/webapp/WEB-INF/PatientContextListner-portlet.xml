@@ -32,7 +32,7 @@
   <import resource="classpath*:applicationContext.xml" />
 
   <context:annotation-config />
-  <context:component-scan base-package="se.vgregion.portal.patientlistner" />
+  <context:component-scan base-package="se.vgregion.portal.patientlistner,se.vgregion.portal.configuration" />
   <!-- context:load-time-weaver aspectj-weaving="on" /-->
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

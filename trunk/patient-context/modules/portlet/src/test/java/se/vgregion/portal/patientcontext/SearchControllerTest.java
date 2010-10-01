@@ -22,6 +22,7 @@ package se.vgregion.portal.patientcontext;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.portlet.MockActionResponse;
+import org.springframework.mock.web.portlet.MockPortletPreferences;
 import org.springframework.mock.web.portlet.MockRenderRequest;
 import org.springframework.ui.ModelMap;
 import se.vgregion.portal.patient.event.PatientContext;
@@ -107,8 +108,9 @@ public class SearchControllerTest {
         SearchPatientFormBean formBean = new SearchPatientFormBean();
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
-        
-        controller.searchEvent(formBean, pCtx, mockRes);
+        MockPortletPreferences mockPrefs = new MockPortletPreferences();
+
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         assertNull(pCtx.getCurrentPatient());
         assertEquals(0, pCtx.getPatientHistorySize());
@@ -121,8 +123,9 @@ public class SearchControllerTest {
         formBean.setSearchText("191212121212");
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
+        MockPortletPreferences mockPrefs = new MockPortletPreferences();
 
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         assertNotNull(pCtx.getCurrentPatient());
         assertEquals(1, pCtx.getPatientHistorySize());
@@ -139,11 +142,12 @@ public class SearchControllerTest {
         formBean.setSearchText("191212121212");
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
+        MockPortletPreferences mockPrefs = new MockPortletPreferences();
 
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         formBean.setSearchText("191212121213");
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         PatientEvent patient = pCtx.getCurrentPatient();
         assertNotNull(patient);
@@ -162,11 +166,12 @@ public class SearchControllerTest {
         formBean.setSearchText("191212121212");
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
+        MockPortletPreferences mockPrefs = new MockPortletPreferences();
 
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         formBean.setSearchText("1212121212");
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         PatientEvent patient = pCtx.getCurrentPatient();
         assertNotNull(patient);
@@ -185,13 +190,14 @@ public class SearchControllerTest {
         formBean.setSearchText("191212121212");
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
+        MockPortletPreferences mockPrefs = new MockPortletPreferences();
 
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
         formBean.setSearchText("121212-1213");
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         formBean.setHistorySearchText("121212-1212");
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         PatientEvent patient = pCtx.getCurrentPatient();
         assertNotNull(patient);
@@ -210,13 +216,14 @@ public class SearchControllerTest {
         formBean.setSearchText("191212121212");
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
+        MockPortletPreferences mockPrefs = new MockPortletPreferences();
 
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
         formBean.setSearchText("121212-1213");
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         formBean.setHistorySearchText("121212-1214");
-        controller.searchEvent(formBean, pCtx, mockRes);
+        controller.searchEvent(formBean, pCtx, mockRes, mockPrefs);
 
         PatientEvent patient = pCtx.getCurrentPatient();
         assertNotNull(patient);
@@ -232,7 +239,7 @@ public class SearchControllerTest {
     @Test
     public void testResetEvent() throws Exception {
         PatientContext pCtx = new PatientContext();
-        PatientEvent patient = new PatientEvent("121212-1212");
+        PatientEvent patient = new PatientEvent("121212-1212", PatientEvent.DEFAULT_GROUP_CODE);
         pCtx.setCurrentPatient(patient);
         pCtx.addToHistory(patient);
 
@@ -250,7 +257,7 @@ public class SearchControllerTest {
 
     private PatientContext initPatientContext(String inputText) {
         PatientContext pCtx = new PatientContext();
-        PatientEvent patient = new PatientEvent(inputText);
+        PatientEvent patient = new PatientEvent(inputText, PatientEvent.DEFAULT_GROUP_CODE);
         pCtx.setCurrentPatient(patient);
         return pCtx;
     }

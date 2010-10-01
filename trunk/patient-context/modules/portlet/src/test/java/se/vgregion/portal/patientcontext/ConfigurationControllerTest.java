@@ -21,8 +21,14 @@ package se.vgregion.portal.patientcontext;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.mock.web.portlet.MockPortletPreferences;
+import org.springframework.ui.ModelMap;
+import se.vgregion.portal.configuration.ConfigurationController;
+import se.vgregion.portal.configuration.ConfigurationFormBean;
+import se.vgregion.portal.patient.event.PatientEvent;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This action do that and that, if it has something special it is.
@@ -39,8 +45,15 @@ public class ConfigurationControllerTest {
 
     @Test
     public void testView() throws Exception {
-        String result = controller.view();
+        ModelMap model = new ModelMap();
+        MockPortletPreferences mockPrefs = new MockPortletPreferences();
 
+        String result = controller.view(model, mockPrefs);
+
+        assertTrue(model.containsAttribute("configure"));
+        ConfigurationFormBean formBean = (ConfigurationFormBean) model.get("configure");
+        assertEquals(formBean.getGroupCode(), PatientEvent.DEFAULT_GROUP_CODE);
+        
         assertEquals(result, ConfigurationController.EDIT_JSP);
     }
 }

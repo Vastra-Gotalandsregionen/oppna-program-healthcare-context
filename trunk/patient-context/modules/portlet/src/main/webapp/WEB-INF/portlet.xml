@@ -44,12 +44,17 @@
       <keywords>Kontext</keywords>
     </portlet-info>
 
+    <supported-processing-event id="a">
+      <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.change</qname>
+    </supported-processing-event>
+
     <supported-publishing-event>
       <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.change</qname>
     </supported-publishing-event>
     <supported-publishing-event>
       <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.reset</qname>
     </supported-publishing-event>
+
   </portlet>
 
   <portlet>
@@ -60,6 +65,7 @@
     <supports>
       <mime-type>text/html</mime-type>
       <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
     </supports>
     <supported-locale>sv</supported-locale>
 
@@ -69,7 +75,7 @@
       <keywords>Context</keywords>
     </portlet-info>
 
-    <supported-processing-event>
+    <supported-processing-event id="b">
       <qname xmlns:x="http://vgregion.se/patientcontext/events">x:pctx.change</qname>
     </supported-processing-event>
     <supported-processing-event>
