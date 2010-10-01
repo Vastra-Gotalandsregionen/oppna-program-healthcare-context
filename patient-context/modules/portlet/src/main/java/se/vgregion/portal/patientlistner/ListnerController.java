@@ -31,6 +31,7 @@ import se.vgregion.portal.patient.event.PatientEvent;
 
 import javax.portlet.Event;
 import javax.portlet.EventRequest;
+import javax.portlet.PortletPreferences;
 
 /**
  * Example listner controller.
@@ -51,24 +52,59 @@ public class ListnerController {
 
     /**
      * Render view.
+     * Use an empty PatientEvent object to signal that nothing should be rendered.
+     *
+     * Filtering has to be done in the view.
+     * If we tried to do the filtering in the event processing method we would access the
+     * PortletPreferences object the sending portlet, not this portlet.
+     * This is a bug in Liferay or Spring Portlet MVC.
      *
      * @param model ModelMap
      * @return path to jsp
      */
     @RenderMapping
-    public String view(ModelMap model) {
+    public String view(ModelMap model, PortletPreferences prefs) {
+        // filtering events by group-code
+        groupCodeFiltering(model, prefs);
+
         if (!model.containsKey("patient")) {
-            model.addAttribute("patient", new PatientEvent(""));
+            model.addAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
         }
 
         return VIEW_JSP;
     }
 
     /**
+     * Filters the model on PatientEvent group-code.
+     *
+     * The listener should only resolve the PatientEvent if the event is sent by an associated
+     * producer.
+     *
+     * ie. if the PatientEvent where sent by the PatientContext portlet on the same page, this
+     * listner should show the patient. However if the patient event where sent by a
+     * PatientContext portlet on another page it should not automatically go out and look up the
+     * patient (in a medical system that the user didn't even know about)
+     *
+     * @param model ModelMap containing the PatientEvent object.
+     * @param prefs PortletPreferences.
+     */
+    private void groupCodeFiltering(ModelMap model, PortletPreferences prefs) {
+        String myGroupCode = prefs.getValue("group.code", PatientEvent.DEFAULT_GROUP_CODE);
+        LOGGER.debug("View Listner GroupCode: " + myGroupCode);
+
+        PatientEvent patient = (PatientEvent)model.get("patient");
+        LOGGER.debug("Event GroupCode: "+ ((patient == null) ? "empty" : patient.getGroupCode()));
+
+        if (patient != null && !myGroupCode.equals(patient.getGroupCode())) {
+            model.remove("patient");
+        }
+    }
+
+    /**
      * Listener method for change PatienEvent's.
      *
      * @param request EventRequest
-     * @param model ModelMap
+     * @param model   ModelMap
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
     public void changeListner(EventRequest request, ModelMap model) {
@@ -92,6 +128,6 @@ public class ListnerController {
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.reset")
     public void resetListner(ModelMap model) {
-        model.addAttribute("patient", new PatientEvent(""));
+        model.addAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
     }
 }

@@ -34,6 +34,7 @@ import static se.vgregion.portal.patient.event.Extension.assertEndsWith;
  */
 public class PatientEventTest {
     PatientEvent patient;
+    String groupCode = PatientEvent.DEFAULT_GROUP_CODE;
 
     @Before
     public void setUp() throws Exception {
@@ -41,41 +42,41 @@ public class PatientEventTest {
 
     @Test
     public void testCreate() {
-        patient = new PatientEvent("aaa");
+        patient = new PatientEvent("aaa", groupCode);
         assertEquals("aaa", patient.getInputText());
         assertNull(patient.getPersonNummer());
 
-        patient = new PatientEvent("19521212-1212");
+        patient = new PatientEvent("19521212-1212", groupCode);
         assertEquals("19521212-1212", patient.getInputText());
         assertEquals("19521212-1212", patient.getPersonNummer().getFull());
     }
 
     @Test
     public void testEquals() throws Exception {
-        PatientEvent p1 = new PatientEvent("531212-1212");
+        PatientEvent p1 = new PatientEvent("531212-1212", groupCode);
         assertEquals(p1, p1);
-        assertEquals(p1, new PatientEvent("531212-1212"));
-        assertEquals(p1, new PatientEvent("19531212-1212"));
-        assertEquals(p1, new PatientEvent("19531212+1212"));
-        assertEquals(p1, new PatientEvent("195312121212"));
-        assertEquals(p1, new PatientEvent("5312121212"));
+        assertEquals(p1, new PatientEvent("531212-1212", groupCode));
+        assertEquals(p1, new PatientEvent("19531212-1212", groupCode));
+        assertEquals(p1, new PatientEvent("19531212+1212", groupCode));
+        assertEquals(p1, new PatientEvent("195312121212", groupCode));
+        assertEquals(p1, new PatientEvent("5312121212", groupCode));
 
-        PatientEvent p2 = new PatientEvent("aaa");
-        assertEquals(p2, new PatientEvent("aaa"));
+        PatientEvent p2 = new PatientEvent("aaa", groupCode);
+        assertEquals(p2, new PatientEvent("aaa", groupCode));
 
-        PatientEvent p3 = new PatientEvent("531212+1212");
-        assertEquals(p3, new PatientEvent("18531212-1212"));
-        assertEquals(p3, new PatientEvent("185312121212"));
+        PatientEvent p3 = new PatientEvent("531212+1212", groupCode);
+        assertEquals(p3, new PatientEvent("18531212-1212", groupCode));
+        assertEquals(p3, new PatientEvent("185312121212", groupCode));
     }
 
     @Test
     public void testNotEquals() throws Exception {
-        PatientEvent p1 = new PatientEvent("531212-1212");
-        PatientEvent p2 = new PatientEvent("aaa");
-        PatientEvent p3 = new PatientEvent(null);
+        PatientEvent p1 = new PatientEvent("531212-1212", groupCode);
+        PatientEvent p2 = new PatientEvent("aaa", groupCode);
+        PatientEvent p3 = new PatientEvent(null, groupCode);
 
-        assertFalse(p1.equals(new PatientEvent("531212-1213")));
-        assertFalse(p2.equals(new PatientEvent("aab")));
+        assertFalse(p1.equals(new PatientEvent("531212-1213", groupCode)));
+        assertFalse(p2.equals(new PatientEvent("aab", groupCode)));
         assertFalse(p1.equals(p2));
         assertFalse(p2.equals(p1));
         assertFalse(p1.equals(null));
@@ -89,35 +90,35 @@ public class PatientEventTest {
 
     @Test
     public void testHashCode() throws Exception {
-        assertEquals(1211601890, new PatientEvent("531212-1212").hashCode());
-        assertEquals(1211601890, new PatientEvent("5312121212").hashCode());
-        assertEquals(1211601890, new PatientEvent("19531212-1212").hashCode());
-        assertEquals(1211601890, new PatientEvent("19531212+1212").hashCode());
-        assertEquals(1211601890, new PatientEvent("195312121212").hashCode());
+        assertEquals(1211601890, new PatientEvent("531212-1212", groupCode).hashCode());
+        assertEquals(1211601890, new PatientEvent("5312121212", groupCode).hashCode());
+        assertEquals(1211601890, new PatientEvent("19531212-1212", groupCode).hashCode());
+        assertEquals(1211601890, new PatientEvent("19531212+1212", groupCode).hashCode());
+        assertEquals(1211601890, new PatientEvent("195312121212", groupCode).hashCode());
 
-        assertEquals(324098207, new PatientEvent("531212+1212").hashCode());
-        assertEquals(324098207, new PatientEvent("185312121212").hashCode());
-        assertEquals(324098207, new PatientEvent("18531212-1212").hashCode());
-        assertEquals(324098207, new PatientEvent("18531212+1212").hashCode());
+        assertEquals(324098207, new PatientEvent("531212+1212", groupCode).hashCode());
+        assertEquals(324098207, new PatientEvent("185312121212", groupCode).hashCode());
+        assertEquals(324098207, new PatientEvent("18531212-1212", groupCode).hashCode());
+        assertEquals(324098207, new PatientEvent("18531212+1212", groupCode).hashCode());
 
-        assertEquals(96321, new PatientEvent("aaa").hashCode());
-        assertEquals(96322, new PatientEvent("aab").hashCode());
-        assertEquals(0, new PatientEvent(null).hashCode());
+        assertEquals(96321, new PatientEvent("aaa", groupCode).hashCode());
+        assertEquals(96322, new PatientEvent("aab", groupCode).hashCode());
+        assertEquals(0, new PatientEvent(null, groupCode).hashCode());
     }
 
     @Test
     public void testToString() throws Exception {
-        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("531212-1212").toString());
-        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("5312121212").toString());
-        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("19531212-1212").toString());
-        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("19531212+1212").toString());
-        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("195312121212").toString());
+        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("531212-1212", groupCode).toString());
+        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("5312121212", groupCode).toString());
+        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("19531212-1212", groupCode).toString());
+        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("19531212+1212", groupCode).toString());
+        assertEndsWith("[personNummer=531212-1212]]", new PatientEvent("195312121212", groupCode).toString());
 
-        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("531212+1212").toString());
-        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("185312121212").toString());
-        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("18531212-1212").toString());
-        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("18531212+1212").toString());
+        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("531212+1212", groupCode).toString());
+        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("185312121212", groupCode).toString());
+        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("18531212-1212", groupCode).toString());
+        assertEndsWith("[personNummer=531212+1212]]", new PatientEvent("18531212+1212", groupCode).toString());
 
-        assertEndsWith("[inputText=aaa,personNummer=<null>]", new PatientEvent("aaa").toString());
+        assertEndsWith("[inputText=aaa,personNummer=<null>]", new PatientEvent("aaa", groupCode).toString());
     }
 }
