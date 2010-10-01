@@ -36,7 +36,10 @@ import javax.portlet.RenderRequest;
 import javax.xml.namespace.QName;
 
 /**
- * This action do that and that, if it has something special it is.
+ * Search view controller.
+ * Handles:
+ *    Coordinates user input and validation.
+ *    Sending out search events.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */

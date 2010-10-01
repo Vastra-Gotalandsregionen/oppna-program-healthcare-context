@@ -25,7 +25,14 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This action do that and that, if it has something special it is.
+ * The PatientContext is an aggregate bean that holds a reference to PatientEvent searches
+ * performed in the current session.
+ * Each health-care context enabled application has it's own PatientContext, the application
+ * is responsible for keeping it's state up to date through listening to change events from
+ * other health-care context enabled portlets in the portal.
+ *
+ * The most common scenario is to have multiple instances of Patient search portlet on the
+ * portal and they will have this communication by default.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */

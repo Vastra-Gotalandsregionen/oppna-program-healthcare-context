@@ -24,7 +24,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import java.io.Serializable;
 
 /**
- * This action do that and that, if it has something special it is.
+ * The PatientEvent is the event bean used to communicate patient information.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
@@ -58,10 +58,6 @@ public class PatientEvent implements Serializable {
     public PersonNummer getPersonNummer() {
         return personNummer;
     }
-
-//    public void setPersonNummer(PersonNummer pNo) {
-//        personNummer = pNo;
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -101,13 +97,4 @@ public class PatientEvent implements Serializable {
                 append("personNummer", personNummer).
                 toString();
     }
-
-    //    @Override
-//    public String toString() {
-//        if (personNummer != null && personNummer.getType() != PersonNummer.Type.INVALID) {
-//            return new ToStringBuilder(this).append("personNummer", personNummer.getNormal()).toString();
-//        } else {
-//            return new ToStringBuilder(this).append("inputText", inputText).toString();
-//        }
-//    }
 }

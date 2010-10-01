@@ -29,7 +29,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * This action do that and that, if it has something special it is.
+ * Full implementation of the swedish person identifier number.
+ * Used by Patient event.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
