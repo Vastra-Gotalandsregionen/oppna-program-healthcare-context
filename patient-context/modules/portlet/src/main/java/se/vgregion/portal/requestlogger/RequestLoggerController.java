@@ -30,8 +30,8 @@ import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Utility controller that log incoming request parameters.
@@ -48,14 +48,15 @@ public class RequestLoggerController {
 
     @RenderMapping
     public String showSearchForm(ModelMap model, RenderRequest request, PortletPreferences preferences) {
-        Map<String, String> requestInfo = getRequestInfo(request);
-        model.addAttribute("requestInfoMap", requestInfo);
+        model.addAttribute("requestInfoMap", getRequestInfo(request));
+        model.addAttribute("requestHeaderMap", getRequestHeader(request));
+        model.addAttribute("requestAttributeMap", getRequestAttribure(request));
+        model.addAttribute("requestParameterMap", getRequestAttribure(request));
         return VIEW_JSP_URL;
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<String, String> getRequestInfo(PortletRequest request) {
-        Map<String, String> result = new HashMap<String, String>();
+    private Map<String, String> getRequestHeader(PortletRequest request) {
+        Map<String, String> result = new TreeMap<String, String>();
 
         HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
         Enumeration<String> names = httpRequest.getHeaderNames();
@@ -64,11 +65,65 @@ public class RequestLoggerController {
             result.put(name, httpRequest.getHeader(name));
         }
 
-        result.put("RemoteUser", httpRequest.getRemoteUser());
-        result.put("RemoteAddr", httpRequest.getRemoteAddr());
-        result.put("RemoteHost", httpRequest.getRemoteHost());
-        result.put("RemotePort", String.valueOf(httpRequest.getRemotePort()));
+        return result;
+    }
+
+    private Map<String, String> getRequestParameter(PortletRequest request) {
+        Map<String, String> result = new TreeMap<String, String>();
+
+        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
+        Enumeration<String> names = httpRequest.getParameterNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            result.put(name, httpRequest.getParameter(name));
+        }
 
         return result;
+    }
+
+    private Map<String, String> getRequestAttribure(PortletRequest request) {
+        Map<String, String> result = new TreeMap<String, String>();
+
+        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
+        Enumeration<String> names = httpRequest.getAttributeNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            result.put(name, httpRequest.getAttribute(name).toString());
+        }
+
+        return result;
+    }
+
+    private Map<String, String> getRequestInfo(PortletRequest request) {
+        Map<String,String> requestResult = new TreeMap<String, String>();
+
+        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
+
+        requestResult.put("RemoteUser", httpRequest.getRemoteUser());
+        requestResult.put("RemoteAddr", httpRequest.getRemoteAddr());
+        requestResult.put("RemoteHost", httpRequest.getRemoteHost());
+        requestResult.put("RemotePort", String.valueOf(httpRequest.getRemotePort()));
+        requestResult.put("AuthType", httpRequest.getAuthType());
+        requestResult.put("CharacterEncoding", httpRequest.getCharacterEncoding());
+        requestResult.put("ContentLength", String.valueOf(httpRequest.getContentLength()));
+        requestResult.put("ContentType", httpRequest.getContentType());
+        requestResult.put("ContextPath", httpRequest.getContextPath());
+        requestResult.put("LocalAddr", httpRequest.getLocalAddr());
+        requestResult.put("Locale", httpRequest.getLocale().toString());
+        requestResult.put("LocalName", httpRequest.getLocalName());
+        requestResult.put("LocalPort", String.valueOf(httpRequest.getLocalPort()));
+        requestResult.put("Method", httpRequest.getMethod());
+        requestResult.put("PathInfo", httpRequest.getPathInfo());
+        requestResult.put("PathTranslated", httpRequest.getPathTranslated());
+        requestResult.put("Protocol", httpRequest.getProtocol());
+        requestResult.put("QueryString", httpRequest.getQueryString());
+        requestResult.put("RequestedSessionId", httpRequest.getRequestedSessionId());
+        requestResult.put("RequestURI", httpRequest.getRequestURI());
+        requestResult.put("Scheme", httpRequest.getScheme());
+        requestResult.put("ServerName", httpRequest.getServerName());
+        requestResult.put("ServerPort", String.valueOf(httpRequest.getServerPort()));
+        requestResult.put("ServletPath", httpRequest.getServletPath());
+
+        return requestResult;
     }
 }
