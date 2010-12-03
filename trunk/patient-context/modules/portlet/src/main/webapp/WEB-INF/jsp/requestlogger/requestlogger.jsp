@@ -19,19 +19,49 @@
 
 --%>
 
-<%@page session="false" contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="false" contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <br/>
 <table>
-  <tr>
-    <th>Name</th>
-    <th>Value</th>
-  </tr>
-  <c:forEach items="${requestInfoMap}" var="requestInfo">
     <tr>
-      <td><c:out value="${requestInfo.key}" /></td>
-      <td><c:out value="${requestInfo.value}" /></td>
+        <th>Name</th>
+        <th>Value</th>
     </tr>
-  </c:forEach>
+    <tr>
+        <th colspan="2">Request Info</th>
+    </tr>
+    <c:forEach items="${requestInfoMap}" var="requestInfo">
+        <tr>
+            <td><c:out value="${requestInfo.key}"/></td>
+            <td><c:out value="${requestInfo.value}"/></td>
+        </tr>
+    </c:forEach>
+    <tr>
+        <th colspan="2">Request Header</th>
+    </tr>
+    <c:forEach items="${requestHeaderMap}" var="requestInfo">
+        <tr>
+            <td><c:out value="${requestInfo.key}"/></td>
+            <td><c:out value="${requestInfo.value}"/></td>
+        </tr>
+    </c:forEach>
+    <tr>
+        <th colspan="2">Request Attribute</th>
+    </tr>
+    <c:forEach items="${requestAttributeMap}" var="requestInfo">
+        <tr>
+            <td><c:out value="${requestInfo.key}"/></td>
+            <td><c:out value="${requestInfo.value}"/></td>
+        </tr>
+    </c:forEach>
+    <tr>
+        <th colspan="2">Request Parameter</th>
+    </tr>
+    <c:forEach items="${requestParameterMap}" var="requestInfo">
+        <tr>
+            <td><c:out value="${requestInfo.key}"/></td>
+            <td><c:out value="${requestInfo.value}"/></td>
+        </tr>
+    </c:forEach>
 </table>
