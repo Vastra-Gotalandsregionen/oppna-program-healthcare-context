@@ -100,6 +100,7 @@ public class RequestLoggerController {
         HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
 
         requestResult.put("RemoteUser", httpRequest.getRemoteUser());
+        requestResult.put("P3P.USER_LOGIN_ID", getRemoteUserId(request));
         requestResult.put("RemoteAddr", httpRequest.getRemoteAddr());
         requestResult.put("RemoteHost", httpRequest.getRemoteHost());
         requestResult.put("RemotePort", String.valueOf(httpRequest.getRemotePort()));
@@ -126,4 +127,14 @@ public class RequestLoggerController {
 
         return requestResult;
     }
+
+    private String getRemoteUserId(PortletRequest request) {
+        Map<String, ?> userInfo = (Map<String, ?>) request.getAttribute(PortletRequest.USER_INFO);
+        String userId = "";
+        if (userInfo != null) {
+            userId = (String) userInfo.get(PortletRequest.P3PUserInfos.USER_LOGIN_ID.toString());
+        }
+        return userId;
+    }
+
 }

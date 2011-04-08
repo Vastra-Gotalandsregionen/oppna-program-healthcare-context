@@ -19,7 +19,7 @@ Generation time : 2010-05-07 13:56:05 CEST
   <name>${project.artifactId}</name>
 
   <build>
-    <finalName>${project.artifactId}</finalName>
+    <finalName>healthcare-context-patient-context-portlet</finalName>
     <plugins>
       <plugin>
         <!-- Configure eclipse plug-in to generate a context root that does not have the version number on it -->
