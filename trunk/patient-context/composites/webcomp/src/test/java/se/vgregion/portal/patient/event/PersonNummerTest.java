@@ -298,21 +298,21 @@ public class PersonNummerTest {
         pNo = PersonNummer.personummer("1212121212");
         assertEquals("1212121212", pNo.getShort());
         assertEquals("121212-1212", pNo.getNormal());
-        assertEquals("19121212-1212", pNo.getFull());
+        assertEquals("20121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("121212-1212");
         assertEquals("1212121212", pNo.getShort());
         assertEquals("121212-1212", pNo.getNormal());
-        assertEquals("19121212-1212", pNo.getFull());
+        assertEquals("20121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("121212+1212");
-        assertEquals("181212121212", pNo.getShort());
+        assertEquals("191212121212", pNo.getShort());
         assertEquals("121212+1212", pNo.getNormal());
-        assertEquals("18121212-1212", pNo.getFull());
+        assertEquals("19121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("19121212-1212");
-        assertEquals("1212121212", pNo.getShort());
-        assertEquals("121212-1212", pNo.getNormal());
+        assertEquals("191212121212", pNo.getShort());
+        assertEquals("121212+1212", pNo.getNormal());
         assertEquals("19121212-1212", pNo.getFull());
 
         pNo = PersonNummer.personummer("18121212-1212");
@@ -372,11 +372,11 @@ public class PersonNummerTest {
 
         assertEquals(pNo, pNo);
         assertEquals(PersonNummer.personummer("1212121212"), PersonNummer.personummer("121212-1212"));
-        assertEquals(PersonNummer.personummer("191212121212"), PersonNummer.personummer("121212-1212"));
-        assertEquals(PersonNummer.personummer("19121212-1212"), PersonNummer.personummer("121212-1212"));
-        assertEquals(PersonNummer.personummer("181212121212"), PersonNummer.personummer("121212+1212"));
-        assertEquals(PersonNummer.personummer("18121212-1212"), PersonNummer.personummer("121212+1212"));
-        assertEquals(PersonNummer.personummer("18121212+1212"), PersonNummer.personummer("121212+1212"));
+        assertEquals(PersonNummer.personummer("191212121212"), PersonNummer.personummer("121212+1212"));
+        assertEquals(PersonNummer.personummer("19121212-1212"), PersonNummer.personummer("121212+1212"));
+        assertEquals(PersonNummer.personummer("191212121212"), PersonNummer.personummer("121212+1212"));
+        assertEquals(PersonNummer.personummer("19121212-1212"), PersonNummer.personummer("121212+1212"));
+        assertEquals(PersonNummer.personummer("19121212+1212"), PersonNummer.personummer("121212+1212"));
     }
 
     @Test
@@ -406,17 +406,17 @@ public class PersonNummerTest {
     @Test
     public void testHashCode() {
         pNo = PersonNummer.personummer("1212121212");
-        assertEquals(37806699, pNo.hashCode());
+        assertEquals(584038049, pNo.hashCode());
         pNo = PersonNummer.personummer("121212-1212");
-        assertEquals(37806699, pNo.hashCode());
+        assertEquals(584038049, pNo.hashCode());
         pNo = PersonNummer.personummer("121212+1212");
-        assertEquals(-849696984, pNo.hashCode());
+        assertEquals(555408898, pNo.hashCode());
         pNo = PersonNummer.personummer("19121212-1212");
-        assertEquals(37806699, pNo.hashCode());
+        assertEquals(555408898, pNo.hashCode());
         pNo = PersonNummer.personummer("18121212-1212");
-        assertEquals(-849696984, pNo.hashCode());
+        assertEquals(526779747, pNo.hashCode());
         pNo = PersonNummer.personummer("18121212+1212");
-        assertEquals(-849696984, pNo.hashCode());
+        assertEquals(526779747, pNo.hashCode());
     }
 
     @Test

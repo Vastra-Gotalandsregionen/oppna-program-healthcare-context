@@ -258,19 +258,25 @@ public final class PersonNummer implements Serializable {
         int thisCentury = cal.get(Calendar.YEAR) / 100;
         int thisYear = cal.get(Calendar.YEAR) % 100;
 
-        if ("-".equals(separator)) {
-            if (year > thisYear) {
-                century = thisCentury - 1;
-            } else {
-                century = thisCentury;
+        if (Type.FULL.equals(type) || Type.FULL_NO.equals(type)) {
+            // determine century by numberText
+            century = Integer.parseInt(numberText.substring(0, 2));
+        } else {
+            // determine century by separator sign
+            if ("-".equals(separator)) {
+                if (year > thisYear) {
+                    century = thisCentury - 1;
+                } else {
+                    century = thisCentury;
+                }
             }
-        }
 
-        if ("+".equals(separator)) {
-            if (year > thisYear) {
-                century = thisCentury - 2;
-            } else {
-                century = thisCentury - 1;
+            if ("+".equals(separator)) {
+                if (year > thisYear) {
+                    century = thisCentury - 2;
+                } else {
+                    century = thisCentury - 1;
+                }
             }
         }
     }
@@ -541,7 +547,6 @@ public final class PersonNummer implements Serializable {
             result = 31 * result + day;
             result = 31 * result + birthNumber;
             result = 31 * result + checkNumber;
-            result = 31 * result + (separator != null ? separator.hashCode() : 0);
             return result;
         }
     }

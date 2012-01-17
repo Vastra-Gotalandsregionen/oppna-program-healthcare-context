@@ -90,16 +90,16 @@ public class PatientEventTest {
 
     @Test
     public void testHashCode() throws Exception {
-        assertEquals(1211601890, new PatientEvent("531212-1212", groupCode).hashCode());
-        assertEquals(1211601890, new PatientEvent("5312121212", groupCode).hashCode());
-        assertEquals(1211601890, new PatientEvent("19531212-1212", groupCode).hashCode());
-        assertEquals(1211601890, new PatientEvent("19531212+1212", groupCode).hashCode());
-        assertEquals(1211601890, new PatientEvent("195312121212", groupCode).hashCode());
+        assertEquals(593273259, new PatientEvent("531212-1212", groupCode).hashCode());
+        assertEquals(593273259, new PatientEvent("5312121212", groupCode).hashCode());
+        assertEquals(593273259, new PatientEvent("19531212-1212", groupCode).hashCode());
+        assertEquals(593273259, new PatientEvent("19531212+1212", groupCode).hashCode());
+        assertEquals(593273259, new PatientEvent("195312121212", groupCode).hashCode());
 
-        assertEquals(324098207, new PatientEvent("531212+1212", groupCode).hashCode());
-        assertEquals(324098207, new PatientEvent("185312121212", groupCode).hashCode());
-        assertEquals(324098207, new PatientEvent("18531212-1212", groupCode).hashCode());
-        assertEquals(324098207, new PatientEvent("18531212+1212", groupCode).hashCode());
+        assertEquals(564644108, new PatientEvent("531212+1212", groupCode).hashCode());
+        assertEquals(564644108, new PatientEvent("185312121212", groupCode).hashCode());
+        assertEquals(564644108, new PatientEvent("18531212-1212", groupCode).hashCode());
+        assertEquals(564644108, new PatientEvent("18531212+1212", groupCode).hashCode());
 
         assertEquals(96321, new PatientEvent("aaa", groupCode).hashCode());
         assertEquals(96322, new PatientEvent("aab", groupCode).hashCode());

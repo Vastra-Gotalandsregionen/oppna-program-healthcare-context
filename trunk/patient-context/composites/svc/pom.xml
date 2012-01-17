@@ -52,9 +52,9 @@
     </dependency>
     
     <dependency>
-      <groupId>com.liferay</groupId>
+      <groupId>com.liferay.portal</groupId>
       <artifactId>portal-service</artifactId>
-      <version>5.2.3</version>
+      <version>6.0.6</version>
       <scope>provided</scope>
     </dependency>
     
