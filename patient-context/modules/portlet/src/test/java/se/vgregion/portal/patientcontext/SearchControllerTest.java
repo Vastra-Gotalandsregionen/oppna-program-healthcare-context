@@ -163,7 +163,7 @@ public class SearchControllerTest {
     @Test
     public void testSearchEventSecondSearchSamePatient() throws Exception {
         SearchPatientFormBean formBean = new SearchPatientFormBean();
-        formBean.setSearchText("191212121212");
+        formBean.setSearchText("201212121212");
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
         MockPortletPreferences mockPrefs = new MockPortletPreferences();
@@ -175,7 +175,7 @@ public class SearchControllerTest {
 
         PatientEvent patient = pCtx.getCurrentPatient();
         assertNotNull(patient);
-        assertEquals("191212121212", patient.getInputText());
+        assertEquals("201212121212", patient.getInputText());
         assertEquals(1, pCtx.getPatientHistorySize());
         assertEquals(1, pCtx.getPatientHistory().size());
         assertTrue(mockRes.getEventNames().hasNext());
@@ -187,7 +187,7 @@ public class SearchControllerTest {
     @Test
     public void testSearchEventHistorySearch() throws Exception {
         SearchPatientFormBean formBean = new SearchPatientFormBean();
-        formBean.setSearchText("191212121212");
+        formBean.setSearchText("201212121212");
         PatientContext pCtx = new PatientContext();
         MockActionResponse mockRes = new MockActionResponse();
         MockPortletPreferences mockPrefs = new MockPortletPreferences();
@@ -202,7 +202,7 @@ public class SearchControllerTest {
         PatientEvent patient = pCtx.getCurrentPatient();
         assertNotNull(patient);
         assertEquals("121212-1212", patient.getInputText());
-        assertEquals(2, pCtx.getPatientHistorySize());
+        assertEquals(2, pCtx.getPatientHistorySize()); // the number of searches on unique patients
         assertEquals(2, pCtx.getPatientHistory().size());
         assertTrue(mockRes.getEventNames().hasNext());
 
