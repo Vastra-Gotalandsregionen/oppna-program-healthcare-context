@@ -29,7 +29,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <div class="module-content">
     <h1>Patient</h1>
@@ -67,3 +67,15 @@
         </c:if>
     </c:if>
 </div>
+
+<portlet:resourceURL var="resourceUrl" escapeXml="false"/>
+
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/listener.js"></script>
+
+<liferay-util:html-bottom>
+    <script type="text/javascript">
+        AUI().ready(function (A) {
+            pollForNewPatient(A, '<%= resourceUrl %>');
+        });
+    </script>
+</liferay-util:html-bottom>
