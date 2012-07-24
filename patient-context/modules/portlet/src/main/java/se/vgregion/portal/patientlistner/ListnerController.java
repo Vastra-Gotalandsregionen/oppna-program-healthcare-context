@@ -173,9 +173,14 @@ public class ListnerController {
     private boolean waitForUpdate(String sessionId) {
 
         // A way to wait for a certain event.
-        CountDownLatch countDownLatch = new CountDownLatch(1);
         try {
-            blockedThreads.put(sessionId, countDownLatch);
+            CountDownLatch countDownLatch;
+            if (blockedThreads.containsKey(sessionId)) {
+                countDownLatch = blockedThreads.get(sessionId);
+            } else {
+                countDownLatch = new CountDownLatch(1);
+                blockedThreads.put(sessionId, countDownLatch);
+            }
             countDownLatch.await(5, TimeUnit.MINUTES);
             return true;
         } catch (InterruptedException e) {
