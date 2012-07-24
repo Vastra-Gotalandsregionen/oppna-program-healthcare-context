@@ -10,8 +10,12 @@ function pollForNewPatient(A, url) {
                 if (response == 'update=true') {
                     //alert("Klicka på OK för att ladda om sidan. Aktuell patient har uppdaterats.");
                     window.location.reload();
+                    pollForNewPatient(A, url);
+                } else if (response == 'update=false') {
+                    pollForNewPatient(A, url);
+                } else {
+                    // Something probably went wrong, e.g. session was invalidated so the client is not logged in. Quit sending requests.
                 }
-                pollForNewPatient(A, url);
             },
             failure:function () {
                 pollForNewPatient(A, url);
