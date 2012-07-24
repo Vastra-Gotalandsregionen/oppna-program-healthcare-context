@@ -55,8 +55,8 @@ public class SearchControllerTest {
 
         assertEquals(SearchController.VIEW_JSP, result);
 
-        assertTrue(model.containsKey("patientContext"));
-        PatientContext pCtx = (PatientContext) model.get("patientContext");
+        assertNotNull(mockReq.getPortletSession().getAttribute("patientContext"));
+        PatientContext pCtx = (PatientContext) mockReq.getPortletSession().getAttribute("patientContext");
         assertNull(pCtx.getCurrentPatient());
         assertNotNull(pCtx.getPatientHistory());
         assertEquals(0, pCtx.getPatientHistorySize());
@@ -73,13 +73,13 @@ public class SearchControllerTest {
     public void testViewPatientContext() throws Exception {
         RenderRequest mockReq = new MockRenderRequest();
         PatientContext pCtx = initPatientContext("19121212-1212");
-        model.addAttribute("patientContext", pCtx);
+        mockReq.getPortletSession().setAttribute("patientContext", pCtx);
 
         String result = controller.view(model, mockReq);
 
         assertEquals(SearchController.VIEW_JSP, result);
 
-        assertSame(pCtx, model.get("patientContext"));
+        assertSame(pCtx, mockReq.getPortletSession().getAttribute("patientContext"));
 
         assertNotNull(pCtx.getPatientHistory());
         assertEquals(0, pCtx.getPatientHistorySize());
@@ -95,7 +95,7 @@ public class SearchControllerTest {
     public void testViewPatientContextNotPersonNummer() throws Exception {
         RenderRequest mockReq = new MockRenderRequest();
         PatientContext pCtx = initPatientContext("aaa");
-        model.addAttribute("patientContext", pCtx);
+        mockReq.getPortletSession().setAttribute("patientContext", pCtx);
 
         String result = controller.view(model, mockReq);
         SearchPatientFormBean formBean = (SearchPatientFormBean) model.get("searchPatient");

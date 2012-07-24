@@ -45,7 +45,6 @@ import javax.xml.namespace.QName;
  */
 @Controller
 @RequestMapping("VIEW")
-@SessionAttributes("patientContext")
 public class SearchController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
@@ -63,10 +62,11 @@ public class SearchController {
      */
     @RenderMapping
     public String view(ModelMap model, RenderRequest request) {
-        if (!model.containsKey("patientContext")) {
-            model.addAttribute("patientContext", new PatientContext());
+        PortletSession session = request.getPortletSession();
+        if (session.getAttribute("patientContext") == null) {
+            session.setAttribute("patientContext", new PatientContext());
         }
-        PatientContext patientContext = (PatientContext) model.get("patientContext");
+        PatientContext patientContext = (PatientContext) session.getAttribute("patientContext");
         SearchPatientFormBean formBean = new SearchPatientFormBean();
         if (patientContext.getCurrentPatient() != null) {
             PatientEvent patient = patientContext.getCurrentPatient();
@@ -139,10 +139,12 @@ public class SearchController {
         Event event = request.getEvent();
         PatientEvent patient = (PatientEvent) event.getValue();
 
-        if (!model.containsKey("patientContext")) {
-            model.addAttribute("patientContext", new PatientContext());
+        PortletSession session = request.getPortletSession();
+
+        if (session.getAttribute("patientContext") == null) {
+            session.setAttribute("patientContext", new PatientContext());
         }
-        PatientContext patientContext = (PatientContext) model.get("patientContext");
+        PatientContext patientContext = (PatientContext) session.getAttribute("patientContext");
 
         // patient selection changed
         if (!patient.equals(patientContext.getCurrentPatient())) {
