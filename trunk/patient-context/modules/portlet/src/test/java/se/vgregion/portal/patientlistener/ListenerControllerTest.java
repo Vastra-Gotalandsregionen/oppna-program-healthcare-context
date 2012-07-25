@@ -17,7 +17,7 @@
  *
  */
 
-package se.vgregion.portal.patientlistner;
+package se.vgregion.portal.patientlistener;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,13 +38,13 @@ import static org.junit.Assert.*;
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
-public class ListnerControllerTest {
-    private ListnerController controller;
+public class ListenerControllerTest {
+    private ListenerController controller;
     private ModelMap model;
 
     @Before
     public void setUp() throws Exception {
-        controller = new ListnerController();
+        controller = new ListenerController();
         model = new ModelMap();
     }
 
@@ -54,7 +54,7 @@ public class ListnerControllerTest {
 
         String result = controller.view(new MockRenderRequest(), model, mockPrefs);
 
-        assertEquals(ListnerController.VIEW_JSP, result);
+        assertEquals(ListenerController.VIEW_JSP, result);
         assertTrue(model.containsKey("patient"));
         PatientEvent patient = (PatientEvent) model.get("patient");
         assertEquals("", patient.getInputText());
@@ -77,24 +77,24 @@ public class ListnerControllerTest {
     }
 
     @Test
-    public void testChangeListnerPatientEventWithPersonNumber() throws Exception {
+    public void testChangeListenerPatientEventWithPersonNumber() throws Exception {
         PatientEvent pe = new PatientEvent("19121212-1212", PatientEvent.DEFAULT_GROUP_CODE);
         Event mockEvent = new MockEvent("{http://vgregion.se/patientcontext/events}pctx.change", pe);
         EventRequest mockReq = new MockEventRequest(mockEvent);
 
-        controller.changeListner(mockReq, model);
+        controller.changeListener(mockReq, model);
 
         PatientEvent patient = (PatientEvent) mockReq.getPortletSession().getAttribute("patient");
         assertEquals(pe, patient);
     }
 
     @Test
-    public void testChangeListnerPatientEventWithInputText() throws Exception {
+    public void testChangeListenerPatientEventWithInputText() throws Exception {
         PatientEvent pe = new PatientEvent("aaa", PatientEvent.DEFAULT_GROUP_CODE);
         Event mockEvent = new MockEvent("{http://vgregion.se/patientcontext/events}pctx.change", pe);
         EventRequest mockReq = new MockEventRequest(mockEvent);
 
-        controller.changeListner(mockReq, model);
+        controller.changeListener(mockReq, model);
 
         PatientEvent patient = (PatientEvent) mockReq.getPortletSession().getAttribute("patient");
         assertEquals(pe, patient);
@@ -102,7 +102,7 @@ public class ListnerControllerTest {
 
 
     @Test
-    public void testChangeListnerPatientAreChangedInModel() throws Exception {
+    public void testChangeListenerPatientAreChangedInModel() throws Exception {
         PatientEvent peModel = new PatientEvent("19121212-1213", PatientEvent.DEFAULT_GROUP_CODE);
 
         PatientEvent pe = new PatientEvent("19121212-1212", PatientEvent.DEFAULT_GROUP_CODE);
@@ -111,7 +111,7 @@ public class ListnerControllerTest {
 
         mockReq.getPortletSession().setAttribute("patient", peModel);
 
-        controller.changeListner(mockReq, model);
+        controller.changeListener(mockReq, model);
 
         PatientEvent patient = (PatientEvent) mockReq.getPortletSession().getAttribute("patient");
         assertEquals(pe, patient);
@@ -119,7 +119,7 @@ public class ListnerControllerTest {
 
 
     @Test
-    public void testResetListner() throws Exception {
+    public void testResetListener() throws Exception {
         PatientEvent pe = new PatientEvent("19121212-1212", PatientEvent.DEFAULT_GROUP_CODE);
 
         MockEventRequest request = new MockEventRequest(new MockEvent(
@@ -127,7 +127,7 @@ public class ListnerControllerTest {
 
         request.getPortletSession().setAttribute("patient", pe);
 
-        controller.resetListner(request);
+        controller.resetListener(request);
 
         PatientEvent patient = (PatientEvent) request.getPortletSession().getAttribute("patient");
         assertFalse(pe.equals(patient));

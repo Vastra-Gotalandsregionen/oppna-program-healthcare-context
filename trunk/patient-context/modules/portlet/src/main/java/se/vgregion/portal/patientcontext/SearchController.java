@@ -135,7 +135,7 @@ public class SearchController {
      * @param model ModelMap
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
-    public void changeListner(EventRequest request, ModelMap model) {
+    public void changeListener(EventRequest request, ModelMap model) {
         Event event = request.getEvent();
         PatientEvent patient = (PatientEvent) event.getValue();
 

@@ -67,7 +67,7 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>PatientContextListner</servlet-name>
+    <servlet-name>PatientContextListener</servlet-name>
     <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
     <init-param>
       <param-name>portlet-class</param-name>
@@ -76,8 +76,8 @@
     <load-on-startup>0</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>PatientContextListner</servlet-name>
-    <url-pattern>/PatientContextListner/*</url-pattern>
+    <servlet-name>PatientContextListener</servlet-name>
+    <url-pattern>/PatientContextListener/*</url-pattern>
   </servlet-mapping>
   
   <servlet>

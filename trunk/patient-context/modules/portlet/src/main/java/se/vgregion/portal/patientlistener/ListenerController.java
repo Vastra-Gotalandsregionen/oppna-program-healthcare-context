@@ -17,7 +17,7 @@
  *
  */
 
-package se.vgregion.portal.patientlistner;
+package se.vgregion.portal.patientlistener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,15 +39,15 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Example listner controller.
+ * Example listener controller.
  * Implementation example of a controller that listens to Patient Events and presents it's content.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 @Controller
 @RequestMapping("VIEW")
-public class ListnerController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ListnerController.class);
+public class ListenerController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ListenerController.class);
 
     /**
      * jsp name.
@@ -89,7 +89,7 @@ public class ListnerController {
      * producer.
      * <p/>
      * ie. if the PatientEvent where sent by the PatientContext portlet on the same page, this
-     * listner should show the patient. However if the patient event where sent by a
+     * listener should show the patient. However if the patient event where sent by a
      * PatientContext portlet on another page it should not automatically go out and look up the
      * patient (in a medical system that the user didn't even know about)
      *
@@ -98,7 +98,7 @@ public class ListnerController {
      */
     private void groupCodeFiltering(ModelMap model, PortletPreferences prefs) {
         String myGroupCode = prefs.getValue("group.code", PatientEvent.DEFAULT_GROUP_CODE);
-        LOGGER.debug("View Listner GroupCode: " + myGroupCode);
+        LOGGER.debug("View Listener GroupCode: " + myGroupCode);
 
         PatientEvent patient = (PatientEvent) model.get("patient");
         LOGGER.debug("Event GroupCode: " + ((patient == null) ? "empty" : patient.getGroupCode()));
@@ -115,15 +115,15 @@ public class ListnerController {
      * @param model   ModelMap
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
-    public void changeListner(EventRequest request, ModelMap model) {
+    public void changeListener(EventRequest request, ModelMap model) {
         Event event = request.getEvent();
         PatientEvent patient = (PatientEvent) event.getValue();
 
-        LOGGER.debug("Listner personnummer input: " + patient.getInputText());
+        LOGGER.debug("Listener personnummer input: " + patient.getInputText());
         if (patient.getPersonNummer() != null) {
-            LOGGER.debug("Listner personnummer short: " + patient.getPersonNummer().getShort());
-            LOGGER.debug("Listner personnummer normal: " + patient.getPersonNummer().getNormal());
-            LOGGER.debug("Listner personnummer full: " + patient.getPersonNummer().getFull());
+            LOGGER.debug("Listener personnummer short: " + patient.getPersonNummer().getShort());
+            LOGGER.debug("Listener personnummer normal: " + patient.getPersonNummer().getNormal());
+            LOGGER.debug("Listener personnummer full: " + patient.getPersonNummer().getFull());
         }
 
         PortletSession portletSession = request.getPortletSession();
@@ -147,7 +147,7 @@ public class ListnerController {
      * @param request request
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.reset")
-    public void resetListner(EventRequest request) {
+    public void resetListener(EventRequest request) {
         request.getPortletSession().setAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
     }
 

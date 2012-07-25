@@ -25,7 +25,7 @@
 <display>
   <category name="VGR">
     <portlet id="PatientContext"/>
-    <portlet id="PatientContextListner"/>
+    <portlet id="PatientContextListener"/>
     <portlet id="RequestLogger"/>
   </category>
 </display>

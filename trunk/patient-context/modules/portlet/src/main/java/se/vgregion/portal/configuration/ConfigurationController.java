@@ -36,7 +36,7 @@ import javax.portlet.PortletPreferences;
  * Configuration Controller for the the portlet.
  * Used to configure group-code for a portlet.
  *
- * The group-code is used for configuring which listner portlet should
+ * The group-code is used for configuring which listener portlet should
  * listen to which event sender portlet.
  * The group-code are stored in PortletPreferences. 
  *

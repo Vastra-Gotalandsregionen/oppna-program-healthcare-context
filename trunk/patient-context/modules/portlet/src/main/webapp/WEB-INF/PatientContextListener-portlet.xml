@@ -32,12 +32,12 @@
   <import resource="classpath*:applicationContext.xml" />
 
   <context:annotation-config />
-  <context:component-scan base-package="se.vgregion.portal.patientlistner,se.vgregion.portal.configuration" />
+  <context:component-scan base-package="se.vgregion.portal.patientlistener,se.vgregion.portal.configuration" />
   <!-- context:load-time-weaver aspectj-weaving="on" /-->
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-    <property name="prefix" value="/WEB-INF/jsp/listner/" />
+    <property name="prefix" value="/WEB-INF/jsp/listener/" />
     <property name="suffix" value=".jsp" />
     <property name="contentType" value="text/html;charset=UTF-8" />
   </bean>
