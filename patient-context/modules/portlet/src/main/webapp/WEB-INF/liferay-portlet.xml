@@ -30,7 +30,7 @@
   </portlet>
 
   <portlet>
-    <portlet-name>PatientContextListner</portlet-name>
+    <portlet-name>PatientContextListener</portlet-name>
     <instanceable>true</instanceable>
   </portlet>
 

@@ -58,8 +58,8 @@
   </portlet>
 
   <portlet>
-    <portlet-name>PatientContextListner</portlet-name>
-    <display-name>PatientContextListner</display-name>
+    <portlet-name>PatientContextListener</portlet-name>
+    <display-name>PatientContextListener</display-name>
     <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
     <expiration-cache>0</expiration-cache>
     <supports>
@@ -70,8 +70,8 @@
     <supported-locale>sv</supported-locale>
 
     <portlet-info>
-      <title>Patient context listner</title>
-      <short-title>Context listner</short-title>
+      <title>Patient context listener</title>
+      <short-title>Context listener</short-title>
       <keywords>Context</keywords>
     </portlet-info>
 
