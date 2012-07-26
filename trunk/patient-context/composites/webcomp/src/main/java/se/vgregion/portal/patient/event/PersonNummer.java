@@ -50,14 +50,14 @@ public final class PersonNummer implements Serializable {
      * a person number at all, to how the input string where broken down.
      */
     public enum Type {
-        SHORT, NORMAL, FULL_NO, FULL, INVALID
+        SHORT, NORMAL, FULL_NO, FULL, FAKE_FULL_NO, INVALID
     }
 
     private int century;
     private int year;
     private int month;
     private int day;
-    private int birthNumber;
+    private String birthNumber;
     private int checkNumber;
     private String separator; // or "+" if age over 100
 
@@ -103,9 +103,9 @@ public final class PersonNummer implements Serializable {
             return String.format("INVALID [%s]", numberText);
         }
         if (separator.equals("-")) {
-            return String.format("%02d%02d%02d%03d%d", year, month, day, birthNumber, checkNumber);
+            return String.format("%02d%02d%02d%s%d", year, month, day, birthNumber, checkNumber);
         } else {
-            return String.format("%02d%02d%02d%02d%03d%d", century, year, month, day, birthNumber, checkNumber);
+            return String.format("%02d%02d%02d%02d%s%d", century, year, month, day, birthNumber, checkNumber);
         }
     }
 
@@ -118,7 +118,7 @@ public final class PersonNummer implements Serializable {
         if (type == Type.INVALID) {
             return String.format("INVALID [%s]", numberText);
         }
-        return String.format("%02d%02d%02d%s%03d%d", year, month, day, separator, birthNumber, checkNumber);
+        return String.format("%02d%02d%02d%s%s%d", year, month, day, separator, birthNumber, checkNumber);
     }
 
     /**
@@ -130,9 +130,20 @@ public final class PersonNummer implements Serializable {
         if (type == Type.INVALID) {
             return String.format("INVALID [%s]", numberText);
         }
-        return String.format("%02d%02d%02d%02d-%03d%d", century, year, month, day, birthNumber, checkNumber);
+        return String.format("%02d%02d%02d%02d-%s%d", century, year, month, day, birthNumber, checkNumber);
     }
 
+    /**
+     * Get the full string representation of the PersonNumber without the separator character.
+     *
+     * @return String
+     */
+    public String getFullNo() {
+        if (type == Type.INVALID) {
+            return String.format("INVALID [%s]", numberText);
+        }
+        return String.format("%02d%02d%02d%02d%s%d", century, year, month, day, birthNumber, checkNumber);
+    }
 
     private void setNumberText(String numberText) {
         this.numberText = numberText;
@@ -140,10 +151,10 @@ public final class PersonNummer implements Serializable {
     }
 
     private void initGender() {
-        if (type == Type.INVALID) {
+        if (type == Type.INVALID || type == Type.FAKE_FULL_NO) {
             gender = null;
         } else {
-            gender = (birthNumber % 2 == 0) ? Gender.FEMALE : Gender.MALE;
+            gender = (Integer.parseInt(birthNumber) % 2 == 0) ? Gender.FEMALE : Gender.MALE;
         }
     }
 
@@ -152,6 +163,9 @@ public final class PersonNummer implements Serializable {
             checkNumber = -1;
             calculatedCheckNumber = -1;
             checkNumberValid = false;
+        } else if (type == Type.FAKE_FULL_NO) {
+            checkNumber = Integer.parseInt(numberText.substring(numberText.length() - 1));
+            checkNumberValid = true;
         } else {
             checkNumber = Integer.parseInt(numberText.substring(numberText.length() - 1));
             calculatedCheckNumber = checkDigitCalculator(getShort());
@@ -161,23 +175,27 @@ public final class PersonNummer implements Serializable {
 
     private void initBirthNumber() {
         if (type == Type.INVALID) {
-            birthNumber = -1;
+            birthNumber = "-1";
         }
 
         if (type == Type.SHORT) {
-            birthNumber = Integer.parseInt(numberText.substring(6, 9));
+            birthNumber = numberText.substring(6, 9);
         }
 
         if (type == Type.NORMAL) {
-            birthNumber = Integer.parseInt(numberText.substring(7, 10));
+            birthNumber = numberText.substring(7, 10);
         }
 
         if (type == Type.FULL_NO) {
-            birthNumber = Integer.parseInt(numberText.substring(8, 11));
+            birthNumber = numberText.substring(8, 11);
+        }
+
+        if (type == Type.FAKE_FULL_NO) {
+            birthNumber = numberText.substring(8, 11);
         }
 
         if (type == Type.FULL) {
-            birthNumber = Integer.parseInt(numberText.substring(9, 12));
+            birthNumber = numberText.substring(9, 12);
         }
     }
 
@@ -190,7 +208,7 @@ public final class PersonNummer implements Serializable {
             day = Integer.parseInt(numberText.substring(4, 6));
         }
 
-        if (type == Type.FULL_NO || type == Type.FULL) {
+        if (type == Type.FULL_NO || type == Type.FULL || type == Type.FAKE_FULL_NO) {
             day = Integer.parseInt(numberText.substring(6, 8));
         }
 
@@ -217,7 +235,7 @@ public final class PersonNummer implements Serializable {
             month = Integer.parseInt(numberText.substring(2, 4));
         }
 
-        if (type == Type.FULL_NO || type == Type.FULL) {
+        if (type == Type.FULL_NO || type == Type.FULL || type == Type.FAKE_FULL_NO) {
             month = Integer.parseInt(numberText.substring(4, 6));
         }
 
@@ -237,7 +255,7 @@ public final class PersonNummer implements Serializable {
             separator = numberText.substring(6, 7);
         }
 
-        if (type == Type.FULL_NO || type == Type.FULL) {
+        if (type == Type.FULL_NO || type == Type.FULL || type == Type.FAKE_FULL_NO) {
             Calendar cal = Calendar.getInstance();
             int thisFullYear = cal.get(Calendar.YEAR);
             int fullYear = Integer.parseInt(numberText.substring(0, 4));
@@ -258,7 +276,7 @@ public final class PersonNummer implements Serializable {
         int thisCentury = cal.get(Calendar.YEAR) / 100;
         int thisYear = cal.get(Calendar.YEAR) % 100;
 
-        if (Type.FULL.equals(type) || Type.FULL_NO.equals(type)) {
+        if (Type.FULL.equals(type) || Type.FULL_NO.equals(type) || Type.FAKE_FULL_NO.equals(type)) {
             // determine century by numberText
             century = Integer.parseInt(numberText.substring(0, 2));
         } else {
@@ -290,7 +308,7 @@ public final class PersonNummer implements Serializable {
             year = Integer.parseInt(numberText.substring(0, 2));
         }
 
-        if (type == Type.FULL_NO || type == Type.FULL) {
+        if (type == Type.FULL_NO || type == Type.FULL || type == Type.FAKE_FULL_NO) {
             year = Integer.parseInt(numberText.substring(2, 4));
         }
     }
@@ -310,6 +328,9 @@ public final class PersonNummer implements Serializable {
                     break;
                 case 12:
                     tmpType = numberText.matches("\\d{12}") ? Type.FULL_NO : Type.INVALID;
+                    if (tmpType.equals(Type.INVALID)) {
+                        tmpType = numberText.matches("[\\dA-Z]{12}") ? Type.FAKE_FULL_NO : Type.INVALID;
+                    }
                     break;
                 case 13:
                     tmpType = numberText.matches("\\d{8}[-|+]\\d{4}") ? Type.FULL : Type.INVALID;
@@ -408,7 +429,7 @@ public final class PersonNummer implements Serializable {
      *
      * @return Integer, a 3 digit number
      */
-    public int getBirthNumber() {
+    public String getBirthNumber() {
         return birthNumber;
     }
 
@@ -506,7 +527,7 @@ public final class PersonNummer implements Serializable {
             return false;
         }
 
-        if (birthNumber != that.birthNumber) {
+        if (!birthNumber.equals(that.birthNumber)) {
             return false;
         }
         if (century != that.century) {
@@ -545,7 +566,7 @@ public final class PersonNummer implements Serializable {
             result = 31 * result + year;
             result = 31 * result + month;
             result = 31 * result + day;
-            result = 31 * result + birthNumber;
+            result = 31 * result + birthNumber.hashCode();
             result = 31 * result + checkNumber;
             return result;
         }
