@@ -42,6 +42,7 @@ public class PersonNummerTest {
         assertEquals("Wrong type", PersonNummer.Type.FULL_NO, PersonNummer.personummer("196707124696").getType());
         assertEquals("Wrong type", PersonNummer.Type.FULL, PersonNummer.personummer("19670712-4696").getType());
         assertEquals("Wrong type", PersonNummer.Type.FULL, PersonNummer.personummer("19670712+4696").getType());
+        assertEquals("Wrong type", PersonNummer.Type.FAKE_FULL_NO, PersonNummer.personummer("19670712A696").getType());
 
         assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("670712 4696").getType());
         assertEquals("Wrong type", PersonNummer.Type.INVALID, PersonNummer.personummer("19670712 4696").getType());
@@ -140,6 +141,7 @@ public class PersonNummerTest {
         assertEquals("Wrong year", 67, PersonNummer.personummer("196707124696").getYear());
         assertEquals("Wrong year", 67, PersonNummer.personummer("19670712-4696").getYear());
         assertEquals("Wrong year", 67, PersonNummer.personummer("19670712+4696").getYear());
+        assertEquals("Wrong year", 67, PersonNummer.personummer("19670712E696").getYear());
         assertEquals("Wrong year", -1, PersonNummer.personummer("670712 4696").getYear());
     }
 
@@ -182,6 +184,10 @@ public class PersonNummerTest {
         assertFalse(pNo.isMonthValid());
 
         pNo = PersonNummer.personummer("19652312+4696");
+        assertEquals("Wrong month", 23, pNo.getMonth());
+        assertFalse(pNo.isMonthValid());
+
+        pNo = PersonNummer.personummer("196523124E96");
         assertEquals("Wrong month", 23, pNo.getMonth());
         assertFalse(pNo.isMonthValid());
     }
@@ -239,16 +245,22 @@ public class PersonNummerTest {
         pNo = PersonNummer.personummer("20090230-1212");
         assertEquals(30, pNo.getDay());
         assertFalse(pNo.isDayValid());
+
+        pNo = PersonNummer.personummer("2009023012B2");
+        assertEquals(30, pNo.getDay());
+        assertFalse(pNo.isDayValid());
     }
 
     @Test
     public void testBirthNumber() {
-        assertEquals(121, PersonNummer.personummer("1212121212").getBirthNumber());
-        assertEquals(121, PersonNummer.personummer("121212-1212").getBirthNumber());
-        assertEquals(121, PersonNummer.personummer("19121212-1212").getBirthNumber());
-        assertEquals(121, PersonNummer.personummer("191212121212").getBirthNumber());
-        assertEquals(121, PersonNummer.personummer("191212121212").getBirthNumber());
-        assertEquals(-1, PersonNummer.personummer("a91212121212").getBirthNumber());
+        assertEquals("121", PersonNummer.personummer("1212121212").getBirthNumber());
+        assertEquals("121", PersonNummer.personummer("121212-1212").getBirthNumber());
+        assertEquals("121", PersonNummer.personummer("19121212-1212").getBirthNumber());
+        assertEquals("121", PersonNummer.personummer("191212121212").getBirthNumber());
+        assertEquals("121", PersonNummer.personummer("191212121212").getBirthNumber());
+        assertEquals("121", PersonNummer.personummer("191212121212").getBirthNumber());
+        assertEquals("E21", PersonNummer.personummer("19121212E212").getBirthNumber());
+        assertEquals("-1", PersonNummer.personummer("a91212121212").getBirthNumber());
     }
 
 
@@ -290,6 +302,7 @@ public class PersonNummerTest {
     public void testGender() {
         assertEquals(PersonNummer.Gender.MALE, PersonNummer.personummer("1212121212").getGender());
         assertEquals(PersonNummer.Gender.FEMALE, PersonNummer.personummer("121212-1222").getGender());
+        assertNull(PersonNummer.personummer("121212A222").getGender());
         assertNull(PersonNummer.personummer("a21212-1222").getGender());
     }
 
@@ -324,6 +337,11 @@ public class PersonNummerTest {
         assertEquals("181212121212", pNo.getShort());
         assertEquals("121212+1212", pNo.getNormal());
         assertEquals("18121212-1212", pNo.getFull());
+
+        pNo = PersonNummer.personummer("18121212A212");
+        assertEquals("18121212A212", pNo.getShort());
+        assertEquals("121212+A212", pNo.getNormal());
+        assertEquals("18121212-A212", pNo.getFull());
     }
 
     @Test
@@ -405,18 +423,23 @@ public class PersonNummerTest {
 
     @Test
     public void testHashCode() {
+        int hashCode = PersonNummer.personummer("1212121212").hashCode();
         pNo = PersonNummer.personummer("1212121212");
-        assertEquals(584038049, pNo.hashCode());
+        assertEquals(hashCode, pNo.hashCode());
         pNo = PersonNummer.personummer("121212-1212");
-        assertEquals(584038049, pNo.hashCode());
+        assertEquals(hashCode, pNo.hashCode());
+
+        hashCode = PersonNummer.personummer("121212+1212").hashCode();
         pNo = PersonNummer.personummer("121212+1212");
-        assertEquals(555408898, pNo.hashCode());
+        assertEquals(hashCode, pNo.hashCode());
         pNo = PersonNummer.personummer("19121212-1212");
-        assertEquals(555408898, pNo.hashCode());
+        assertEquals(hashCode, pNo.hashCode());
+
+        hashCode = PersonNummer.personummer("18121212-1212").hashCode();
         pNo = PersonNummer.personummer("18121212-1212");
-        assertEquals(526779747, pNo.hashCode());
+        assertEquals(hashCode, pNo.hashCode());
         pNo = PersonNummer.personummer("18121212+1212");
-        assertEquals(526779747, pNo.hashCode());
+        assertEquals(hashCode, pNo.hashCode());
     }
 
     @Test
