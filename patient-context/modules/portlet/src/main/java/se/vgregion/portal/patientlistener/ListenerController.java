@@ -115,7 +115,7 @@ public class ListenerController {
      * @param model   ModelMap
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
-    public void changeListener(EventRequest request, ModelMap model) {
+    public void changeListener(EventRequest request, ModelMap model) throws InterruptedException {
         Event event = request.getEvent();
         PatientEvent patient = (PatientEvent) event.getValue();
 
@@ -133,8 +133,20 @@ public class ListenerController {
         if (!patient.equals(patientInSession)) {
             portletSession.setAttribute("patient", patient);
 
-            String sessionId = portletSession.getId();
-            CountDownLatch countDownLatch = blockedThreads.get(sessionId);
+            notifyBlockedThread(portletSession);
+        }
+    }
+
+    private void notifyBlockedThread(PortletSession portletSession) throws InterruptedException {
+        String sessionId = portletSession.getId();
+        CountDownLatch countDownLatch = blockedThreads.get(sessionId);
+        if (countDownLatch != null) {
+            countDownLatch.countDown();
+        } else {
+            // There is a small chance that the countDownLatch is null since we are in between two requests.
+            // Therefor we try again with a short delay.
+            Thread.sleep(1000);
+            countDownLatch = blockedThreads.get(sessionId);
             if (countDownLatch != null) {
                 countDownLatch.countDown();
             }
@@ -147,8 +159,13 @@ public class ListenerController {
      * @param request request
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.reset")
-    public void resetListener(EventRequest request) {
-        request.getPortletSession().setAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
+    public void resetListener(EventRequest request) throws InterruptedException {
+        PortletSession portletSession = request.getPortletSession();
+        if (portletSession.getAttribute("patient") != null) {
+            portletSession.setAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
+
+            notifyBlockedThread(portletSession);
+        }
     }
 
     @ResourceMapping
@@ -181,8 +198,7 @@ public class ListenerController {
                 countDownLatch = new CountDownLatch(1);
                 blockedThreads.put(sessionId, countDownLatch);
             }
-            countDownLatch.await(5, TimeUnit.MINUTES);
-            return true;
+            return countDownLatch.await(30, TimeUnit.SECONDS); // returns true if the CountDownLatch is counted down or false if it times out
         } catch (InterruptedException e) {
             LOGGER.info(e.getMessage(), e);
         } finally {
