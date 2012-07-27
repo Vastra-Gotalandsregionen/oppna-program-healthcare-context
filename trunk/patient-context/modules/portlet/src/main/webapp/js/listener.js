@@ -2,7 +2,7 @@ function pollForNewPatient(A, url) {
     A.io.request(url, {
         cache:false,
         sync:false,
-        timeout:60 * 1000,
+        timeout:30 * 1000,
         method:'get',
         on:{
             success:function () {
