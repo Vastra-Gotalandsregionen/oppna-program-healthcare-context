@@ -59,7 +59,9 @@ public class ThreadSynchronizationManager {
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
-            writer.close();
+            if (writer != null) {
+                writer.close();
+            }
         }
     }
 
