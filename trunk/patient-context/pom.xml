@@ -22,7 +22,6 @@ Generation time : 2010-05-07 13:56:05 CEST
   <modules>
     <module>composites/types</module>
     <module>composites/svc</module>
-    <module>composites/webcomp</module>
     <module>modules/portlet</module>
   </modules>
 </project>
