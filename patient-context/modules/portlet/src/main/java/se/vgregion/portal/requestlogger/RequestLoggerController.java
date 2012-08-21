@@ -68,19 +68,6 @@ public class RequestLoggerController {
         return result;
     }
 
-    private Map<String, String> getRequestParameter(PortletRequest request) {
-        Map<String, String> result = new TreeMap<String, String>();
-
-        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
-        Enumeration<String> names = httpRequest.getParameterNames();
-        while (names.hasMoreElements()) {
-            String name = names.nextElement();
-            result.put(name, httpRequest.getParameter(name));
-        }
-
-        return result;
-    }
-
     private Map<String, String> getRequestAttribure(PortletRequest request) {
         Map<String, String> result = new TreeMap<String, String>();
 
