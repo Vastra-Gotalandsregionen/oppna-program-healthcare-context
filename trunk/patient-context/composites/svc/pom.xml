@@ -20,12 +20,6 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>healthcare-context-patient-context-composite-svc</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>healthcare-context-patient-context-composite-types</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
