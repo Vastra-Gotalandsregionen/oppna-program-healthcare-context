@@ -25,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
@@ -102,8 +101,6 @@ public class SearchController {
         String groupCode = prefs.getValue("group.code", PatientEvent.DEFAULT_GROUP_CODE);
 
         // Log patient
-        LOGGER.debug("1-search: " + formBean.getSearchText());
-        LOGGER.debug("1-history: " + formBean.getHistorySearchText());
         PatientEvent patient;
         if (formBean.getHistorySearchText() == null
                 || "0".equals(formBean.getHistorySearchText())) {

@@ -70,12 +70,12 @@
 
 <portlet:resourceURL var="resourceUrl" escapeXml="false"/>
 
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/listener.js"></script>
+<script type="text/javascript" src="/regionportalen-theme/js/rp-patient-context.js"></script>
 
 <liferay-util:html-bottom>
     <script type="text/javascript">
         AUI().ready(function (A) {
-            pollForNewPatient(A, '<%= resourceUrl %>');
+            pollForNewPatient('<%= resourceUrl %>');
         });
     </script>
 </liferay-util:html-bottom>

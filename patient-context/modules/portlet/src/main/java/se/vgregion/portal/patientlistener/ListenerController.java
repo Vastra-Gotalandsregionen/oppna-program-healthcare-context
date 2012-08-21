@@ -27,16 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import se.vgregion.portal.concurrency.ThreadSynchronizationManager;
 import se.vgregion.portal.patient.event.PatientEvent;
 
 import javax.portlet.*;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Example listener controller.
@@ -54,7 +48,7 @@ public class ListenerController {
      */
     public static final String VIEW_JSP = "view";
 
-    private final Map<String, CountDownLatch> blockedThreads = Collections.synchronizedMap(new HashMap<String, CountDownLatch>());
+    private final ThreadSynchronizationManager threadSynchronizationManager = ThreadSynchronizationManager.getInstance();
 
     /**
      * Render view.
@@ -98,10 +92,8 @@ public class ListenerController {
      */
     private void groupCodeFiltering(ModelMap model, PortletPreferences prefs) {
         String myGroupCode = prefs.getValue("group.code", PatientEvent.DEFAULT_GROUP_CODE);
-        LOGGER.debug("View Listener GroupCode: " + myGroupCode);
 
         PatientEvent patient = (PatientEvent) model.get("patient");
-        LOGGER.debug("Event GroupCode: " + ((patient == null) ? "empty" : patient.getGroupCode()));
 
         if (patient != null && !myGroupCode.equals(patient.getGroupCode())) {
             model.remove("patient");
@@ -119,13 +111,6 @@ public class ListenerController {
         Event event = request.getEvent();
         PatientEvent patient = (PatientEvent) event.getValue();
 
-        LOGGER.debug("Listener personnummer input: " + patient.getInputText());
-        if (patient.getPersonNummer() != null) {
-            LOGGER.debug("Listener personnummer short: " + patient.getPersonNummer().getShort());
-            LOGGER.debug("Listener personnummer normal: " + patient.getPersonNummer().getNormal());
-            LOGGER.debug("Listener personnummer full: " + patient.getPersonNummer().getFull());
-        }
-
         PortletSession portletSession = request.getPortletSession();
 
         PatientEvent patientInSession = (PatientEvent) portletSession.getAttribute("patient");
@@ -133,23 +118,7 @@ public class ListenerController {
         if (!patient.equals(patientInSession)) {
             portletSession.setAttribute("patient", patient);
 
-            notifyBlockedThread(portletSession);
-        }
-    }
-
-    private void notifyBlockedThread(PortletSession portletSession) throws InterruptedException {
-        String sessionId = portletSession.getId();
-        CountDownLatch countDownLatch = blockedThreads.get(sessionId);
-        if (countDownLatch != null) {
-            countDownLatch.countDown();
-        } else {
-            // There is a small chance that the countDownLatch is null since we are in between two requests.
-            // Therefor we try again with a short delay.
-            Thread.sleep(1000);
-            countDownLatch = blockedThreads.get(sessionId);
-            if (countDownLatch != null) {
-                countDownLatch.countDown();
-            }
+            threadSynchronizationManager.notifyBlockedThread(portletSession);
         }
     }
 
@@ -164,46 +133,13 @@ public class ListenerController {
         if (portletSession.getAttribute("patient") != null) {
             portletSession.setAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
 
-            notifyBlockedThread(portletSession);
+            threadSynchronizationManager.notifyBlockedThread(portletSession);
         }
     }
 
     @ResourceMapping
     public void pollForChange(ResourceRequest request, ResourceResponse response) {
-        String sessionId = request.getPortletSession().getId();
-        boolean shouldUpdate = waitForUpdate(sessionId);
-        PrintWriter writer = null;
-        try {
-            writer = response.getWriter();
-            if (shouldUpdate) {
-                writer.append("update=true");
-            } else {
-                writer.append("update=false");
-            }
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        } finally {
-            writer.close();
-        }
+        threadSynchronizationManager.pollForChange(request.getPortletSession().getId(), response);
     }
 
-    private boolean waitForUpdate(String sessionId) {
-
-        // A way to wait for a certain event.
-        try {
-            CountDownLatch countDownLatch;
-            if (blockedThreads.containsKey(sessionId)) {
-                countDownLatch = blockedThreads.get(sessionId);
-            } else {
-                countDownLatch = new CountDownLatch(1);
-                blockedThreads.put(sessionId, countDownLatch);
-            }
-            return countDownLatch.await(30, TimeUnit.SECONDS); // returns true if the CountDownLatch is counted down or false if it times out
-        } catch (InterruptedException e) {
-            LOGGER.info(e.getMessage(), e);
-        } finally {
-            blockedThreads.remove(sessionId);
-        }
-        return false;
-    }
 }
