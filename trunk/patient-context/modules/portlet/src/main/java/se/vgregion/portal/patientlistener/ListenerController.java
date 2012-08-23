@@ -121,7 +121,7 @@ public class ListenerController {
         if (!patient.equals(patientInSession)) {
             portletSession.setAttribute("patient", patient);
 
-            threadSynchronizationManager.notifyBlockedThread(portletSession);
+            threadSynchronizationManager.notifyBlockedThreads(portletSession);
         }
     }
 
@@ -136,7 +136,7 @@ public class ListenerController {
         if (portletSession.getAttribute("patient") != null) {
             portletSession.setAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
 
-            threadSynchronizationManager.notifyBlockedThread(portletSession);
+            threadSynchronizationManager.notifyBlockedThreads(portletSession);
         }
     }
 

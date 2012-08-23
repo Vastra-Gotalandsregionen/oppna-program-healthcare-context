@@ -127,7 +127,7 @@ public final class ThreadSynchronizationManager {
      *
      * @param portletSession the {@link PortletSession} instance
      */
-    public void notifyBlockedThread(PortletSession portletSession) {
+    public void notifyBlockedThreads(PortletSession portletSession) {
         String sessionId = portletSession.getId();
         notifyBlockedThreads(sessionId);
     }
