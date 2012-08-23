@@ -43,7 +43,8 @@ public class PatientEvent implements Serializable {
     /**
      * PatientEvent are immutable and cannot be changed after creation.
      *
-     * @param inputText String representing a patient identifier.
+     * @param inputText String representing a patient identifier
+     * @param groupCode the groupCode of the instance
      */
     public PatientEvent(String inputText, String groupCode) {
         this.groupCode = groupCode;

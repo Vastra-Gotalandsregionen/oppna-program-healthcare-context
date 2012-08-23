@@ -48,7 +48,8 @@ public class ListenerController {
      */
     public static final String VIEW_JSP = "view";
 
-    private final ThreadSynchronizationManager threadSynchronizationManager = ThreadSynchronizationManager.getInstance();
+    private final ThreadSynchronizationManager threadSynchronizationManager = ThreadSynchronizationManager
+            .getInstance();
 
     /**
      * Render view.
@@ -59,7 +60,9 @@ public class ListenerController {
      * PortletPreferences object the sending portlet, not this portlet.
      * This is a bug in Liferay or Spring Portlet MVC.
      *
-     * @param model ModelMap
+     * @param request the request
+     * @param model   ModelMap
+     * @param prefs   the PortletPreferences
      * @return path to jsp
      */
     @RenderMapping
@@ -107,7 +110,7 @@ public class ListenerController {
      * @param model   ModelMap
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.change")
-    public void changeListener(EventRequest request, ModelMap model) throws InterruptedException {
+    public void changeListener(EventRequest request, ModelMap model) {
         Event event = request.getEvent();
         PatientEvent patient = (PatientEvent) event.getValue();
 
@@ -128,7 +131,7 @@ public class ListenerController {
      * @param request request
      */
     @EventMapping("{http://vgregion.se/patientcontext/events}pctx.reset")
-    public void resetListener(EventRequest request) throws InterruptedException {
+    public void resetListener(EventRequest request) {
         PortletSession portletSession = request.getPortletSession();
         if (portletSession.getAttribute("patient") != null) {
             portletSession.setAttribute("patient", new PatientEvent("", PatientEvent.DEFAULT_GROUP_CODE));
@@ -137,6 +140,12 @@ public class ListenerController {
         }
     }
 
+    /**
+     * See {@link ThreadSynchronizationManager#pollForChange(java.lang.String, javax.portlet.MimeResponse)}.
+     *
+     * @param request  the request
+     * @param response the response
+     */
     @ResourceMapping
     public void pollForChange(ResourceRequest request, ResourceResponse response) {
         threadSynchronizationManager.pollForChange(request.getPortletSession().getId(), response);

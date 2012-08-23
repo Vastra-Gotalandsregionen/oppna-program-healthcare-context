@@ -93,6 +93,7 @@ public class SearchController {
      * @param formBean FormBean from view
      * @param patientContext PatientContext
      * @param response ActionResponse for event propagation
+     * @param prefs PortletPreferences
      */
     @ActionMapping("searchEvent")
     public void searchEvent(@ModelAttribute("searchPatient") SearchPatientFormBean formBean,

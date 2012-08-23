@@ -27,10 +27,15 @@ import org.slf4j.LoggerFactory;
  */
 public class PatientAccessAuditLogger {
 
-    protected final Logger LOGGER;
+    protected final Logger logger;
 
+    /**
+     * Constructor.
+     *
+     * @param loggerName the loggerName
+     */
     public PatientAccessAuditLogger(String loggerName) {
-        LOGGER = LoggerFactory.getLogger(loggerName);
+        logger = LoggerFactory.getLogger(loggerName);
     }
 
     /**
@@ -40,6 +45,6 @@ public class PatientAccessAuditLogger {
      *            Map of parameter requests
      */
     public void logRequestParametersInAuditLog(AuditLogInfoContainer auditLogInfoContainer) {
-        LOGGER.info(auditLogInfoContainer.toFlatLogMessage());
+        logger.info(auditLogInfoContainer.toFlatLogMessage());
     }
 }
