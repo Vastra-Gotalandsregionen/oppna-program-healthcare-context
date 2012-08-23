@@ -54,10 +54,10 @@ public class ThreadSynchronizationManagerTest {
         t4.start();
         t5.start();
 
-        Thread.sleep(100); // It's realistic to sleep some time before someone triggers the notifyBlockedThread.
+        Thread.sleep(100); // It's realistic to sleep some time before someone triggers the notifyBlockedThreads.
 
         // Trigger the update. Soon we'll se which threads have timed out.
-        manager.notifyBlockedThread(sessionId);
+        manager.notifyBlockedThreads(sessionId);
 
         // Wait for all to finish
         t1.join();

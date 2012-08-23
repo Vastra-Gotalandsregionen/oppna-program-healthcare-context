@@ -35,10 +35,10 @@ import javax.portlet.PortletPreferences;
 /**
  * Configuration Controller for the the portlet.
  * Used to configure group-code for a portlet.
- *
+ * <p/>
  * The group-code is used for configuring which listener portlet should
  * listen to which event sender portlet.
- * The group-code are stored in PortletPreferences. 
+ * The group-code are stored in PortletPreferences.
  *
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
@@ -53,8 +53,10 @@ public class ConfigurationController {
     public static final String EDIT_JSP = "configuration";
 
     /**
-     * Nothing here yet.
+     * Render phase method which shows the edit view.
      *
+     * @param model the model
+     * @param prefs the PortletPreferences
      * @return edit view jsp.
      */
     @RenderMapping
@@ -69,16 +71,25 @@ public class ConfigurationController {
         return EDIT_JSP;
     }
 
+    /**
+     * Action phase method for storing the group code in the portlet preferences. The group code is sent with the
+     * {@link PatientEvent}s which are sent as {@link javax.portlet.Event}s and may help event processors take
+     * appropriate actions.
+     *
+     * @param formBean    the formBean
+     * @param response    the response
+     * @param preferences the preferences
+     */
     @ActionMapping("configureEvent")
     public void configureEvent(@ModelAttribute("configure") ConfigurationFormBean formBean,
-                               ActionResponse response, PortletPreferences prefs) {
-        String currentGroupCode = prefs.getValue("group.code", PatientEvent.DEFAULT_GROUP_CODE);
+                               ActionResponse response, PortletPreferences preferences) {
+        String currentGroupCode = preferences.getValue("group.code", PatientEvent.DEFAULT_GROUP_CODE);
         String newGroupCode = formBean.getGroupCode();
 
         if (!currentGroupCode.equals(newGroupCode)) {
             try {
-                prefs.setValue("group.code", newGroupCode);
-                prefs.store();
+                preferences.setValue("group.code", newGroupCode);
+                preferences.store();
             } catch (Exception e) {
                 LOGGER.error("Failed to update group.code", e);
             }

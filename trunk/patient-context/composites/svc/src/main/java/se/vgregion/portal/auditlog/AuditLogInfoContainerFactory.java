@@ -25,8 +25,8 @@ import se.vgregion.portal.util.RequestResponseConverter;
 
 public interface AuditLogInfoContainerFactory {
 
-    public abstract void setRequestResponseConverter(RequestResponseConverter requestResponseConverter);
+    void setRequestResponseConverter(RequestResponseConverter requestResponseConverter);
 
-    public abstract AuditLogInfoContainer getAuditLogInfoContainer(String patientId, PortletRequest portletRequest);
+    AuditLogInfoContainer getAuditLogInfoContainer(String patientId, PortletRequest portletRequest);
 
 }

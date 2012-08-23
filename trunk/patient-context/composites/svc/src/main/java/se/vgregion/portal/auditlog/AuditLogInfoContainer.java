@@ -32,7 +32,7 @@ import java.util.SortedMap;
  * by providing data in a Map.
  * It can be used straight out of the box, but can also be extended
  * to add this functionality.
- * e.g se.vgregion.portal.pli.logging.PliAuditLogger 
+ * e.g se.vgregion.portal.pli.logging.PliAuditLogger
  * 
  * @author hangyl
  * 

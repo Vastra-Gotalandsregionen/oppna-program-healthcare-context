@@ -28,26 +28,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Interface whose implementations convert from {@link PortletRequest}s and {@link PortletResponse}s to the
+ * corresponding {@link HttpServletRequest} and {@link HttpServletResponse}, respectively, from which they originate.
+ *
  * @author Anders Asplund - Logica
  * @author Hans Gyllensten, VGR-IT (vgrId: hangy2)
- * 
  */
 public interface RequestResponseConverter {
 
     /**
-     * Converts a PortletResonse to a HttpServletResponse
-     * 
-     * @param response
+     * Converts a PortletResonse to a HttpServletResponse.
+     *
+     * @param response the response
      * @return HttpServletResponse
      */
-    public HttpServletResponse getHttpServletResponse(PortletResponse response);
+    HttpServletResponse getHttpServletResponse(PortletResponse response);
 
     /**
-     * Converts a PortletRequest to a HttpServletRequest
-     * 
-     * @param request
+     * Converts a PortletRequest to a HttpServletRequest.
+     *
+     * @param request the request
      * @return HttpServletRequest
      */
-    public HttpServletRequest getHttpServletRequest(PortletRequest request);
+    HttpServletRequest getHttpServletRequest(PortletRequest request);
 
 }

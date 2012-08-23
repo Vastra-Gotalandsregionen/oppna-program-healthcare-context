@@ -38,7 +38,7 @@ import java.util.TreeMap;
  * Useful for tracking request header information.
  *
  * @author Anders Bergkvist
- * @author David Rosell  
+ * @author David Rosell
  */
 @Controller
 @RequestMapping("VIEW")
@@ -46,6 +46,14 @@ public class RequestLoggerController {
 
     public static final String VIEW_JSP_URL = "requestlogger";
 
+    /**
+     * Render phase method which loads the model and shows the search form view.
+     *
+     * @param model       the model
+     * @param request     the request
+     * @param preferences the preferences
+     * @return the view
+     */
     @RenderMapping
     public String showSearchForm(ModelMap model, RenderRequest request, PortletPreferences preferences) {
         model.addAttribute("requestInfoMap", getRequestInfo(request));
@@ -82,7 +90,7 @@ public class RequestLoggerController {
     }
 
     private Map<String, String> getRequestInfo(PortletRequest request) {
-        Map<String,String> requestResult = new TreeMap<String, String>();
+        Map<String, String> requestResult = new TreeMap<String, String>();
 
         HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
 

@@ -53,7 +53,7 @@ public class PatientContext implements Serializable {
     }
 
     /**
-     * Set the currently active PatientEvent
+     * Set the currently active PatientEvent.
      *
      * @param currentPatient PatientEvent
      */
